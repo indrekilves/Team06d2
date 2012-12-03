@@ -29,4 +29,24 @@
     <servlet-name>SetupDatabase</servlet-name>
     <url-pattern>/SetupDatabase</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ShowStateAdminUnitTypes</display-name>
+    <servlet-name>ShowStateAdminUnitTypes</servlet-name>
+    <servlet-class>borderguard.ShowStateAdminUnitTypes</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowStateAdminUnitTypes</servlet-name>
+    <url-pattern>/ShowStateAdminUnitTypes</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ShowStateAdminUnits</display-name>
+    <servlet-name>ShowStateAdminUnits</servlet-name>
+    <servlet-class>borderguard.ShowStateAdminUnits</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowStateAdminUnits</servlet-name>
+    <url-pattern>/ShowStateAdminUnits</url-pattern>
+  </servlet-mapping>
 </web-app>

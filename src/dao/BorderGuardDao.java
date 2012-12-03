@@ -46,7 +46,7 @@ public class BorderGuardDao {
 	    try {
 	    	connection = createConnectionAndAddToSession(request);
 	    } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); 
         }		
 	}
 
