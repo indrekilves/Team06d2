@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<project name="Team06d" default="compile">
+    
+    <property name="src.dir" location="src" />
+	<property name="home.dir" location="${user.home}" />
+	<property name="build.dir" location="build" />
+	<property name="dist.dir" location="dist" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="web_content.dir" location="WebContent" />
+	<property name="lib.dir" location="${web_content.dir}/WEB-INF/lib" />
+	<property name="war.name" value="Team06d.war" />
+	<property name="war.path" location="${dist.dir}/${war.name}" />  
+	
+	
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	
+	<target name="war" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		
+		<war destfile="${war.path}" webxml="${web_content.dir}/WEB-INF/web.xml">
+			<classes dir="${classes.dir}" />
+			<fileset dir="${web_content.dir}" excludes="**/servlet-api.jar" />
+		</war>
+	</target>
+	
+    
+	<target name="compile" depends="clean, init">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+			
+	    
+	<target name="init">
+		<mkdir dir="${classes.dir}" />
+	</target>
+	
+	
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+    
+	<target name="load_file">
+    	<loadfile property="myFile" srcfile="${home.dir}/test.txt"/>
+		<echo message="${myFile}"/>
+	</target>
+      
+	<echo>Hello</echo>
+</project>

@@ -19,4 +19,14 @@
     <servlet-name>Hello</servlet-name>
     <url-pattern>/Hello</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SetupDatabase</display-name>
+    <servlet-name>SetupDatabase</servlet-name>
+    <servlet-class>borderguard.SetupDatabase</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetupDatabase</servlet-name>
+    <url-pattern>/SetupDatabase</url-pattern>
+  </servlet-mapping>
 </web-app>
