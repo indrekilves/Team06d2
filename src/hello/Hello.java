@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Hello extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().println("Hello Team06d");
+		//response.getWriter().println("Hello Team06d");
+		request.getRequestDispatcher("hello.jsp").forward(request, response);
 	}
 
 
