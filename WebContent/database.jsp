@@ -18,13 +18,12 @@
 	</div>	
 	
 	<div id="content">
-		<div id="innerContainer">
+		<div id="innerContainer">	
 			<p class="lPad100">			
-				Welcome to BoarderGuard webApplication.
+				Tables are created and dummy data inserted.
 			</p>
-		</div>
+		</div>	
 	</div>
-
 	<div id="footer">
 		<jsp:include page="footer.jsp"/>
 	</div>

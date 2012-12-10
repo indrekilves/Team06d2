@@ -1,23 +1,63 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>State Admin Unit Types</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BoarderGuard - Admin Unit Types</title>
+<link rel="stylesheet" href="./style.css" type="text/css">
 </head>
 <body>
-	<h2>State Admin Unit Types</h2>
+	
+	<div id="header">
+		<jsp:include page="header.jsp"/>
+	</div>
+	
+	<div id="navigation">
+   		<jsp:include page="navigation.jsp"/>
+	</div>	
+	
+	
+	<div id="content">
+	 	<div class="pad10">
+		<b>State Admin Unit types</b><br><br>
 
-	<c:forEach var="type" items="${stateAdminUnitTypes}">
-		ID: <c:out value="${type.state_admin_unit_type_id}" />
-		Code: <c:out value="${type.code}" />
-		Name: <c:out value="${type.name}" />
+		<table>
+		<tr>
+			<th>ID</th>
+			<th>Code</th>
+			<th>Name</th>
+			<th></th>
+		</tr>
+		
+		<c:forEach var="type" items="${stateAdminUnitTypes}">
+			<tr>
+				<td>
+					 <c:out value="${type.state_admin_unit_type_id}" />
+				</td>
+				<td>
+					 <c:out value="${type.code}" />
+				</td>
+				<td>
+					<c:out value="${type.name}" />
+				</td>
+				<td>
+					<a href="?action=editStateAdminUnitType&id=${type.state_admin_unit_type_id}">Edit</a>
+				</td>
+			
+			</tr>
+		</c:forEach>
+		</table>
+		</div>
+	</div>
+	
+	<div id="footer">
+		<jsp:include page="footer.jsp"/>
+	</div>
+	
 
-		<a href="?action=editStateAdminUnitType&id=${type.state_admin_unit_type_id}">Edit</a>
-		<br />
-	</c:forEach>
+
 </body>
 </html>

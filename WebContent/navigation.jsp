@@ -4,30 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>BoarderGuard - Team06d</title>
 <link rel="stylesheet" href="./style.css" type="text/css">
 </head>
 <body>
-
-	<div id="header">
-		<jsp:include page="header.jsp"/>
+	<div id="navigationText">
+		<b>Main menu</b></br>
+		<a href="SetupDatabase">Create database</a><br>
+		<a href="StateAdminUnitTypeController">State Admin Unit Types</a><br>
+		<a href="ShowStateAdminUnits">State Admin Units</a><br>
 	</div>
-	
-	<div id="navigation">
-   		<jsp:include page="navigation.jsp"/>
-	</div>	
-	
-	<div id="content">
-		<div id="innerContainer">
-			<p class="lPad100">			
-				Welcome to BoarderGuard webApplication.
-			</p>
-		</div>
-	</div>
-
-	<div id="footer">
-		<jsp:include page="footer.jsp"/>
-	</div>
-
 </body>
 </html>
