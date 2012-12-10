@@ -64,7 +64,7 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	
 	private void showFormOfStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		StateAdminUnitType type = typeDao.getStateAdminUnitTypeById(id);
+		StateAdminUnitType type = typeDao.getStateAdminUnitTypeByIdWithRelations(id);
 
 		request.setAttribute("stateAdmintUnitType", type);
 		request.getRequestDispatcher("stateAdminUnitTypeForm.jsp").forward(request, response);		

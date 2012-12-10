@@ -1,23 +1,25 @@
 package beans;
 
 import java.util.Date;
+import java.util.List;
 
 public class StateAdminUnitType {
 
-	private int    state_admin_unit_type_id;
-	private String openedBy;
-	private Date   opened;
-	private String changedBy;
-	private Date   changed;
-	private String closedBy;
-	private Date   closed;
-	private String code;
-	private String name;
-	private String comment;
-	private Date   fromDate;
-	private Date   toDate;
-	
-	
+	private int    						state_admin_unit_type_id;
+	private String 						openedBy;
+	private Date   						opened;
+	private String 						changedBy;
+	private Date   						changed;
+	private String		 				closedBy;
+	private Date  			 			closed;
+	private String 						code;
+	private String 						name;
+	private String 						comment;
+	private Date   						fromDate;
+	private Date   						toDate;
+	private StateAdminUnitType			bossAdminUnitType;
+	private List<StateAdminUnitType> 	subordinateAdminUnitTypes;
+		
 	
 	public void StateAdminUnitType() {
 	}
@@ -132,11 +134,32 @@ public class StateAdminUnitType {
 	}
 
 	
+	public StateAdminUnitType getBossAdminUnitType() {
+		return bossAdminUnitType;
+	}
+
+	public void setBossAdminUnitType(StateAdminUnitType bossAdminUnitType) {
+		this.bossAdminUnitType = bossAdminUnitType;
+	}
+
+
+
+	public List<StateAdminUnitType> getSubordinateAdminUnitTypes() {
+		return subordinateAdminUnitTypes;
+	}
+
+	public void setSubordinateAdminUnitTypes(List<StateAdminUnitType> subOrdinateAdminUnitTypes) {
+		this.subordinateAdminUnitTypes = subOrdinateAdminUnitTypes;
+	}
+
+
+
 	@Override 
 	public String toString(){
 		return	"ID: " + state_admin_unit_type_id + "   " +
 				"Code: " + code + "   " +
 				"Name: " + name;		
 	}
+
 	
 }

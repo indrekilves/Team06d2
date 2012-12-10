@@ -18,9 +18,9 @@ import beans.StateAdminUnitType;
 
 public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
-	private Statement st;
-	private PreparedStatement ps;
-	private ResultSet rs;
+//	private Statement st;
+//	private PreparedStatement ps;
+//	private ResultSet rs;
 		
 	
 	public StateAdminUnitTypeDao() {
@@ -34,76 +34,67 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 
 	public List<StateAdminUnitType> getAllStateAdminUnitTypes() {
+	    List<StateAdminUnitType> stateAdminUnitTypes = new ArrayList<StateAdminUnitType>();
+
+	    Statement st = null;
+	    ResultSet rs = null;
 		try {
 			st = super.getConnection().createStatement();
-		    rs = st.executeQuery("SELECT 	state_admin_unit_type_id, " +	//  1
-		    					 "			openedBy,  " +  				//  2
-					 			 "			opened, " +						//  3
-						  	 	 "			changedBy, " + 					//  4
-						 		 "			changed, " +					//  5
-								 "			closedBy, " +					//  6
-								 "			closed, " + 					//  7
-								 "			code,  " +						//  8
-								 "			name,  " + 						//  9
-								 "			comment,  " +					// 10
-								 "			fromDate, " +					// 11
-								 "			toDate  " +						// 12
-		    					 "FROM STATE_ADMIN_UNIT_TYPE");
+		    rs = st.executeQuery("SELECT * FROM state_admin_unit_type");
 
-		    List<StateAdminUnitType> stateAdminUnitTypes = new ArrayList<StateAdminUnitType>();
 		    while (rs.next()) {
-		    	stateAdminUnitTypes.add(createStateAdminUniTypeFromResultSet());
+		    	stateAdminUnitTypes.add(createStateAdminUniTypeFromResultSet(rs));
 		    }
 
-		    return stateAdminUnitTypes;
 		} catch (Exception e) {
 		    throw new RuntimeException(e);
 		} finally {
 			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(st);
-		}	
+		}
+		
+	    return stateAdminUnitTypes;
 	}
 
 	
 	
-	public StateAdminUnitType getStateAdminUnitTypeById(int state_admin_unit_type_id) {
+	public StateAdminUnitType getStateAdminUnitTypeById(Integer state_admin_unit_type_id) {
+		if (state_admin_unit_type_id == null) {
+			return null;
+		}
+		
+	    StateAdminUnitType stateAdminUnitType = null;
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			String sql = "SELECT 	state_admin_unit_type_id, " +	//  1
-						 "			openedBy,  " +  				//  2
-			 			 "			opened, " +						//  3
-				  	 	 "			changedBy, " + 					//  4
-				 		 "			changed, " +					//  5
-						 "			closedBy, " +					//  6
-						 "			closed, " + 					//  7
-						 "			code,  " +						//  8
-						 "			name,  " + 						//  9
-						 "			comment,  " +					// 10
-						 "			fromDate, " +					// 11
-						 "			toDate  " +						// 12
-						 "FROM STATE_ADMIN_UNIT_TYPE " +
-						 "WHERE state_admin_unit_type_id = ?";
+			String sql = "SELECT * " +
+						 "FROM   state_admin_unit_type " +
+						 "WHERE  state_admin_unit_type_id = ?";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+			ps = super.getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
 		    rs = ps.executeQuery();
-		    StateAdminUnitType stateAdminUnitType = null;
 
-		    while (rs.next()) {
-		    	stateAdminUnitType = createStateAdminUniTypeFromResultSet();
-		    }
+		    if (rs.next()) {
+		    	stateAdminUnitType = createStateAdminUniTypeFromResultSet(rs);
+			} else {
+				System.out.println("State Admin Unit Type not found for ID: " + state_admin_unit_type_id);
+			}
 
-			return stateAdminUnitType;
 		} catch (Exception e) {
 		    throw new RuntimeException(e);
 		} finally {
 			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
-		}	
+		}
 
+
+		return stateAdminUnitType;
 	}
 
 	
-	private StateAdminUnitType createStateAdminUniTypeFromResultSet() throws SQLException {
+	private StateAdminUnitType createStateAdminUniTypeFromResultSet(ResultSet rs) throws SQLException {
     	StateAdminUnitType stateAdminUnitType = new StateAdminUnitType();
     	
     	stateAdminUnitType.setState_admin_unit_type_id(rs.getInt("state_admin_unit_type_id"));
@@ -118,13 +109,134 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
     	stateAdminUnitType.setComment(rs.getString("comment"));
     	stateAdminUnitType.setFromDate(rs.getDate("fromDate"));
     	stateAdminUnitType.setToDate(rs.getDate("toDate"));
-    	
+    	 	
 		return stateAdminUnitType;
 	}
 
 	
 	
+	public StateAdminUnitType getStateAdminUnitTypeByIdWithRelations(Integer state_admin_unit_type_id) {
+		if (state_admin_unit_type_id == null) {
+			return null;
+		}		
+	
+		// type
+		StateAdminUnitType stateAdminUnitType = getStateAdminUnitTypeById(state_admin_unit_type_id);
+	    if (stateAdminUnitType == null){
+	    	return null;
+	    }	    	
+	    
+		// boss
+    	StateAdminUnitType bossAdminUnitType = getBossAdminUnitTypeById(state_admin_unit_type_id);
+    	stateAdminUnitType.setBossAdminUnitType(bossAdminUnitType);
+    	
+    	// subordinates
+    	List<StateAdminUnitType> subOrdinateAdminUnitTypes = getSubOrdinateAdminUnitTypesById(state_admin_unit_type_id);
+		stateAdminUnitType.setSubordinateAdminUnitTypes(subOrdinateAdminUnitTypes);
+		
+		
+    	return stateAdminUnitType;
+	}
+	
+
+	private StateAdminUnitType getBossAdminUnitTypeById(Integer state_admin_unit_type_id) {
+		if (state_admin_unit_type_id == null) {
+			return null;
+		}
+		
+		StateAdminUnitType bossAdminUnitType = null;
+		Integer bossID = null;
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT 	state_admin_unit_type_id " +
+						 "FROM   	POSSIBLE_SUBORDINATION " +
+						 "WHERE 	possible_subordinate_type_id = ?";
+			
+		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, state_admin_unit_type_id);		    
+		    rs = ps.executeQuery();
+
+		    if (rs.next()) {
+				bossID = rs.getInt("state_admin_unit_type_id");
+			} else {
+				System.out.println("Boss not found for ID: " + state_admin_unit_type_id);
+			}
+	    
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		
+		if (bossID != null) {
+			bossAdminUnitType = getStateAdminUnitTypeById(bossID);
+		}
+		
+		return bossAdminUnitType;
+	}
+	
+	
+	
+
+	private List<StateAdminUnitType> getSubOrdinateAdminUnitTypesById(Integer state_admin_unit_type_id) {
+		if (state_admin_unit_type_id == null) {
+			return null;
+		}
+		List<StateAdminUnitType> subOrdinateAdminUnitTypes = new ArrayList<StateAdminUnitType>();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "SELECT 	possible_subordinate_type_id " +
+						 "FROM   	POSSIBLE_SUBORDINATION " +
+						 "WHERE 	state_admin_unit_type_id = ?";
+			
+		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, state_admin_unit_type_id);		    
+		    rs = ps.executeQuery();
+
+		    while (rs.next()) {
+		    	
+				Integer subID = rs.getInt("possible_subordinate_type_id");
+				StateAdminUnitType subType = getStateAdminUnitTypeById(subID); 
+		    	
+				subOrdinateAdminUnitTypes.add(subType);
+		    	
+				System.out.println("Subordinate for ID:" + state_admin_unit_type_id + " is ID:" + subID);				
+		    }
+		    
+
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}		
+
+		
+		return subOrdinateAdminUnitTypes;
+	}
+	
+	
+	// Update
+	
+	
 	public void updateStateAdminUnitTypeByType(StateAdminUnitType stateAdminUnitType) {
+		if (stateAdminUnitType == null)
+		{
+			return;
+		}
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
 		try {
 			String sql = "UPDATE STATE_ADMIN_UNIT_TYPE  " 	+	
 						 "SET   code      = ?,  "         	+	//  1
@@ -154,6 +266,8 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    DbUtils.closeQuietly(ps);
 		}	
 	}
+
+	
 
 	
 	

@@ -20,29 +20,76 @@
 	</div>	
 	
 	<div id="content">
-
+	 	<div class="pad10">
 	
-		<c:if test="${not empty errors}">
-			<div style="color: red">
-				<c:forEach var="error" items="${errors}">
-					<c:out value="${error}"></c:out>
-					<br />
-				</c:forEach>
-			</div>
-			<br />
-			<br />
-		</c:if>
-	
-	
-		<form method="POST" name="editStateAdminUnitTypeForm" action="?id=${stateAdmintUnitType.state_admin_unit_type_id}" >
-	
-		    ID: 	<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br/>
-		    Code:	<input name="code" 	value="${stateAdmintUnitType.code}"><br/>
-		    Name:	<input name="name" 	value="${stateAdmintUnitType.name}"><br/>
+			<c:if test="${not empty errors}">
+				<div style="color: red">
+					<c:forEach var="error" items="${errors}">
+						<c:out value="${error}"></c:out>
+						<br />
+					</c:forEach>
+				</div>
+				<br />
+				<br />
+			</c:if>
 		
-		    <input type="submit" value="Save">
 		
-		</form>
+			<form method="POST" name="editStateAdminUnitTypeForm" action="?id=${stateAdmintUnitType.state_admin_unit_type_id}" >
+		
+			    <!--  ID: 	<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br/> -->
+			    <div id="leftContainer">
+			    	<table>
+				    	<!-- Code -->
+				    	<tr>
+					    	<td>Code</td> 		
+						   	<td><input name="code" 	value="${stateAdmintUnitType.code}"></td>	
+					    </tr>
+		
+		   		    	<!-- Name -->
+					    <tr>
+						    <td>Name</td>		
+						    <td><input name="name" 	value="${stateAdmintUnitType.name}"></td>	
+					    </tr>
+					    
+		   		    	<!-- Comment -->
+						<tr>
+							<td valign="top">Comment</td>
+							<td><textarea 	name = "comment" 
+											cols = "35"
+											rows = "10">${stateAdmintUnitType.comment}
+								</textarea>
+							</td>
+					    </tr>
+					    
+					    <!-- Subordinate -->
+					    <!-- 
+				    	<tr>
+							<td>Subordinate of</td>
+							<td><select name="AdminUnitTypeMaster_adminUnitTypeID">
+									<c:forEach var="entry"
+										items="${formData.adminUnitTypeMasterListWithZero}">
+										<c:set var="selected" value="" />
+										<c:if
+											test="${entry.adminUnitTypeID == formData.adminUnitTypeMaster.adminUnitTypeID}">
+											<c:set var="selected" value="selected=\"selected\"" />
+										</c:if>
+										<c:if
+											test="${entry.adminUnitTypeID!=formData.adminUnitType.adminUnitTypeID}">
+											<option value="${entry.adminUnitTypeID}" ${selected}>${entry.name}</option>
+										</c:if>
+									</c:forEach>
+							</select></td>
+						</tr>
+						 -->
+				    </table>
+				</div>
+				
+				<div id="rightContainer">			
+			    	<input type="submit" value="Save">
+				</div>
+				
+			</form>
+		</div>
 	</div>
 
 	<div id="footer">
