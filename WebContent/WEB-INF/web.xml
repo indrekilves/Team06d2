@@ -23,7 +23,7 @@
     <description></description>
     <display-name>SetupDatabase</display-name>
     <servlet-name>SetupDatabase</servlet-name>
-    <servlet-class>borderguard.SetupDatabase</servlet-class>
+    <servlet-class>servlets.SetupDatabase</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>SetupDatabase</servlet-name>
@@ -33,7 +33,7 @@
     <description></description>
     <display-name>ShowStateAdminUnitTypes</display-name>
     <servlet-name>ShowStateAdminUnitTypes</servlet-name>
-    <servlet-class>borderguard.ShowStateAdminUnitTypes</servlet-class>
+    <servlet-class>servlets.ShowStateAdminUnitTypes</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ShowStateAdminUnitTypes</servlet-name>
@@ -43,10 +43,40 @@
     <description></description>
     <display-name>ShowStateAdminUnits</display-name>
     <servlet-name>ShowStateAdminUnits</servlet-name>
-    <servlet-class>borderguard.ShowStateAdminUnits</servlet-class>
+    <servlet-class>servlets.ShowStateAdminUnits</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ShowStateAdminUnits</servlet-name>
     <url-pattern>/ShowStateAdminUnits</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ShowStateAdminUnitType</display-name>
+    <servlet-name>ShowStateAdminUnitType</servlet-name>
+    <servlet-class>servlets.ShowStateAdminUnitType</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowStateAdminUnitType</servlet-name>
+    <url-pattern>/ShowStateAdminUnitType</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditStateAdminUnitType</display-name>
+    <servlet-name>EditStateAdminUnitType</servlet-name>
+    <servlet-class>servlets.EditStateAdminUnitType</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditStateAdminUnitType</servlet-name>
+    <url-pattern>/EditStateAdminUnitType</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>StateAdminUnitTypeController</display-name>
+    <servlet-name>StateAdminUnitTypeController</servlet-name>
+    <servlet-class>servlets.StateAdminUnitTypeController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StateAdminUnitTypeController</servlet-name>
+    <url-pattern>/StateAdminUnitTypeController</url-pattern>
   </servlet-mapping>
 </web-app>

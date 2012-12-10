@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -119,6 +120,39 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
     	stateAdminUnitType.setToDate(rs.getDate("toDate"));
     	
 		return stateAdminUnitType;
+	}
+
+	
+	
+	public void updateStateAdminUnitTypeByType(StateAdminUnitType stateAdminUnitType) {
+		try {
+			String sql = "UPDATE STATE_ADMIN_UNIT_TYPE  " 	+	
+						 "SET   code      = ?,  "         	+	//  1
+						 "		name      = ?,  " 			+ 	//  2
+						 "		comment   = ?,  " 			+	//  3
+						 "		fromDate  = ?, " 			+	//  4
+						 "		toDate    = ?," 			+	//  5
+						 "		changedBy = 'Admin', " 		+ 	
+				 		 "		changed   = NOW() " 		+	
+						 "WHERE state_admin_unit_type_id = ?";  //  6
+			
+		    ps = super.getConnection().prepareStatement(sql);	 
+		   
+		    ps.setString(1, stateAdminUnitType.getCode());
+		    ps.setString(2, stateAdminUnitType.getName());
+		    ps.setString(3, stateAdminUnitType.getComment());
+		    ps.setDate(  4, (Date) stateAdminUnitType.getFromDate());
+		    ps.setDate(  5, (Date) stateAdminUnitType.getToDate());
+		    ps.setInt(   6, stateAdminUnitType.getState_admin_unit_type_id());
+		    
+		    ps.executeUpdate();
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}	
 	}
 
 	
