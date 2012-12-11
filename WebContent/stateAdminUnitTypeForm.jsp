@@ -7,9 +7,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>BoarderGuard - Edit Admin Unit Type</title>
-<link rel="stylesheet" href="./style.css" type="text/css">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>BoarderGuard - Edit Admin Unit Type</title>
+	<link rel="stylesheet" href="./style.css" type="text/css">
+
 </head>
 <body>
 
@@ -35,94 +37,46 @@
 				<br />
 			</c:if>
 		
-		
-			<form method="POST" name="editStateAdminUnitTypeForm" action="?id=${unitType.state_admin_unit_type_id}" >
-		
-			    <!--  ID: 	<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br/> -->
-			    <div id="leftContainer">
-			    	<table>
-				    	<!-- Code -->
-				    	<tr>
-					    	<td>Code</td> 		
-						   	<td><input name="code" 	value="${unitType.code}"></td>	
-					    </tr>
-		
-		   		    	<!-- Name -->
-					    <tr>
-						    <td>Name</td>		
-						    <td><input name="name" 	value="${unitType.name}"></td>	
-					    </tr>
-					    
-		   		    	<!-- Comment -->
-						<tr>
-							<td valign="top">Comment</td>
-							<td><textarea 	name = "comment" 
-											cols = "35"
-											rows = "10">${unitType.comment}
-								</textarea>
-							</td>
-					    </tr>
-					    
-					    <!-- Subordinate -->
-					    
-				    	<tr>
-							<td>Subordinate of</td>
-							<td>
-
-			 				 
-							<select name="bossAdminUnitTypeId">
-								<c:forEach var="entry" items="${unitTypes}">
-							    	<c:set var="selected" value=""/>
-							    	
-							    	<c:if test="${entry.state_admin_unit_type_id == unitType.bossAdminUnitType.state_admin_unit_type_id}">
-							     		<c:set var="selected" value="selected=\"selected\""/>
-							    	</c:if>
-
-									<option value="${entry.state_admin_unit_type_id}" ${selected}>${entry.name}</option>
-								</c:forEach>
-							</select>
-						
-							</td>
-			
-						</tr>
-						
-						<!-- From date  -->
-						<!-- TODO: convert to jQuery based datePicker / calender widget -->
-						<tr>
-							<td>From</td>
-							<td>
-								<input 	name  = "fromDate" 
-										type  = "text" 
-										value ="<fmt:formatDate 	value   = "${unitType.fromDate}"  
-																	type    = "date" 
-																	pattern = "dd-MM-yyyy"/>"
-								 />
-							</td>
+			<table>
+				<tr>
+					<td width="250px">
+						<!-- Left panel -->
+						<form 	method	= "POST" 
+							name	= "saveStateAdminUnitTypeForm" 
+							action	= "?action=saveStateAdminUnitType&id=${unitType.state_admin_unit_type_id}"
+							id 		= "saveForm">
 							
-						</tr>
-						
-						<!-- To date  -->
-						<tr>
-							<td>To</td>
-							<td>
-								<input 	name  = "toDate" 
-										type  = "text" 
-										value ="<fmt:formatDate 	value   = "${unitType.toDate}"  
-																	type    = "date" 
-																	pattern = "dd-MM-yyyy"/>"
-								 />
-							</td>
-							
-						</tr>
-						
-				    </table>
-				</div>
-				
-				<div id="rightContainer">			
-			    	<input type="submit" value="Save">
-				</div>
-				
-			</form>
+					    	<jsp:include page="stateAdminUnitTypeFormLeftPanel.jsp"/>			    	
+						</form>	
+					</td>
+					<td valign="top">
+						<!-- Right panel -->
+						<jsp:include page="stateAdminUnitTypeFormRightPanel.jsp"/>			    	
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td align="right">	
+						<table>
+							<tr>
+								<td>			
+									<!-- Save button -->
+								 	<input type="submit" value="Save" name="btnSave" form = "saveForm" class="large">
+								</td>
+								<td>
+									<!-- Cancel button -->					
+									<form 	method	= "POST" 
+											name	= "CancelStateAdminUnitType" 
+											action 	= "?action=cancelStateAdminUnitType&id=${unitType.state_admin_unit_type_id}" >
+								    	
+								    	<input type="submit" value="Cancel" name="btnCancel" class="large">
+									</form>
+								</td>
+							</tr>						
+						</table>
+					</td>	
+				</tr>	 	
+			</table>	
 		</div>
 	</div>
 
