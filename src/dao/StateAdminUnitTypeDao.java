@@ -18,11 +18,7 @@ import beans.StateAdminUnitType;
 
 public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
-//	private Statement st;
-//	private PreparedStatement ps;
-//	private ResultSet rs;
-		
-	
+
 	public StateAdminUnitTypeDao() {
 		super();
 	}
@@ -40,7 +36,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	    ResultSet rs = null;
 		try {
 			st = super.getConnection().createStatement();
-		    rs = st.executeQuery("SELECT * FROM state_admin_unit_type");
+		    rs = st.executeQuery(	"SELECT * " +
+		    						"FROM   state_admin_unit_type " +
+		    						"WHERE 	opened <= NOW() " +
+		    						"  AND	closed >= NOW() ");
 
 		    while (rs.next()) {
 		    	stateAdminUnitTypes.add(createStateAdminUniTypeFromResultSet(rs));
@@ -70,7 +69,9 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		try {
 			String sql = "SELECT * " +
 						 "FROM   state_admin_unit_type " +
-						 "WHERE  state_admin_unit_type_id = ?";
+						 "WHERE  state_admin_unit_type_id = ? " +
+						 "  AND	 opened <= NOW() " +
+						 "  AND	 closed >= NOW() ";
 			
 			ps = super.getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
@@ -151,8 +152,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT 	state_admin_unit_type_id " +
-						 "FROM   	POSSIBLE_SUBORDINATION " +
-						 "WHERE 	possible_subordinate_type_id = ?";
+						 "FROM   	possible_subordination " +
+						 "WHERE 	possible_subordinate_type_id = ? " +
+						 "  AND		opened <= NOW() " +
+						 "  AND		closed >= NOW() ";
 			
 		    ps = super.getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
@@ -194,8 +197,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		
 		try {
 			String sql = "SELECT 	possible_subordinate_type_id " +
-						 "FROM   	POSSIBLE_SUBORDINATION " +
-						 "WHERE 	state_admin_unit_type_id = ?";
+						 "FROM   	possible_subordination " +
+						 "WHERE 	state_admin_unit_type_id = ? " +
+						 "  AND		opened <= NOW() " +
+						 "  AND		closed >= NOW() ";
 			
 		    ps = super.getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
@@ -225,6 +230,15 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	}
 	
 	
+	
+	public List<StateAdminUnitType> getPossibleBossStateAdminUnitTypesById(Integer id) {
+		// TODO leia k6ik kellele ma ise ei allu
+		return null;
+	}
+
+	
+	
+	
 	// Update
 	
 	
@@ -238,7 +252,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		ResultSet rs = null;
 		
 		try {
-			String sql = "UPDATE STATE_ADMIN_UNIT_TYPE  " 	+	
+			String sql = "UPDATE state_admin_unit_type  " 	+	
 						 "SET   code      = ?,  "         	+	//  1
 						 "		name      = ?,  " 			+ 	//  2
 						 "		comment   = ?,  " 			+	//  3
@@ -266,6 +280,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    DbUtils.closeQuietly(ps);
 		}	
 	}
+
 
 	
 

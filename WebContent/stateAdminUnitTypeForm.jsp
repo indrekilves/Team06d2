@@ -34,7 +34,7 @@
 			</c:if>
 		
 		
-			<form method="POST" name="editStateAdminUnitTypeForm" action="?id=${stateAdmintUnitType.state_admin_unit_type_id}" >
+			<form method="POST" name="editStateAdminUnitTypeForm" action="?id=${unitType.state_admin_unit_type_id}" >
 		
 			    <!--  ID: 	<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br/> -->
 			    <div id="leftContainer">
@@ -42,13 +42,13 @@
 				    	<!-- Code -->
 				    	<tr>
 					    	<td>Code</td> 		
-						   	<td><input name="code" 	value="${stateAdmintUnitType.code}"></td>	
+						   	<td><input name="code" 	value="${unitType.code}"></td>	
 					    </tr>
 		
 		   		    	<!-- Name -->
 					    <tr>
 						    <td>Name</td>		
-						    <td><input name="name" 	value="${stateAdmintUnitType.name}"></td>	
+						    <td><input name="name" 	value="${unitType.name}"></td>	
 					    </tr>
 					    
 		   		    	<!-- Comment -->
@@ -56,31 +56,34 @@
 							<td valign="top">Comment</td>
 							<td><textarea 	name = "comment" 
 											cols = "35"
-											rows = "10">${stateAdmintUnitType.comment}
+											rows = "10">${unitType.comment}
 								</textarea>
 							</td>
 					    </tr>
 					    
 					    <!-- Subordinate -->
-					    <!-- 
+					    
 				    	<tr>
 							<td>Subordinate of</td>
-							<td><select name="AdminUnitTypeMaster_adminUnitTypeID">
-									<c:forEach var="entry"
-										items="${formData.adminUnitTypeMasterListWithZero}">
-										<c:set var="selected" value="" />
-										<c:if
-											test="${entry.adminUnitTypeID == formData.adminUnitTypeMaster.adminUnitTypeID}">
-											<c:set var="selected" value="selected=\"selected\"" />
-										</c:if>
-										<c:if
-											test="${entry.adminUnitTypeID!=formData.adminUnitType.adminUnitTypeID}">
-											<option value="${entry.adminUnitTypeID}" ${selected}>${entry.name}</option>
-										</c:if>
-									</c:forEach>
-							</select></td>
+							<td>
+
+			 				 
+							<select name="bossAdminUnitTypeId">
+								<c:forEach var="entry" items="${unitTypes}">
+							    	<c:set var="selected" value=""/>
+							    	
+							    	<c:if test="${entry.state_admin_unit_type_id == unitType.bossAdminUnitType.state_admin_unit_type_id}">
+							     		<c:set var="selected" value="selected=\"selected\""/>
+							    	</c:if>
+
+									<option value="${entry.state_admin_unit_type_id}" ${selected}>${entry.name}</option>
+								</c:forEach>
+							</select>
+						
+							</td>
+			
 						</tr>
-						 -->
+						
 				    </table>
 				</div>
 				
