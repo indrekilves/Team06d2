@@ -16,29 +16,27 @@
 	<table>
 	   	<!-- Code -->
 	   	<tr>
-	    	<td>Code</td> 		
+	    	<td width="100px">Code</td> 		
 		   	<td><input name="code" 	value="${unitType.code}"></td>	
 	    </tr>
 	
-			    	<!-- Name -->
-	    <tr>
+    	<!-- Name -->
+	    <tr class="tall">
 		    <td>Name</td>		
 		    <td><input name="name" 	value="${unitType.name}"></td>	
 	    </tr>
 	    
-			    	<!-- Comment -->
-		<tr>
+    	<!-- Comment -->
+		<tr class="tall">
 			<td valign="top">Comment</td>
-			<td><textarea 	name = "comment" 
-							cols = "35"
-							rows = "10">${unitType.comment}
-				</textarea>
+			<td>
+				<textarea name="comment">${unitType.comment}</textarea>
 			</td>
 	    </tr>
 	    
 	    <!-- Subordinate -->
 	    
-	   	<tr>
+	   	<tr class="tall">
 			<td>Subordinate of</td>
 			<td>
 	
@@ -61,7 +59,7 @@
 		
 		<!-- From date  -->
 		<!-- TODO: convert to jQuery based datePicker / calender widget -->
-		<tr>
+		<tr class="tall">
 			<td>From</td>
 			<td>
 				<input 	name  = "fromDate" 
@@ -77,7 +75,7 @@
 		<!-- To date  -->
 		<!-- TODO: convert to jQuery based datePicker / calender widget -->
 		
-		<tr>
+		<tr class="tall">
 			<td>To</td>
 			<td>
 				<input 	name  = "toDate" 

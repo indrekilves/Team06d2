@@ -11,14 +11,32 @@ body {
 
 table {
 	/* border: 1px solid black; */
-	border-collapse: collapse;
+	border-collapse: collapse;				
+}
+
+tr.tall{
+	line-height: 40px;
+}
+
+input{
+	width: 200px;	
 }
 
 
-input.large{
+input.largeButton{
 	width:80px; 
 }
 
+
+textarea{
+	width: 200px;	
+	height: 60px;
+}
+
+
+select{
+	width: 205px;
+}
 
 p.center{
 	text-align:center;

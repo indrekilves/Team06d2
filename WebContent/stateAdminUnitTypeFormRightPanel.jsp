@@ -14,16 +14,14 @@
 </head>
 <body>
 	<table width="300px">
-    	<tr>
-	    	<th width="30px"></th>
+    	<tr style="border: 1px solid black;background-color:#D3D3D3;">
     		<th align="left">Subordinates</th>
     		<th></th>				    						    		
     	</tr>
     	
     	<!-- list of subordinates -->
 		<c:forEach var="subType" items="${unitType.subordinateAdminUnitTypes}">
-			<tr>
-				<td></td>
+			<tr style="border: 1px solid black;">
 				<td>
 					<c:out value="${subType.name}" />
 				</td>
@@ -36,7 +34,7 @@
 					  	<input 	type  = "submit" 
 					  			value = "Remove" 
 					  			name  = "btnRemoveSubTypeID_${subType.state_admin_unit_type_id}" 
-					  			class = "large">
+					  			class = "largeButton">
 				  	</form>				  	
 				</td>			
 			</tr>
@@ -44,7 +42,6 @@
 		
 		<!-- add new subordinate -->		
 		<tr height="40px" valign="bottom">
-			<td></td>
 			<td></td>
 			<td align="right">
 
@@ -55,7 +52,7 @@
 				  	<input 	type  = "submit" 
 				  			value = "Add" 
 				  			name  = "btnAddSubType" 
-				  			class = "large">
+				  			class = "largeButton">
 			  	</form>				  	
 			</td>
 		</tr>

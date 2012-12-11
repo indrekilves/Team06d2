@@ -39,7 +39,7 @@
 		
 			<table>
 				<tr>
-					<td width="250px">
+					<td>
 						<!-- Left panel -->
 						<form 	method	= "POST" 
 							name	= "saveStateAdminUnitTypeForm" 
@@ -49,19 +49,25 @@
 					    	<jsp:include page="stateAdminUnitTypeFormLeftPanel.jsp"/>			    	
 						</form>	
 					</td>
+				
+				
+					<td width="15px"></td>
+					
 					<td valign="top">
 						<!-- Right panel -->
 						<jsp:include page="stateAdminUnitTypeFormRightPanel.jsp"/>			    	
 					</td>
+					
 				</tr>
 				<tr>
 					<td></td>
+				    <td></td>
 					<td align="right">	
 						<table>
-							<tr>
+							<tr height="60px" valign="bottom">
 								<td>			
 									<!-- Save button -->
-								 	<input type="submit" value="Save" name="btnSave" form = "saveForm" class="large">
+								 	<input type="submit" value="Save" name="btnSave" form = "saveForm" class="largeButton">
 								</td>
 								<td>
 									<!-- Cancel button -->					
@@ -69,7 +75,7 @@
 											name	= "CancelStateAdminUnitType" 
 											action 	= "?action=cancelStateAdminUnitType&id=${unitType.state_admin_unit_type_id}" >
 								    	
-								    	<input type="submit" value="Cancel" name="btnCancel" class="large">
+								    	<input type="submit" value="Cancel" name="btnCancel" class="largeButton">
 									</form>
 								</td>
 							</tr>						
