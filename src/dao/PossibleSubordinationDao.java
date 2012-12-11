@@ -152,4 +152,16 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 		    DbUtils.closeQuietly(ps);
 		}		
 	}
+
+	
+
+	public void removeSubOrdinateRelation(Integer id, Integer subId) {
+		if (id == null || subId == null) return;
+
+		Integer oldRelationId = getPossibleSubordinationIdByIDs(id, subId);
+		
+		if (oldRelationId != null){
+			closePossibleSubordinationByRelationID(oldRelationId);
+		}
+	}
 }

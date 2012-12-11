@@ -35,10 +35,13 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		String action = getDoGetAction(request);
 		
 		if (action.equals("default")) {
-			showListOfStateAdminUnitTypes(request, response);
-		} else if (action.equals("editStateAdminUnitType")) {
-			showFormOfStateAdminUnitType(request, response);
+			showStateAdminUnitTypesList(request, response);
+		} else if (action.equals("edit")) {
+			showStateAdminUnitTypeForm(request, response);
+		} else if (action.equals("add")) {
+			showStateAdminUnitTypeForm(request, response);
 		}
+
 	}
 
 	
@@ -49,9 +52,9 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		if ((action == null) || (action.length() < 1)) {
 			action = "default";
 		} else if (action.equals("editStateAdminUnitType") && id != null && id.length() > 0) {
-			action = "editStateAdminUnitType";
+			action = "edit";
 		} else if (action.equals("addStateAdminUnitType") && id == null) {
-			action = "addStateAdminUnitType";
+			action = "add";
 		} else { 
 			action = "default";
 		}
@@ -60,18 +63,15 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	}
 
 	
-	private void showListOfStateAdminUnitTypes(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
+	private void showStateAdminUnitTypesList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
 		List<StateAdminUnitType> types = typeDao.getAllStateAdminUnitTypes();
 
 		request.setAttribute("stateAdminUnitTypes", types);
 		request.getRequestDispatcher("stateAdminUnitTypesList.jsp").forward(request, response);
 	}
+
 	
-	
-	
-	
-	
-	private void showFormOfStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showStateAdminUnitTypeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		if (id != null){
 			StateAdminUnitType type = typeDao.getStateAdminUnitTypeByIdWithRelations(id);
@@ -92,19 +92,18 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		String action = getDoPostAction(request);
 		
 		if (action.equals("default")) {
-			showListOfStateAdminUnitTypes(request, response);
+			showStateAdminUnitTypesList(request, response);
 		} else if (action.equals("cancel")){
-			showListOfStateAdminUnitTypes(request, response);
+			showStateAdminUnitTypesList(request, response);
 		} else if (action.equals("save")){
 			saveStateAdminUnitType(request, response);
-		} else if (action.equals("add")){
-			addStateAdminUnitType(request, response);
+		} else if (action.equals("addSubType")){
+			addSubStateAdminUnitType(request, response);
 		} else if (action.equals("removeSubType")){
 			removeSubStateAdminUnitType(request, response);
 		}
 
 	}
-
 
 
 	private String getDoPostAction(HttpServletRequest request) {
@@ -116,43 +115,40 @@ public class StateAdminUnitTypeController extends HttpServlet {
 			action = "default";
 		} else if (action.equals("saveStateAdminUnitType") && id != null && id.length() > 0) {
 			action = "save";
-		} else if (action.equals("removeSubStateAdminUnitType") && id != null && id.length() > 0 && subId != null && subId.length() > 0) {
-			action = "removeSubType";
 		} else if (action.equals("cancelStateAdminUnitType")) {
 			action = "cancel";			
-		} else if (action.equals("addStateAdminUnitType") && id == null) {
-			action = "add";
+		} else if (action.equals("removeSubStateAdminUnitType") && id != null && id.length() > 0 && subId != null && subId.length() > 0) {
+			action = "removeSubType";
+		} else if (action.equals("addSubStateAdminUnitType") && id != null && id.length() > 0) {
+			action = "addSubType";
 		} else { 
 			action = "default";
 		}
 
 		return action;
 	}
-	
+		
+	// Save the edit
 	
 	private void saveStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<String> errors = getValidationErrors(request);
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
-			showFormOfStateAdminUnitType(request, response);
+			showStateAdminUnitTypeForm(request, response);
             return;
         }
 	        
         updateStateAdminUnitType(request);
-        updateStateAdminUnitTypeRelations(request);
+		updateStateAdminUnitTypeBoss(request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
         showStateAdminUnitTypeSummary(request, response);
 	}
 
 	
-	private void addStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		showFormOfStateAdminUnitType(request, response);
+	private void addSubStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		showStateAdminUnitTypeForm(request, response);
 	}
 	
 
-	private void removeSubStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO: remove subType relation
-		showFormOfStateAdminUnitType(request, response);
-	}
 
 	
 	private List<String> getValidationErrors(HttpServletRequest request) {
@@ -228,14 +224,7 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		
 		typeDao.updateStateAdminUnitTypeByType(type);
 	}
-	
 
-
-	private void updateStateAdminUnitTypeRelations(HttpServletRequest request) {
-		updateStateAdminUnitTypeBoss(request);
-		
-		// TODO update subOrdinateRelations
-	}
 	
 	private void updateStateAdminUnitTypeBoss(HttpServletRequest request) {
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -257,6 +246,24 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		request.setAttribute("stateAdmintUnitType", type);
         request.getRequestDispatcher("stateAdminUnitType.jsp").forward(request, response);
 	}
+
+	
+	// Remove subType
+	
+	
+	private void removeSubStateAdminUnitType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		updateStateAdminUnitTypeSubOrdinates(request);
+		showStateAdminUnitTypeForm(request, response);
+	}
+
+
+	private void updateStateAdminUnitTypeSubOrdinates(HttpServletRequest request) {
+		Integer id    = Integer.parseInt(request.getParameter("id"));
+		Integer subId = Integer.parseInt(request.getParameter("subId"));
+	
+		posSubOrdDao.removeSubOrdinateRelation(id, subId);
+	}
+
 
 
 }
