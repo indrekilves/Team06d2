@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" 	uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -82,6 +84,35 @@
 						
 							</td>
 			
+						</tr>
+						
+						<!-- From date  -->
+						<!-- TODO: convert to jQuery based datePicker / calender widget -->
+						<tr>
+							<td>From</td>
+							<td>
+								<input 	name  = "fromDate" 
+										type  = "text" 
+										value ="<fmt:formatDate 	value   = "${unitType.fromDate}"  
+																	type    = "date" 
+																	pattern = "dd-MM-yyyy"/>"
+								 />
+							</td>
+							
+						</tr>
+						
+						<!-- To date  -->
+						<tr>
+							<td>To</td>
+							<td>
+								<input 	name  = "toDate" 
+										type  = "text" 
+										value ="<fmt:formatDate 	value   = "${unitType.toDate}"  
+																	type    = "date" 
+																	pattern = "dd-MM-yyyy"/>"
+								 />
+							</td>
+							
 						</tr>
 						
 				    </table>
