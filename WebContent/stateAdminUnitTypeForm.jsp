@@ -11,8 +11,43 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>BoarderGuard - Edit Admin Unit Type</title>
 	<link rel="stylesheet" href="./style.css" type="text/css">
-
+	<script type="text/javascript">
+		function saveForm() {
+			var exitMode = document.getElementById("exitMode");
+			exitMode.value="save";
+			document.getElementById("stateAdminUnitTypeForm").submit();
+		}
+	
+	
+		function cancelForm() {
+			var exitMode = document.getElementById("exitMode");
+			exitMode.value="cancel";
+			document.getElementById("stateAdminUnitTypeForm").submit();
+		}
+	
+	
+		function removeSubOrdinate(id) {
+			var exitMode = document.getElementById("exitMode");
+			exitMode.value="removeSubOrdinate";
+	
+			var subId = document.getElementById("subId");
+			subId.value = id;
+			
+			document.getElementById("stateAdminUnitTypeForm").submit();
+		}
+	
+	
+		function addSubOrdinate() {
+			var exitMode = document.getElementById("exitMode");
+			exitMode.value="addSubOrdinate";
+			document.getElementById("stateAdminUnitTypeForm").submit();
+		}
+	
+	</script>
+	
 </head>
+
+
 <body>
 
 	<div id="header">
@@ -37,52 +72,46 @@
 				<br />
 			</c:if>
 		
-			<table>
-				<tr>
-					<td>
-						<!-- Left panel -->
-						<form 	method	= "POST" 
-							name	= "saveStateAdminUnitTypeForm" 
-							action	= "?action=saveStateAdminUnitType&id=${unitType.state_admin_unit_type_id}"
-							id 		= "saveForm">
-							
-					    	<jsp:include page="stateAdminUnitTypeFormLeftPanel.jsp"/>			    	
-						</form>	
-					</td>
+			<form 	method	= "POST" 
+					id		= "stateAdminUnitTypeForm" 
+					action	= "?form=stateAdminUnitTypeForm&id=${unitType.state_admin_unit_type_id}">
 				
-				
-					<td width="15px"></td>
+				<input type="hidden" id="subId" 	name="subId"	value="">					
+				<input type="hidden" id="exitMode"	name="exitMode"	value="">
 					
-					<td valign="top">
-						<!-- Right panel -->
-						<jsp:include page="stateAdminUnitTypeFormRightPanel.jsp"/>			    	
-					</td>
+				<table>
+					<tr>
+<!-- Left panel --> 	<td>
+ 	  						<jsp:include page="stateAdminUnitTypeFormLeftPanel.jsp"/>			    	
+						</td>
 					
-				</tr>
-				<tr>
-					<td></td>
-				    <td></td>
-					<td align="right">	
-						<table>
-							<tr height="60px" valign="bottom">
-								<td>			
-									<!-- Save button -->
-								 	<input type="submit" value="Save" name="btnSave" form = "saveForm" class="largeButton">
-								</td>
-								<td>
-									<!-- Cancel button -->					
-									<form 	method	= "POST" 
-											name	= "CancelStateAdminUnitType" 
-											action 	= "?action=cancelStateAdminUnitType&id=${unitType.state_admin_unit_type_id}" >
-								    	
-								    	<input type="submit" value="Cancel" name="btnCancel" class="largeButton">
-									</form>
-								</td>
-							</tr>						
-						</table>
-					</td>	
-				</tr>	 	
-			</table>	
+					
+<!-- Center panel -->	<td width="15px"></td>
+						
+<!-- Right panel -->	<td valign="top">
+							<jsp:include page="stateAdminUnitTypeFormRightPanel.jsp"/>			    	
+						</td>
+						
+					</tr>
+					<tr>
+						<td></td>
+					    <td></td>
+						<td align="right">	
+							<table>
+								<tr height="60px" valign="bottom">
+<!-- Save button -->				<td>			
+									 	<input type="button" value="Save" name="btnSave" class="largeButton"  onclick="saveForm()">
+									</td>
+<!-- Cancel button -->				<td>
+								    	<input type="button" value="Cancel" name="btnCancel" class="largeButton" onclick="cancelForm()">
+									</td>
+								</tr>						
+							</table>
+						</td>	
+					</tr>	 	
+				</table>
+			</form>	
+						
 		</div>
 	</div>
 

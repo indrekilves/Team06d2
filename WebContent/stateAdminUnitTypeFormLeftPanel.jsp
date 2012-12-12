@@ -42,6 +42,8 @@
 	
 				 
 			<select name="bossAdminUnitTypeId">
+				<option value=""></option>
+			
 				<c:forEach var="entry" items="${unitTypes}">
 			    	<c:set var="selected" value=""/>
 			    	

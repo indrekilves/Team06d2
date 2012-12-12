@@ -28,7 +28,42 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	}
 	
 	
+	
+	
+	public List<StateAdminUnitType> getAllPossibleBossStateAdminUnitTypesByType(StateAdminUnitType stateAdminUnitType) {
+		List<StateAdminUnitType> possibleTypes = new ArrayList<StateAdminUnitType>();
+		List<StateAdminUnitType> allTypes = getAllStateAdminUnitTypes();
+		
+		for (StateAdminUnitType validateType : allTypes) {
+			if (isTypeValidForBoss(validateType, stateAdminUnitType)){
+				possibleTypes.add(validateType);
+			}
+		}
+		
+		return possibleTypes;
+	}
+		
 
+	private boolean isTypeValidForBoss(StateAdminUnitType validateType,	StateAdminUnitType stateAdminUnitType) {
+		if (validateType.getState_admin_unit_type_id() == stateAdminUnitType.getState_admin_unit_type_id()){
+			return false;
+		}
+		
+		for (StateAdminUnitType subOrdinateOfStateAdminUnit : stateAdminUnitType.getSubordinateAdminUnitTypes()) {
+			if (validateType.getState_admin_unit_type_id() == subOrdinateOfStateAdminUnit.getState_admin_unit_type_id()){
+				return false;
+			}
+		}
+
+//		if (stateAdminUnitType.getSubordinateAdminUnitTypes().contains(validateType)){
+//			return false;
+//		}
+			
+		return true;
+	}
+
+	
+	
 	public List<StateAdminUnitType> getAllStateAdminUnitTypes() {
 	    List<StateAdminUnitType> stateAdminUnitTypes = new ArrayList<StateAdminUnitType>();
 
@@ -239,7 +274,85 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 	
 	
+	// Insert
+	
+	
+	
+	
+	public Integer insertStateAdminUnitTypeByType(StateAdminUnitType stateAdminUnitType) {
+		if (stateAdminUnitType == null)
+		{
+			return null;
+		}
+		
+		PreparedStatement ps      = null;
+		PreparedStatement psId    = null;
+		ResultSet         rs      = null;
+		Integer           addedId = null; 
+		
+		try {
+			String sql = 	"INSERT INTO state_admin_unit_type " +
+							"(" +
+							"  openedby, " +
+							"  opened, " +
+							"  changedby, " +
+							"  changed, " +
+							"  closedby, " +
+							"  closed, " +
+							"  code, " +
+							"  name, " +
+							"  comment, " +
+							"  fromdate, " +
+							"  todate" +
+							") " +
+							"VALUES " +
+							"(" +
+							"  'admin', " +
+							"  NOW(), " +
+							"  'admin', " +
+							"  NOW(), " +
+							"  '', " +
+							"  '2999-12-31', " +
+							"  ?, " +				// 1	code
+							"  ?, " +				// 2	name
+							"  ?, " + 				// 3	comment
+							"  ?, " +				// 4	fromDate
+							"  ?)";					// 5	toDate
+		
+		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
+		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
+		
+		    ps = super.getConnection().prepareStatement(sql);	 
+		   
+		    ps.setString(1, stateAdminUnitType.getCode());
+		    ps.setString(2, stateAdminUnitType.getName());
+		    ps.setString(3, stateAdminUnitType.getComment());
+			ps.setDate(  4, fromDate);
+		    ps.setDate(  5, toDate);
+		    
+		    ps.executeUpdate();
+		    
+		    psId = super.getConnection().prepareStatement("CALL IDENTITY()");
+			rs = psId.executeQuery();
+			rs.next();
+			addedId = rs.getInt(1);		    
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+		
+		return addedId;			
+	}
+
+	
+	
+	
 	// Update
+	
+	
 	
 	
 	public void updateStateAdminUnitTypeByType(StateAdminUnitType stateAdminUnitType) {
@@ -261,18 +374,17 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 						 "		changedBy = 'Admin', " 		+ 	
 				 		 "		changed   = NOW() " 		+	
 						 "WHERE state_admin_unit_type_id = ?";  //  6
-			
+		
+		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
+		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
+		
 		    ps = super.getConnection().prepareStatement(sql);	 
 		   
 		    ps.setString(1, stateAdminUnitType.getCode());
 		    ps.setString(2, stateAdminUnitType.getName());
 		    ps.setString(3, stateAdminUnitType.getComment());
-		    
-		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
-		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
 			ps.setDate(  4, fromDate);
 		    ps.setDate(  5, toDate);
-		
 		    ps.setInt(   6, stateAdminUnitType.getState_admin_unit_type_id());
 		    
 		    ps.executeUpdate();
@@ -290,9 +402,5 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		return new java.sql.Date(javaDate.getTime()); 
 	}
 
-
-	
-
-	
-	
+		
 }

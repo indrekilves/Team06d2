@@ -19,41 +19,33 @@
     		<th></th>				    						    		
     	</tr>
     	
-    	<!-- list of subordinates -->
+<!-- list of subordinates -->
 		<c:forEach var="subType" items="${unitType.subordinateAdminUnitTypes}">
 			<tr style="border: 1px solid black;">
 				<td>
 					<c:out value="${subType.name}" />
 				</td>
 				<td align="right">
-
-					<form 	method	= "POST" 
-							name   	= "removeSubStateAdminUnitType" 
-							action	= "?action=removeSubStateAdminUnitType&id=${unitType.state_admin_unit_type_id}&subId=${subType.state_admin_unit_type_id}" >
-						
-					  	<input 	type  = "submit" 
-					  			value = "Remove" 
-					  			name  = "btnRemoveSubTypeID_${subType.state_admin_unit_type_id}" 
-					  			class = "largeButton">
-				  	</form>				  	
+				  	<input 	type    = "button" 
+				  			value   = "Remove" 
+				  			name    = "btnRemoveSubType" 
+				  			class   = "largeButton" 
+				  			onclick = "removeSubOrdinate('${subType.state_admin_unit_type_id}')">		  			
 				</td>			
 			</tr>
 		</c:forEach>
 		
-		<!-- add new subordinate -->		
+<!-- add new subordinate -->		
 		<tr height="40px" valign="bottom">
 			<td></td>
 			<td align="right">
 
-				<form 	method	= "POST" 
-						name   	= "addSubStateAdminUnitType" 
-						action	= "?action=addSubStateAdminUnitType&id=${unitType.state_admin_unit_type_id}" >
 					
-				  	<input 	type  = "submit" 
-				  			value = "Add" 
-				  			name  = "btnAddSubType" 
-				  			class = "largeButton">
-			  	</form>				  	
+				  	<input 	type    = "button" 
+				  			value   = "Add" 
+				  			name    = "btnAddSubType" 
+				  			class   = "largeButton"
+				  			onclick = "addSubOrdinate()">
 			</td>
 		</tr>
    	</table>

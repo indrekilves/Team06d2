@@ -31,7 +31,9 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 			closePossibleSubordinationByRelationID(oldRelationId);
 		}
 		
-		addPossibleSubordinationByIDs(newBossID, stateAdminUnitTypeID);
+		if (newBossID != null){
+			addPossibleSubordinationByIDs(newBossID, stateAdminUnitTypeID);
+		}
 	}
 
 
@@ -130,9 +132,9 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 						 "VALUES " +
 						 "(" +
 						 "  'admin', " +
-						 "  '1900-01-01', " +
+						 "  NOW(), " +
 						 "  'admin', " +
-						 "  '1900-01-01', " +
+						 "  NOW(), " +
 						 "  'admin', " +
 						 "  '2999-12-31', " +
 						 "  '', " +
