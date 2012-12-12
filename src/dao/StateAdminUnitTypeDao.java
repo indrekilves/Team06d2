@@ -1,11 +1,11 @@
 package dao;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -267,8 +267,12 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    ps.setString(1, stateAdminUnitType.getCode());
 		    ps.setString(2, stateAdminUnitType.getName());
 		    ps.setString(3, stateAdminUnitType.getComment());
-		    ps.setDate(  4, (Date) stateAdminUnitType.getFromDate());
-		    ps.setDate(  5, (Date) stateAdminUnitType.getToDate());
+		    
+		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
+		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
+			ps.setDate(  4, fromDate);
+		    ps.setDate(  5, toDate);
+		
 		    ps.setInt(   6, stateAdminUnitType.getState_admin_unit_type_id());
 		    
 		    ps.executeUpdate();
@@ -279,6 +283,11 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
 		}	
+	}
+
+	
+	private java.sql.Date getSqlDateFromJavaDate(Date javaDate) {
+		return new java.sql.Date(javaDate.getTime()); 
 	}
 
 

@@ -13,7 +13,6 @@ public class SetupDatabase extends HttpServlet {
 		BorderGuardDao dao = new BorderGuardDao(request, response);
         dao.createTabels();
         dao.insertDummyData();
-        //response.getWriter().println("Tables are created and dummy data inserted.");
 		request.getRequestDispatcher("database.jsp").forward(request, response);       
 	}
 

@@ -23,11 +23,17 @@
 		<div class="pad10">
 			<b>State Admin Unit Type is updated</b><br><br>
 	
-		    ID: 			<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br/>
-		    Code:			<c:out value="${stateAdmintUnitType.code}"/><br/>
-		    Name:			<c:out value="${stateAdmintUnitType.name}"/><br/>
-		    Comment:		<c:out value="${stateAdmintUnitType.comment}"/><br/>
-		    Subordinate of:	<c:out value="${stateAdmintUnitType.bossAdminUnitType.name}"></c:out>
+		    ID: 			<c:out value="${stateAdmintUnitType.state_admin_unit_type_id}"/><br>
+		    Code:			<c:out value="${stateAdmintUnitType.code}"/><br>
+		    Name:			<c:out value="${stateAdmintUnitType.name}"/><br>
+		    Comment:		<c:out value="${stateAdmintUnitType.comment}"/><br>
+		    Subordinate of:	<c:out value="${stateAdmintUnitType.bossAdminUnitType.name}"/><br>
+		    From date:		<c:out value="${stateAdmintUnitType.fromDate}"/><br>
+		    To date:		<c:out value="${stateAdmintUnitType.toDate}"/><br>
+		    SubOrdinates:	<c:forEach var="subType" items="${stateAdmintUnitType.subordinateAdminUnitTypes}">
+								<c:out value="${subType.name}" /></br>
+							</c:forEach>
+		    
 	    </div>
 	</div>
 	

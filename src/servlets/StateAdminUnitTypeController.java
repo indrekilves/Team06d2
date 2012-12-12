@@ -5,9 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -72,8 +70,9 @@ public class StateAdminUnitTypeController extends HttpServlet {
 
 	
 	private void showStateAdminUnitTypeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer id = Integer.parseInt(request.getParameter("id"));
-		if (id != null){
+		String strId = request.getParameter("id");
+		if (strId != null){
+			Integer id = Integer.parseInt(strId);
 			StateAdminUnitType type = typeDao.getStateAdminUnitTypeByIdWithRelations(id);
 			List<StateAdminUnitType> types = typeDao.getAllStateAdminUnitTypes();
 	
@@ -188,24 +187,20 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		    return errors;
 		}
 
-		DateFormat 	dateFormat	= new SimpleDateFormat("dd.MM.yyyy");
-		String 		strFromDate = request.getParameter("fromDate");
-		String 		strToDate 	= request.getParameter("toDate");
-		Date 		fromDate 	= null;
-		Date 		toDate   	= null;
-		
-		try {
-			fromDate = dateFormat.parse(strFromDate);
-		} catch (ParseException e) {
+
+		Date fromDate = getDateFromString(request.getParameter("fromDate"));
+		if (fromDate == null) {
 			errors.add("From date must with format dd.mm.yyyy");
-		}  
-
-		try {
-			toDate = dateFormat.parse(strToDate);
-		} catch (ParseException e) {
+			return errors;
+		}	
+		
+		Date toDate = getDateFromString(request.getParameter("toDate"));
+		if (toDate == null) {
 			errors.add("To date must with format dd.mm.yyyy");
-		}  
-
+			return errors;
+		}	
+		
+		
 		if (fromDate.after(toDate)){
 			errors.add("From date must be before To date");
 		}		
@@ -213,6 +208,8 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		return errors;
 	}
 
+
+	
 
 	private void updateStateAdminUnitType(HttpServletRequest request) {
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -222,9 +219,31 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		type.setName(request.getParameter("name"));
 		type.setComment(request.getParameter("comment"));
 		
+		Date fromDate = getDateFromString(request.getParameter("fromDate"));
+		Date toDate = getDateFromString(request.getParameter("toDate"));
+		
+		type.setFromDate(fromDate);
+		type.setToDate(toDate);
+		
 		typeDao.updateStateAdminUnitTypeByType(type);
 	}
 
+	
+	private Date getDateFromString(String strDate) {
+		if (strDate == null) return null;
+		
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+		Date date = null;
+		
+		try {
+			date = df.parse(strDate);
+		} catch (ParseException e) {}
+		
+		return date;
+	}
+
+
+	
 	
 	private void updateStateAdminUnitTypeBoss(HttpServletRequest request) {
 		int id = Integer.parseInt(request.getParameter("id"));
