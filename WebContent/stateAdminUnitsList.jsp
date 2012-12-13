@@ -12,29 +12,40 @@
 	<script type="text/javascript">
 		function editUnit(id) {
 			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "editUnitType";
+			exitMode.value = "editUnit";
 			
+			var origin = document.getElementById("origin");
+			origin.value = "listOfUnits";
+						
 			var idWidget = document.getElementById("id");
 			idWidget.value = id;
 			
-			document.getElementById("listOfStateAdminUnits").submit();
+			document.getElementById("listOfUnits").submit();
 		}
 		
 
 		function removeUnit(id) {
 			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "removeUnitType";
+			exitMode.value = "removeUnit";
+			
+			var origin = document.getElementById("origin");
+			origin.value = "listOfUnits";
 			
 			var idWidget = document.getElementById("id");
 			idWidget.value = id;
 			
-			document.getElementById("listOfStateAdminUnits").submit();
+			document.getElementById("listOfUnits").submit();
 		}
+		
 		
 		function addUnit() {
 			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "addUnitType";
-			document.getElementById("listOfStateAdminUnits").submit();
+			exitMode.value = "addUnit";
+			
+			var origin = document.getElementById("origin");
+			origin.value = "listOfUnits";
+			
+			document.getElementById("listOfUnits").submit();
 		}
 		
 	</script>
@@ -58,11 +69,11 @@
 
 
 			<form 	method	= "POST" 
-					id		= "listOfStateAdminUnits" 
-					action	= "?form=listOfStateAdminUnits">
+					id		= "listOfUnits">
 			
 				<input type="hidden" id="id" 		name="id"		value="">					
 				<input type="hidden" id="exitMode"	name="exitMode"	value="">
+				<input type="hidden" id="origin"	name="origin"	value="listOfUnits">
 
 				<table>
 					<tr align="left">

@@ -38,7 +38,7 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = getDoPostAction(request);
+		String action = getAction(request);
 		
 		if (action.equals("default") || action.equals("cancel")) 
 		{
@@ -72,7 +72,7 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	}
 
 
-	private String getDoPostAction(HttpServletRequest request) {
+	private String getAction(HttpServletRequest request) {
 		String action 	= "default";
 		String form 	= request.getParameter("form");
 		String exitMode	= request.getParameter("exitMode");		
