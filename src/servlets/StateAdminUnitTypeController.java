@@ -30,36 +30,9 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = getDoGetAction(request);
-		
-		if (action.equals("default")) {
-			showStateAdminUnitTypesList(request, response);
-		} else if (action.equals("edit")) {
-			showStateAdminUnitTypeForm(request, response);
-		} else if (action.equals("add")) {
-			showStateAdminUnitTypeForm(request, response);
-		}
-
+		showStateAdminUnitTypesList(request, response);
 	}
-
 	
-	private String getDoGetAction(HttpServletRequest request) {
-		String action	= request.getParameter("action");
-		String id 		= request.getParameter("id");
-
-		if ((action == null) || (action.length() < 1)) {
-			action = "default";
-		} else if (action.equals("editStateAdminUnitType") && id != null && id.length() > 0) {
-			action = "edit";
-		} else if (action.equals("addStateAdminUnitType") && id == null) {
-			action = "add";
-		} else { 
-			action = "default";
-		}
-
-		return action;
-	}
-
 
 	// POST	
 	
