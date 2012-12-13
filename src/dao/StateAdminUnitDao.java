@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.dbutils.DbUtils;
 
 import beans.StateAdminUnit;
+import beans.StateAdminUnitType;
 
 public class StateAdminUnitDao extends BorderGuardDao{
 
-	 private Statement st;
-	 private ResultSet rs;
-		
+	
+	StateAdminUnitTypeDao typeDao = new StateAdminUnitTypeDao();
 	
 	public StateAdminUnitDao() {
 		super();
@@ -31,53 +32,64 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	
 
 	public List<StateAdminUnit> getAllStateAdminUnits() {
+	    List<StateAdminUnit> units = new ArrayList<StateAdminUnit>();
+
+	    Statement st = null;
+	    ResultSet rs = null;
 		try {
 			st = super.getConnection().createStatement();
+		    rs = st.executeQuery(	"SELECT * " +
+		    						"FROM   state_admin_unit " +
+		    						"WHERE 	opened <= NOW() " +
+		    						"  AND	closed >= NOW() ");
 
-			rs = st.executeQuery("SELECT 	state_admin_unit_id, " +				//  1
-								"			openedBy,  " +  						//  2
-								"			opened, " +								//  3
-								"			changedBy, " + 							//  4
-								"			changed, " +							//  5
-								"			closedBy, " +							//  6
-								"			closed, " + 							//  7
-								"			code,  " +								//  8
-								"			name,  " + 								//  9
-								"			comment,  " +							// 10
-								"			fromDate, " +							// 11
-								"			toDate, " +								// 12
-								"			state_admin_unit_type_id " +			// 13
-								"FROM STATE_ADMIN_UNIT");
+		    while (rs.next()) {
+		    	StateAdminUnit unit = createUnitFromResultSet(rs);
+		    	if (unit != null) {
+		    		units.add(unit);
+		    	}	
+		    }
 
-			List<StateAdminUnit> stateAdminUnits = new ArrayList<StateAdminUnit>();
-			while (rs.next()) {
-				StateAdminUnit stateAdminUnit = new StateAdminUnit();
-
-				stateAdminUnit.setState_admin_unit_id(rs.getInt("state_admin_unit_id"));
-				stateAdminUnit.setOpenedBy(rs.getString("openedBy"));
-				stateAdminUnit.setOpened(rs.getDate("opened"));
-				stateAdminUnit.setChangedBy(rs.getString("changedBy"));
-				stateAdminUnit.setChanged(rs.getDate("changed"));
-				stateAdminUnit.setClosedBy(rs.getString("closedBy"));
-				stateAdminUnit.setClosed(rs.getDate("closed"));
-				stateAdminUnit.setCode(rs.getString("code"));
-				stateAdminUnit.setName(rs.getString("name"));
-				stateAdminUnit.setComment(rs.getString("comment"));
-				stateAdminUnit.setFromDate(rs.getDate("fromDate"));
-				stateAdminUnit.setToDate(rs.getDate("toDate"));
-				stateAdminUnit.setState_admin_unit_type_id(rs.getInt("state_admin_unit_type_id"));
-
-				stateAdminUnits.add(stateAdminUnit);
-			}
-
-			return stateAdminUnits;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+		    throw new RuntimeException(e);
 		} finally {
 			DbUtils.closeQuietly(rs);
-			DbUtils.closeQuietly(st);
-		}	
+		    DbUtils.closeQuietly(st);
+		}
+		
+	    return units;
 	}
+
+	
+	private StateAdminUnit createUnitFromResultSet(ResultSet rs) throws SQLException {
+		StateAdminUnit unit = new StateAdminUnit();
+		
+		unit.setState_admin_unit_id(rs.getInt("state_admin_unit_id"));
+		unit.setOpenedBy(rs.getString("openedBy"));
+		unit.setOpened(rs.getDate("opened"));
+		unit.setChangedBy(rs.getString("changedBy"));
+		unit.setChanged(rs.getDate("changed"));
+		unit.setClosedBy(rs.getString("closedBy"));
+		unit.setClosed(rs.getDate("closed"));
+		unit.setCode(rs.getString("code"));
+		unit.setName(rs.getString("name"));
+		unit.setComment(rs.getString("comment"));
+		unit.setFromDate(rs.getDate("fromDate"));
+		unit.setToDate(rs.getDate("toDate"));
+		unit.setState_admin_unit_type_id(rs.getInt("state_admin_unit_type_id"));
+
+		// Add type
+		Integer typeId = unit.getState_admin_unit_type_id();
+		if (typeId != null){
+			StateAdminUnitType type = typeDao.getStateAdminUnitTypeById(typeId);
+			if (type != null){
+				unit.setType(type);
+			}
+		}
+		
+		return unit;
+	}
+	
 
 	
 }

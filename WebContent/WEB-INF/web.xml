@@ -74,4 +74,14 @@
     <servlet-name>StateAdminUnitTypeController</servlet-name>
     <url-pattern>/StateAdminUnitTypeController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>StateAdminUnitController</display-name>
+    <servlet-name>StateAdminUnitController</servlet-name>
+    <servlet-class>servlets.StateAdminUnitController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StateAdminUnitController</servlet-name>
+    <url-pattern>/StateAdminUnitController</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -7,30 +7,31 @@ import dao.StateAdminUnitTypeDao;
 
 public class StateAdminUnit {
 
-	private int    state_admin_unit_id;
-	private String openedBy;
-	private Date   opened;
-	private String changedBy;
-	private Date   changed;
-	private String closedBy;
-	private Date   closed;
-	private String code;
-	private String name;
-	private String comment;
-	private Date   fromDate;
-	private Date   toDate;
-	private int	   state_admin_unit_type_id;
+	private Integer  			state_admin_unit_id;
+	private String 				openedBy;
+	private Date   				opened;
+	private String 				changedBy;
+	private Date   				changed;
+	private String 				closedBy;
+	private Date   				closed;
+	private String 				code;
+	private String 				name;
+	private String 				comment;
+	private Date   				fromDate;
+	private Date   				toDate;
+	private Integer          	state_admin_unit_type_id;
+	private StateAdminUnitType	type;
 	
 	
 	public StateAdminUnit() {
 	}
 
 
-	public int getState_admin_unit_id() {
+	public Integer getState_admin_unit_id() {
 		return state_admin_unit_id;
 	}
 
-	public void setState_admin_unit_id(int state_admin_unit_id) {
+	public void setState_admin_unit_id(Integer state_admin_unit_id) {
 		this.state_admin_unit_id = state_admin_unit_id;
 	}
 
@@ -134,15 +135,24 @@ public class StateAdminUnit {
 	}
 
 
-	public int getState_admin_unit_type_id() {
+	public Integer getState_admin_unit_type_id() {
 		return state_admin_unit_type_id;
 	}
 
-	public void setState_admin_unit_type_id(int state_admin_unit_type_id) {
+	public void setState_admin_unit_type_id(Integer state_admin_unit_type_id) {
 		this.state_admin_unit_type_id = state_admin_unit_type_id;
 	}
 
 	
+	public StateAdminUnitType getType() {
+		return type;
+	}
+
+	public void setType(StateAdminUnitType type) {
+		this.type = type;
+	}
+
+
 	private StateAdminUnitType getStateAdminUnitType() {
 		StateAdminUnitTypeDao dao = new StateAdminUnitTypeDao();
 		return dao.getStateAdminUnitTypeById(state_admin_unit_type_id);
