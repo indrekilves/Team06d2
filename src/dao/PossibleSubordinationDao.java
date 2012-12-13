@@ -87,7 +87,6 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 		}
 		
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
 			String sql = "UPDATE	possible_subordination  " 	+	
@@ -102,7 +101,6 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 		} catch (Exception e) {
 		    throw new RuntimeException(e);
 		} finally {
-			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
 		}			
 	}

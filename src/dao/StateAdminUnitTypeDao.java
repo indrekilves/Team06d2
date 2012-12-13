@@ -34,9 +34,11 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		List<StateAdminUnitType> possibleTypes = new ArrayList<StateAdminUnitType>();
 		List<StateAdminUnitType> allTypes = getAllStateAdminUnitTypes();
 		
-		for (StateAdminUnitType validateType : allTypes) {
-			if (isTypeValidForBoss(validateType, stateAdminUnitType)){
-				possibleTypes.add(validateType);
+		if (!allTypes.isEmpty()) {
+			for (StateAdminUnitType validateType : allTypes) {
+				if (isTypeValidForBoss(validateType, stateAdminUnitType)){
+					possibleTypes.add(validateType);
+				}
 			}
 		}
 		
@@ -66,10 +68,12 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		List<StateAdminUnitType> possibleTypes = new ArrayList<StateAdminUnitType>();
 		List<StateAdminUnitType> allTypes = getAllStateAdminUnitTypes();
 		
-		for (StateAdminUnitType validateType : allTypes) {
-			if (isTypeValidForSubordinate(validateType, stateAdminUnitType)){
-				possibleTypes.add(validateType);
-			}
+		if (!allTypes.isEmpty()){
+			for (StateAdminUnitType validateType : allTypes) {
+				if (isTypeValidForSubordinate(validateType, stateAdminUnitType)){
+					possibleTypes.add(validateType);
+				}
+			}		
 		}
 		
 		return possibleTypes;	
@@ -105,7 +109,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	private boolean isTypeASubordinate(StateAdminUnitType validateType,	List<StateAdminUnitType> subOrdinates) {
 		boolean isSubOrdinate = false;
 		
-		if (subOrdinates != null) {
+		if (subOrdinates != null && !subOrdinates.isEmpty()) {
 			for (StateAdminUnitType subOrdinate : subOrdinates) {
 				if (validateType.getState_admin_unit_type_id() == subOrdinate.getState_admin_unit_type_id()){
 					isSubOrdinate = true;
@@ -158,7 +162,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    						"  AND	closed >= NOW() ");
 
 		    while (rs.next()) {
-		    	stateAdminUnitTypes.add(createStateAdminUniTypeFromResultSet(rs));
+		    	StateAdminUnitType stateAdminUnitType = createStateAdminUniTypeFromResultSet(rs);
+		    	if (stateAdminUnitType != null) {
+		    		stateAdminUnitTypes.add(stateAdminUnitType);
+		    	}	
 		    }
 
 		} catch (Exception e) {
@@ -326,8 +333,9 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    	
 				Integer subID = rs.getInt("possible_subordinate_type_id");
 				StateAdminUnitType subType = getStateAdminUnitTypeById(subID); 
-		    	
-				subOrdinateAdminUnitTypes.add(subType);
+		    	if (subType != null) {
+					subOrdinateAdminUnitTypes.add(subType);
+		    	}
 		    	
 				System.out.println("Subordinate for ID:" + state_admin_unit_type_id + " is ID:" + subID);				
 		    }
@@ -512,6 +520,28 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		}
 
 		return isCodeExisting;
+	}
+
+	
+	
+	
+	public void closeStateAdminUnitTypeById(Integer state_admin_unit_type_id) {
+		PreparedStatement ps = null;
+		try {
+			String sql = "UPDATE	state_admin_unit_type  " 	+	
+						 "SET    	closedBy = 'Admin', " 		+ 	
+				 		 "	 		closed   = NOW() " 			+	
+						 "WHERE 	state_admin_unit_type_id = ?";  
+			
+		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, state_admin_unit_type_id);
+		    ps.executeUpdate();
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+		    DbUtils.closeQuietly(ps);
+		}				
 	}
 
 		
