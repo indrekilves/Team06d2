@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -16,8 +15,6 @@ public class BorderGuardDao {
 
 
 	private Connection connection;
-    private Statement st;
-    private ResultSet rs;
 
     
     // Constructors 

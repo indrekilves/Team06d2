@@ -9,6 +9,8 @@ import dao.BorderGuardDao;
 
 public class SetupDatabase extends HttpServlet {
 
+	private static final long serialVersionUID = -391959563520044178L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BorderGuardDao dao = new BorderGuardDao(request, response);
         dao.createTabels();

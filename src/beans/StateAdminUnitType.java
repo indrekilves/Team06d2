@@ -21,7 +21,7 @@ public class StateAdminUnitType {
 	private List<StateAdminUnitType> 	subordinateAdminUnitTypes;
 		
 	
-	public void StateAdminUnitType() {
+	public StateAdminUnitType() {
 	}
 
 

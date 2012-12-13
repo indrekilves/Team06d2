@@ -22,7 +22,7 @@ public class StateAdminUnit {
 	private int	   state_admin_unit_type_id;
 	
 	
-	public void StateAdminUnit() {
+	public StateAdminUnit() {
 	}
 
 

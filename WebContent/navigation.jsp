@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="navigationText">
-		<b>Main menu</b></br>
+		<b>Main menu</b><br>
 		<a href="SetupDatabase">Create database</a><br>
 		<a href="StateAdminUnitTypeController">State Admin Unit Types</a><br>
 		<a href="ShowStateAdminUnits">State Admin Units</a><br>

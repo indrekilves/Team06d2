@@ -494,10 +494,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		try {
 			String sql = "SELECT 1 " +
 						 "FROM   state_admin_unit_type " +
-						 "WHERE  code = ? ";
+						 "WHERE  UPPER(code) = ? ";
 			
 			ps = super.getConnection().prepareStatement(sql);	 
-		    ps.setString(1, code);		    
+		    ps.setString(1, code.toUpperCase());		    
 		    rs = ps.executeQuery();
 
 		    if (rs.next()) {

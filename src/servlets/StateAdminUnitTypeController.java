@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.omg.PortableInterceptor.INACTIVE;
-
-import com.sun.tools.doclets.formats.html.resources.standard;
 
 import beans.StateAdminUnitType;
 import dao.PossibleSubordinationDao;
@@ -26,7 +21,7 @@ import dao.StateAdminUnitTypeDao;
 
 public class StateAdminUnitTypeController extends HttpServlet {
 
-	
+	private static final long serialVersionUID = 3711868332683834980L;
 	StateAdminUnitTypeDao typeDao = new StateAdminUnitTypeDao();
 	PossibleSubordinationDao posSubOrdDao = new PossibleSubordinationDao();
 
@@ -228,7 +223,11 @@ public class StateAdminUnitTypeController extends HttpServlet {
 					}
 				}
 			}
-		}		
+		} else {
+			if (typeDao.isCodeExisting(code)){
+				errors.add("Code '" + code + "' is in use already.");
+			}
+		}			
 		
 		return errors;
 	}
@@ -350,6 +349,7 @@ public class StateAdminUnitTypeController extends HttpServlet {
 	}
 
 
+	@SuppressWarnings("unused")
 	private void showStateAdminUnitTypeSummaryById(Integer id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (id == null){
 			showStateAdminUnitTypesList(request, response);

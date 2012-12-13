@@ -7,6 +7,6 @@
 <link rel="stylesheet" href="./style.css" type="text/css">
 </head>
 <body>
-	Indrek Ilves & Hanno Sirkel
+	Indrek Ilves and Hanno Sirkel
 </body>
 </html>
