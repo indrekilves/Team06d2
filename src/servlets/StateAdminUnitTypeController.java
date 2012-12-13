@@ -388,6 +388,13 @@ public class StateAdminUnitTypeController extends HttpServlet {
 		String strId = request.getParameter("id"); 
 		
 		if (strId == null || strId.length() < 1){
+			List<String> errors = getValidationErrors(request);
+	        if (!errors.isEmpty()) {
+	            request.setAttribute("errors", errors);
+				showStateAdminUnitTypeForm(request, response);
+	            return;
+	        }
+		  
 			id = insertStateAdminUnitType(request);
 		} else {
 			id = Integer.parseInt(strId);
