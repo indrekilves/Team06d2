@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StateAdminUnitType {
 
-	private int    						state_admin_unit_type_id;
+	private Integer 					state_admin_unit_type_id;
 	private String 						openedBy;
 	private Date   						opened;
 	private String 						changedBy;
@@ -26,11 +26,11 @@ public class StateAdminUnitType {
 
 
 	
-	public int getState_admin_unit_type_id() {
+	public Integer getState_admin_unit_type_id() {
 		return state_admin_unit_type_id;
 	}
 
-	public void setState_admin_unit_type_id(int state_admin_unit_type_id) {
+	public void setState_admin_unit_type_id(Integer state_admin_unit_type_id) {
 		this.state_admin_unit_type_id = state_admin_unit_type_id;
 	}
 

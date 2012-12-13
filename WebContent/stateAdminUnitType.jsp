@@ -31,7 +31,7 @@
 		    From date:		<c:out value="${stateAdmintUnitType.fromDate}"/><br>
 		    To date:		<c:out value="${stateAdmintUnitType.toDate}"/><br>
 		    SubOrdinates:	<c:forEach var="subType" items="${stateAdmintUnitType.subordinateAdminUnitTypes}">
-								<c:out value="${subType.name}" /></br>
+								<c:out value="${subType.name}" />, 
 							</c:forEach>
 		    
 	    </div>

@@ -39,7 +39,7 @@
 	
 		function addSubOrdinate() {
 			var exitMode = document.getElementById("exitMode");
-			exitMode.value="addSubOrdinate";
+			exitMode.value="showListOfPossibleSubOrdinates";
 			document.getElementById("stateAdminUnitTypeForm").submit();
 		}
 	

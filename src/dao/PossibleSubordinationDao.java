@@ -166,4 +166,12 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 			closePossibleSubordinationByRelationID(oldRelationId);
 		}
 	}
+
+	
+
+	public void addSubOrdinateRelation(Integer id, Integer subId) {
+		if (id == null || subId == null) return;
+		
+		addPossibleSubordinationByIDs(id, subId);
+	}
 }

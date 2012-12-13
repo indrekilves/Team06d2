@@ -45,23 +45,104 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		
 
 	private boolean isTypeValidForBoss(StateAdminUnitType validateType,	StateAdminUnitType stateAdminUnitType) {
+		// can't be itself
 		if (validateType.getState_admin_unit_type_id() == stateAdminUnitType.getState_admin_unit_type_id()){
 			return false;
 		}
 		
-		for (StateAdminUnitType subOrdinateOfStateAdminUnit : stateAdminUnitType.getSubordinateAdminUnitTypes()) {
-			if (validateType.getState_admin_unit_type_id() == subOrdinateOfStateAdminUnit.getState_admin_unit_type_id()){
-				return false;
-			}
+		// can't be subordinate
+		List<StateAdminUnitType> subOrdinates = stateAdminUnitType.getSubordinateAdminUnitTypes();
+		boolean isSubordinate = isTypeASubordinate(validateType, subOrdinates);
+		if (isSubordinate) {
+			return false;
 		}
-
-//		if (stateAdminUnitType.getSubordinateAdminUnitTypes().contains(validateType)){
-//			return false;
-//		}
 			
 		return true;
 	}
 
+	
+	
+	public List<StateAdminUnitType> getAllPossibleSubordinateStateAdminUnitTypesByType(StateAdminUnitType stateAdminUnitType) {
+		List<StateAdminUnitType> possibleTypes = new ArrayList<StateAdminUnitType>();
+		List<StateAdminUnitType> allTypes = getAllStateAdminUnitTypes();
+		
+		for (StateAdminUnitType validateType : allTypes) {
+			if (isTypeValidForSubordinate(validateType, stateAdminUnitType)){
+				possibleTypes.add(validateType);
+			}
+		}
+		
+		return possibleTypes;	
+	}
+	
+	
+	private boolean isTypeValidForSubordinate(StateAdminUnitType validateType, StateAdminUnitType stateAdminUnitType) {
+		// can't be itself
+		if (validateType.getState_admin_unit_type_id() == stateAdminUnitType.getState_admin_unit_type_id()){
+			return false;
+		}
+		
+
+		// can't be subordinate
+		List<StateAdminUnitType> subOrdinates = stateAdminUnitType.getSubordinateAdminUnitTypes();
+		boolean isSubordinate = isTypeASubordinate(validateType, subOrdinates);
+		if (isSubordinate) {
+			return false;
+		}
+		
+		// can't be boss
+		StateAdminUnitType boss = stateAdminUnitType.getBossAdminUnitType();
+		boolean isBoss = isTypeABoss(validateType, boss);
+		if (isBoss) {
+			return false;
+		}
+		
+		
+		return true;	
+	}
+	
+	
+	private boolean isTypeASubordinate(StateAdminUnitType validateType,	List<StateAdminUnitType> subOrdinates) {
+		boolean isSubOrdinate = false;
+		
+		if (subOrdinates != null) {
+			for (StateAdminUnitType subOrdinate : subOrdinates) {
+				if (validateType.getState_admin_unit_type_id() == subOrdinate.getState_admin_unit_type_id()){
+					isSubOrdinate = true;
+				} else {
+					// is subOrdinate of subOrdinate
+					List<StateAdminUnitType> subOrdinateSubOrdinates = getSubOrdinateAdminUnitTypesById(subOrdinate.getState_admin_unit_type_id());
+					if (subOrdinateSubOrdinates != null) {
+						isSubOrdinate = isTypeASubordinate(validateType, subOrdinateSubOrdinates);
+					}
+					 
+				}
+			}			
+		}
+		
+		return isSubOrdinate;
+	}
+	
+	
+	private boolean isTypeABoss(StateAdminUnitType validateType, StateAdminUnitType boss) {
+		boolean isBoss = false;
+		
+		if (boss != null){						
+			if (validateType.getState_admin_unit_type_id() == boss.getState_admin_unit_type_id()){
+				isBoss = true;
+			} else {
+				// is bosses boss				
+				StateAdminUnitType bossesBoss = getBossAdminUnitTypeById(boss.getState_admin_unit_type_id());
+				if (bossesBoss != null) {
+					isBoss = isTypeABoss(validateType, bossesBoss);
+				}
+			}
+		}
+
+		return isBoss;
+	}
+	
+	
 	
 	
 	public List<StateAdminUnitType> getAllStateAdminUnitTypes() {
@@ -265,13 +346,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	}
 	
 	
-	
-	public List<StateAdminUnitType> getPossibleBossStateAdminUnitTypesById(Integer id) {
-		// TODO leia k6ik kellele ma ise ei allu
-		return null;
-	}
 
-	
 	
 	
 	// Insert
@@ -342,6 +417,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		} finally {
 			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
+		    DbUtils.closeQuietly(psId);
 		}
 		
 		return addedId;			
@@ -400,6 +476,42 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 	private java.sql.Date getSqlDateFromJavaDate(Date javaDate) {
 		return new java.sql.Date(javaDate.getTime()); 
+	}
+
+	
+		
+	
+	public boolean isCodeExisting(String code) {
+		boolean isCodeExisting = false;
+		
+		if (code == null || code.length() < 1) {
+			return isCodeExisting;
+		}
+			
+	    
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT 1 " +
+						 "FROM   state_admin_unit_type " +
+						 "WHERE  code = ? ";
+			
+			ps = super.getConnection().prepareStatement(sql);	 
+		    ps.setString(1, code);		    
+		    rs = ps.executeQuery();
+
+		    if (rs.next()) {
+		    	isCodeExisting = rs.getBoolean(1);
+		    }
+
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		return isCodeExisting;
 	}
 
 		

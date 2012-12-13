@@ -25,38 +25,38 @@
 		<b>State Admin Unit types</b><br><br>
 
 		<table>
-		<tr align="left">
-			<th width="40px">ID</th>
-			<th width="100px">Code</th>
-			<th width="150px">Name</th>
-			<th width="50px"></th>
-		</tr>
-		
-			<c:forEach var="type" items="${stateAdminUnitTypes}">
-				<tr>
-					<td>
-						 <c:out value="${type.state_admin_unit_type_id}" />
-					</td>
-					<td>
-						 <c:out value="${type.code}" />
-					</td>
-					<td>
-						<c:out value="${type.name}" />
-					</td>
-					<td>
-						<a href="?action=editStateAdminUnitType&id=${type.state_admin_unit_type_id}">Edit</a>
-					</td>
-				
-				</tr>
-			</c:forEach>
-		<tr height="60px" valign="bottom">
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
-				<a href="?action=addStateAdminUnitType">Add</a>
-			</td>
-		</tr>
+			<tr align="left">
+				<th width="40px">ID</th>
+				<th width="100px">Code</th>
+				<th width="150px">Name</th>
+				<th width="50px"></th>
+			</tr>
+			
+				<c:forEach var="type" items="${stateAdminUnitTypes}">
+					<tr>
+						<td>
+							 <c:out value="${type.state_admin_unit_type_id}" />
+						</td>
+						<td>
+							 <c:out value="${type.code}" />
+						</td>
+						<td>
+							<c:out value="${type.name}" />
+						</td>
+						<td>
+							<a href="?action=editStateAdminUnitType&id=${type.state_admin_unit_type_id}">Edit</a>
+						</td>
+					
+					</tr>
+				</c:forEach>
+			<tr height="60px" valign="bottom">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<a href="?action=addStateAdminUnitType">Add</a>
+				</td>
+			</tr>
 		</table>
 		</div>
 	</div>
