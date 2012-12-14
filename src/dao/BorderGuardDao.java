@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
@@ -73,6 +74,18 @@ public class BorderGuardDao {
 	public Connection getConnection() {
 		return connection;
 	}
+	
+	
+	
+	
+	// Helpers
+		
+	
+	
+	public java.sql.Date getSqlDateFromJavaDate(Date javaDate) {
+		return new java.sql.Date(javaDate.getTime()); 
+	}
+	
 	
 	
 	

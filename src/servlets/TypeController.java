@@ -1,15 +1,11 @@
 package servlets;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +15,7 @@ import dao.StateAdminUnitTypeDao;
 
 
 
-public class TypeController extends HttpServlet {
+public class TypeController extends GenericController {
 
 	private static final long serialVersionUID = 3711868332683834980L;
 	StateAdminUnitTypeDao typeDao = new StateAdminUnitTypeDao();
@@ -294,18 +290,6 @@ public class TypeController extends HttpServlet {
 	}
 
 	
-	private Date getDateFromString(String strDate) {
-		if (strDate == null) return null;
-		
-		DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-		Date date = null;
-		
-		try {
-			date = df.parse(strDate);
-		} catch (ParseException e) {}
-		
-		return date;
-	}
 	
 	
 	private void updateStateAdminUnitTypeBossById(Integer id, HttpServletRequest request) {

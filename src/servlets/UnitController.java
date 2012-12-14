@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.StateAdminUnitDao;
 import beans.StateAdminUnit;
 
-public class UnitController extends HttpServlet {
+public class UnitController extends GenericController  {
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -143,11 +142,44 @@ public class UnitController extends HttpServlet {
 
 	
 
-	private void saveUnitFrom(HttpServletRequest request,
-			HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		System.out.println("saveFrom");
+	private void saveUnitFrom(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("saveUnitFrom");
 		
+//		List<String> errors = getValidationErrors(request);
+//        if (!errors.isEmpty()) {
+//            request.setAttribute("errors", errors);
+//			showTypeForm(request, response);
+//            return;
+//        }
+	  
+        Integer id = null;
+        String strId = request.getParameter("id"); 
+		
+        if (strId == null || strId.length() < 1){
+			//id = insertStateAdminUnitType(request);
+		} else {        
+			id = Integer.parseInt(strId);
+			updateUnitById(id, request);
+		}
+		
+		//updateStateAdminUnitTypeBossById(id, request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
+		showUnitsList(request, response);
+		
+	}
+
+
+	private void updateUnitById(Integer id, HttpServletRequest request) {
+		if (id == null) return;
+
+		StateAdminUnit unit = unitDao.getUnitById(id);
+	
+		unit.setCode(request.getParameter("code"));
+		unit.setName(request.getParameter("name"));
+		unit.setComment(request.getParameter("comment"));
+		unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
+		unit.setToDate(getDateFromString(request.getParameter("toDate")));
+		
+		unitDao.updateUnitByUnit(unit);		
 	}
 
 
@@ -216,6 +248,8 @@ public class UnitController extends HttpServlet {
 		unit.setCode(request.getParameter("code"));
 		unit.setName(request.getParameter("name"));
 		unit.setComment(request.getParameter("comment"));
+		
+		// TODO type and Dates are missing
 		//unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
 		//unit.setToDate(getDateFromString(request.getParameter("toDate")));
 		

@@ -152,7 +152,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	    Statement st = null;
 	    ResultSet rs = null;
 		try {
-			st = super.getConnection().createStatement();
+			st = getConnection().createStatement();
 		    rs = st.executeQuery(	"SELECT * " +
 		    						"FROM   state_admin_unit " +
 		    						"WHERE 	opened <= NOW() " +
@@ -217,7 +217,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 						 "  AND		opened <= NOW() " +
 						 "  AND		closed >= NOW() ";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, id);		    
 		    rs = ps.executeQuery();
 
@@ -260,7 +260,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 						 "  AND		opened <= NOW() " +
 						 "  AND		closed >= NOW() ";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, id);		    
 		    rs = ps.executeQuery();
 
@@ -310,7 +310,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 						 "  AND	 opened <= NOW() " +
 						 "  AND	 closed >= NOW() ";
 			
-			ps = super.getConnection().prepareStatement(sql);	 
+			ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, id);		    
 		    rs = ps.executeQuery();
 
@@ -357,6 +357,48 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		}
 		
 		return unit;
+	}
+
+	
+	
+	
+	// Update unit
+
+	
+	
+	
+	public void updateUnitByUnit(StateAdminUnit unit) {
+		if (unit == null) return;
+		
+		PreparedStatement ps = null;
+		
+		try {
+			String sql = "UPDATE state_admin_unit  " 	+	
+						 "SET   code      = ?,  "       +	//  1
+						 "		name      = ?,  " 		+ 	//  2
+						 "		comment   = ?,  " 		+	//  3
+						 "		fromDate  = ?, " 		+	//  4
+						 "		toDate    = ?," 		+	//  5
+						 "		changedBy = 'Admin', " 	+ 	
+				 		 "		changed   = NOW() " 	+	
+						 "WHERE state_admin_unit_id = ?";  //  6
+		
+		    ps = getConnection().prepareStatement(sql);	 
+		   
+		    ps.setString(1, unit.getCode());
+		    ps.setString(2, unit.getName());
+		    ps.setString(3, unit.getComment());
+			ps.setDate(  4, getSqlDateFromJavaDate(unit.getFromDate()));
+		    ps.setDate(  5, getSqlDateFromJavaDate(unit.getToDate()));
+		    ps.setInt(   6, unit.getState_admin_unit_id());
+		    
+		    ps.executeUpdate();
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+		    DbUtils.closeQuietly(ps);
+		}	
 	}
 
 

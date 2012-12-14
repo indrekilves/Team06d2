@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -155,7 +154,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	    Statement st = null;
 	    ResultSet rs = null;
 		try {
-			st = super.getConnection().createStatement();
+			st = getConnection().createStatement();
 		    rs = st.executeQuery(	"SELECT * " +
 		    						"FROM   state_admin_unit_type " +
 		    						"WHERE 	opened <= NOW() " +
@@ -196,7 +195,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 						 "  AND	 opened <= NOW() " +
 						 "  AND	 closed >= NOW() ";
 			
-			ps = super.getConnection().prepareStatement(sql);	 
+			ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
 		    rs = ps.executeQuery();
 
@@ -280,7 +279,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 						 "  AND		opened <= NOW() " +
 						 "  AND		closed >= NOW() ";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
 		    rs = ps.executeQuery();
 
@@ -325,7 +324,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 						 "  AND		opened <= NOW() " +
 						 "  AND		closed >= NOW() ";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);		    
 		    rs = ps.executeQuery();
 
@@ -405,7 +404,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
 		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
 		
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		   
 		    ps.setString(1, stateAdminUnitType.getCode());
 		    ps.setString(2, stateAdminUnitType.getName());
@@ -415,7 +414,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		    
 		    ps.executeUpdate();
 		    
-		    psId = super.getConnection().prepareStatement("CALL IDENTITY()");
+		    psId = getConnection().prepareStatement("CALL IDENTITY()");
 			rs = psId.executeQuery();
 			rs.next();
 			addedId = rs.getInt(1);		    
@@ -440,13 +439,9 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 	
 	public void updateStateAdminUnitTypeByType(StateAdminUnitType stateAdminUnitType) {
-		if (stateAdminUnitType == null)
-		{
-			return;
-		}
+		if (stateAdminUnitType == null) return;
 		
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
 			String sql = "UPDATE state_admin_unit_type  " 	+	
@@ -459,16 +454,13 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 				 		 "		changed   = NOW() " 		+	
 						 "WHERE state_admin_unit_type_id = ?";  //  6
 		
-		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
-		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
-		
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		   
 		    ps.setString(1, stateAdminUnitType.getCode());
 		    ps.setString(2, stateAdminUnitType.getName());
 		    ps.setString(3, stateAdminUnitType.getComment());
-			ps.setDate(  4, fromDate);
-		    ps.setDate(  5, toDate);
+			ps.setDate(  4, getSqlDateFromJavaDate(stateAdminUnitType.getFromDate()));
+		    ps.setDate(  5, getSqlDateFromJavaDate(stateAdminUnitType.getToDate()));
 		    ps.setInt(   6, stateAdminUnitType.getState_admin_unit_type_id());
 		    
 		    ps.executeUpdate();
@@ -476,15 +468,12 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		} catch (Exception e) {
 		    throw new RuntimeException(e);
 		} finally {
-			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
 		}	
 	}
 
 	
-	private java.sql.Date getSqlDateFromJavaDate(Date javaDate) {
-		return new java.sql.Date(javaDate.getTime()); 
-	}
+
 
 	
 		
@@ -504,7 +493,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 						 "FROM   state_admin_unit_type " +
 						 "WHERE  UPPER(code) = ? ";
 			
-			ps = super.getConnection().prepareStatement(sql);	 
+			ps = getConnection().prepareStatement(sql);	 
 		    ps.setString(1, code.toUpperCase());		    
 		    rs = ps.executeQuery();
 
@@ -533,7 +522,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 				 		 "	 		closed   = NOW() " 			+	
 						 "WHERE 	state_admin_unit_type_id = ?";  
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, state_admin_unit_type_id);
 		    ps.executeUpdate();
 		    
