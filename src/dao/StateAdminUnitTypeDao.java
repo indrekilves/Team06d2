@@ -106,7 +106,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	}
 	
 	
-	private boolean isTypeASubordinate(StateAdminUnitType validateType,	List<StateAdminUnitType> subOrdinates) {
+	public boolean isTypeASubordinate(StateAdminUnitType validateType,	List<StateAdminUnitType> subOrdinates) {
 		boolean isSubOrdinate = false;
 		
 		if (subOrdinates != null && !subOrdinates.isEmpty()) {

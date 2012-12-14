@@ -9,10 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.StateAdminUnitDao;
-import dao.StateAdminUnitTypeDao;
-
 import beans.StateAdminUnit;
-import beans.StateAdminUnitType;
 
 public class UnitController extends HttpServlet {
 	
@@ -198,13 +195,11 @@ public class UnitController extends HttpServlet {
 
 		if (strId != null && strId.length() > 0){
 			Integer id = Integer.parseInt(strId);
-			unit = unitDao.getStateAdminUnitById(id);
-			
-			//unit = unitDao.getStateAdminUnitTypeByIdWithRelations(id);
-			//bossUnits = unitDao.getAllPossibleBossStateAdminUnitTypesByType(unit);			
+			unit = unitDao.getUnitWithRelationsById(id);
+			bossUnits = unitDao.getAllPossibleBossUnitsByUnit(unit);			
 		} else {
 			unit = fillUnitFromRequest(request);
-			bossUnits = unitDao.getAllStateAdminUnits();	
+			bossUnits = unitDao.getAllUnits();	
 		}
 		
 		request.setAttribute("unit", unit);
@@ -234,7 +229,7 @@ public class UnitController extends HttpServlet {
 	private void showUnitsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("showUnitsList");
 
-		List<StateAdminUnit> units = unitDao.getAllStateAdminUnits();
+		List<StateAdminUnit> units = unitDao.getAllUnits();
 
 		request.setAttribute("units", units);
 		request.getRequestDispatcher("pages/unitsList.jsp").forward(request, response);	

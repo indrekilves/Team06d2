@@ -18,21 +18,21 @@
     	</tr>
     	
 <!-- list of subordinates -->
-<%-- 		<c:forEach var="subUnit" items="${unit.subordinateAdminUnits}"> --%>
-<!-- 			<tr style="border: 1px solid black;"> -->
-<!-- 				<td> -->
-<%-- 					<c:out value="${subUnit.name}" /> --%>
-<!-- 				</td> -->
-<!-- 				<td align="right"> -->
-<!-- 				  	<input 	type    = "button"  -->
-<!-- 				  			value   = "Remove"  -->
-<!-- 				  			id		= "removeSubOrdinateUnit_${subUnit.state_admin_unit_id}" -->
-<!-- 				  			name    = "btnRemoveSubType"  -->
-<!-- 				  			class   = "largeButton"  -->
-<%-- 				  			onclick = "removeSubOrdinate('${unit.state_admin_unit_id}', '${subUnit.state_admin_unit_id}')">		  			 --%>
-<!-- 				</td>			 -->
-<!-- 			</tr> -->
-<%-- 		</c:forEach> --%>
+		<c:forEach var="subUnit" items="${unit.subordinateUnits}">
+			<tr style="border: 1px solid black;">
+				<td>
+					<c:out value="${subUnit.name}" />
+				</td>
+				<td align="right">
+				  	<input 	type    = "button" 
+				  			value   = "Remove" 
+				  			id		= "removeSubOrdinateUnit_${subUnit.state_admin_unit_id}"
+				  			name    = "btnRemoveSubType" 
+				  			class   = "largeButton" 
+				  			onclick = "removeSubOrdinate('${unit.state_admin_unit_id}', '${subUnit.state_admin_unit_id}')">		  			
+				</td>			
+			</tr>
+		</c:forEach>
 		
 <!-- add new subordinate -->		
 		<tr height="40px" valign="bottom">

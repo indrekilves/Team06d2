@@ -1,26 +1,28 @@
 package beans;
 
 import java.util.Date;
-
-import dao.StateAdminUnitTypeDao;
+import java.util.List;
 
 
 public class StateAdminUnit {
 
-	private Integer  			state_admin_unit_id;
-	private String 				openedBy;
-	private Date   				opened;
-	private String 				changedBy;
-	private Date   				changed;
-	private String 				closedBy;
-	private Date   				closed;
-	private String 				code;
-	private String 				name;
-	private String 				comment;
-	private Date   				fromDate;
-	private Date   				toDate;
-	private Integer          	state_admin_unit_type_id;
-	private StateAdminUnitType	type;
+	private Integer  				state_admin_unit_id;
+	private String 					openedBy;
+	private Date   					opened;
+	private String 					changedBy;
+	private Date   					changed;
+	private String 					closedBy;
+	private Date   					closed;
+	private String 					code;
+	private String 					name;
+	private String 					comment;
+	private Date   					fromDate;
+	private Date   					toDate;
+	private Integer          		state_admin_unit_type_id;
+	private StateAdminUnitType		type;
+	private StateAdminUnit			bossUnit;
+	private List<StateAdminUnit> 	subordinateUnits;
+
 	
 	
 	public StateAdminUnit() {
@@ -152,21 +154,34 @@ public class StateAdminUnit {
 		this.type = type;
 	}
 
-
-	private StateAdminUnitType getStateAdminUnitType() {
-		StateAdminUnitTypeDao dao = new StateAdminUnitTypeDao();
-		return dao.getStateAdminUnitTypeById(state_admin_unit_type_id);
-	}
 	
+
+
+	public StateAdminUnit getBossUnit() {
+		return bossUnit;
+	}
+
+	public void setBossUnit(StateAdminUnit bossUnit) {
+		this.bossUnit = bossUnit;
+	}
+
+
+	public List<StateAdminUnit> getSubordinateUnits() {
+		return subordinateUnits;
+	}
+
+	public void setSubordinateUnits(List<StateAdminUnit> subordinateUnits) {
+		this.subordinateUnits = subordinateUnits;
+	}
+
 
 	@Override 
 	public String toString(){
-		StateAdminUnitType type = getStateAdminUnitType();
-				
 		return	"ID: " + state_admin_unit_id + "   " +
 				"Code: " + code + "   " +
 				"Name: " + name + "   " + 		
 				"Type: " + type.getName();
 	}
+
 	
 }

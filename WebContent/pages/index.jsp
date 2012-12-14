@@ -20,7 +20,8 @@
 	<div id="content">
 		<div id="innerContainer">
 			<p class="lPad100">			
-				Welcome to BoarderGuard webApplication.
+				Welcome to BoarderGuard webApplication.<br><br>
+				First please <a href="DatabaseController">create database</a>.<br>
 			</p>
 		</div>
 	</div>

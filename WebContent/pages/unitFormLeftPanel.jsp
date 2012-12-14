@@ -48,15 +48,15 @@
 			<select name="bossUnitId">
 				<option value=""></option>
 			
-<%-- 				<c:forEach var="entry" items="${bossUnits}"> --%>
-<%-- 			    	<c:set var="selected" value=""/> --%>
+				<c:forEach var="entry" items="${bossUnits}">
+			    	<c:set var="selected" value=""/>
 			    	
-<%-- 			    	<c:if test="${entry.state_admin_unit_id == unit.bossAdminUnit.state_admin_unit_id}"> --%>
-<%-- 			     		<c:set var="selected" value="selected=\"selected\""/> --%>
-<%-- 			    	</c:if> --%>
+			    	<c:if test="${entry.state_admin_unit_id == unit.bossUnit.state_admin_unit_id}">
+			     		<c:set var="selected" value="selected=\"selected\""/>
+			    	</c:if>
 	
-<%-- 					<option value="${entry.state_admin_unit_id}" ${selected}>${entry.name}</option> --%>
-<%-- 				</c:forEach> --%>
+					<option value="${entry.state_admin_unit_id}" ${selected}>${entry.name}</option>
+				</c:forEach>
 			</select>
 		
 			</td>
