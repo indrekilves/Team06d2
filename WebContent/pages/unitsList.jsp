@@ -7,7 +7,7 @@
 <head>
 	<title>Admin Units</title>
 	<meta 	http-equiv="Content-Type" 	content="text/html; charset=UTF-8">
-	<link 	type="text/css"				rel="stylesheet" href="./style.css">
+	<link  	type="text/css"				rel="stylesheet"	 href="./css/style.css">
  	<script type="text/javascript" 		src="js/unitsList.js"></script> 
 </head>
 <body>
