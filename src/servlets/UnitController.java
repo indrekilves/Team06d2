@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.tools.doclets.formats.html.resources.standard;
+
 import dao.StateAdminUnitDao;
 import dao.StateAdminUnitTypeDao;
 import beans.StateAdminUnit;
@@ -17,7 +19,8 @@ public class UnitController extends GenericController  {
 	
 	
 	private static final long serialVersionUID = 1L;
-	StateAdminUnitDao unitDao = new StateAdminUnitDao();
+	private StateAdminUnitDao unitDao = new StateAdminUnitDao();
+	private StateAdminUnit sessionUnit  = null;
    
 	
 	// GET
@@ -332,10 +335,14 @@ public class UnitController extends GenericController  {
  
 		System.out.println("changeType - ID: " + strId);
 		
-		if (strId != null && strId.length() > 0){
+		if (strId != null && strId.length() > 0){		
 			Integer id = Integer.parseInt(strId);
 			unit = unitDao.getUnitById(id);
-		} 
+		} else {
+			unit = fillUnitFromRequest(request);
+			sessionUnit = unit; // hack
+		}
+		
 
 		request.setAttribute("unit", unit);			
 		request.setAttribute("types", types);		
@@ -346,8 +353,6 @@ public class UnitController extends GenericController  {
 	
 
 	private void saveType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO siin peab tegelema ka uue unit'i lisamisega
-		
 		StateAdminUnit unit = null;
 		String strId   = request.getParameter("id");
 		Integer typeId = Integer.parseInt(request.getParameter("typeId"));
@@ -384,16 +389,57 @@ public class UnitController extends GenericController  {
 			unit = unitDao.getUnitWithRelationsById(id);
 			bossUnits = unitDao.getAllPossibleBossUnitsByUnit(unit);			
 		} else {
-			unit = fillUnitFromRequest(request);
+			unit = mergeRequestAndSessionUnit(request);
 			bossUnits = unitDao.getAllUnits();	
 		}
-		
+
 		request.setAttribute("unit", unit);
 		request.setAttribute("bossUnits", bossUnits);
 			
 		request.getRequestDispatcher("pages/unitForm.jsp").forward(request, response);		
 	}
 	
+
+	/**
+	 * HACK - should go through session and so. To big change for that late.
+	 */
+	private StateAdminUnit mergeRequestAndSessionUnit(HttpServletRequest request) {
+		StateAdminUnit unit = fillUnitFromRequest( request);
+
+		if (unit == null || sessionUnit == null){
+			return unit;
+		}
+		
+		
+		if (unit.getName() == null && sessionUnit.getName() != null) {
+			unit.setName(sessionUnit.getName());
+		} 
+
+		if (unit.getCode() == null && sessionUnit.getCode() != null) {
+			unit.setCode(sessionUnit.getCode());
+		} 
+
+		if (unit.getComment() == null && sessionUnit.getComment() != null) {
+			unit.setComment(sessionUnit.getComment());
+		} 
+				
+		if (unit.getState_admin_unit_type_id() == null && sessionUnit.getState_admin_unit_type_id() != null) {
+			unit.setState_admin_unit_type_id(sessionUnit.getState_admin_unit_type_id());
+		} 
+
+		if (unit.getFromDate() == null && sessionUnit.getFromDate() != null) {
+			unit.setFromDate(sessionUnit.getFromDate());
+		} 
+
+		if (unit.getToDate() == null && sessionUnit.getToDate() != null) {
+			unit.setToDate(sessionUnit.getToDate());
+		} 
+		
+		sessionUnit = null;
+		
+		return unit;
+	}
+
 
 	private StateAdminUnit fillUnitFromRequest(HttpServletRequest request) {
 		StateAdminUnit unit = new StateAdminUnit();
@@ -405,7 +451,6 @@ public class UnitController extends GenericController  {
 		unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
 		unit.setToDate(getDateFromString(request.getParameter("toDate")));
 		unit.setType(getTypeFromRequest(request));
-
 
 		return unit;
 	}
