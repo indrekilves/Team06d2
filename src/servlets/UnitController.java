@@ -392,7 +392,9 @@ public class UnitController extends GenericController  {
 			unit = mergeRequestAndSessionUnit(request);
 			bossUnits = unitDao.getAllUnits();	
 		}
-
+		
+		String typeRelatedWidgetStatus = (unit.getType() != null) ? "" : "disabled";
+		request.setAttribute("typeRelatedWidgetStatus", typeRelatedWidgetStatus);
 		request.setAttribute("unit", unit);
 		request.setAttribute("bossUnits", bossUnits);
 			
