@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.BorderGuardDao;
 
-public class SetupDatabase extends HttpServlet {
+public class DatabaseController extends HttpServlet {
 
 	private static final long serialVersionUID = -391959563520044178L;
 
@@ -15,7 +15,7 @@ public class SetupDatabase extends HttpServlet {
 		BorderGuardDao dao = new BorderGuardDao(request, response);
         dao.createTabels();
         dao.insertDummyData();
-		request.getRequestDispatcher("database.jsp").forward(request, response);       
+		request.getRequestDispatcher("pages/database.jsp").forward(request, response);       
 	}
 
 }

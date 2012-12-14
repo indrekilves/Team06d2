@@ -5,52 +5,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>BoarderGuard - Admin Units</title>
-	<link rel="stylesheet" href="./style.css" type="text/css">
-
-	<script type="text/javascript">
-		function editUnit(id) {
-			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "editUnit";
-			
-			var origin = document.getElementById("origin");
-			origin.value = "listOfUnits";
-						
-			var idWidget = document.getElementById("id");
-			idWidget.value = id;
-			
-			document.getElementById("listOfUnits").submit();
-		}
-		
-
-		function removeUnit(id) {
-			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "removeUnit";
-			
-			var origin = document.getElementById("origin");
-			origin.value = "listOfUnits";
-			
-			var idWidget = document.getElementById("id");
-			idWidget.value = id;
-			
-			document.getElementById("listOfUnits").submit();
-		}
-		
-		
-		function addUnit() {
-			var exitMode = document.getElementById("exitMode");
-			exitMode.value = "addUnit";
-			
-			var origin = document.getElementById("origin");
-			origin.value = "listOfUnits";
-			
-			document.getElementById("listOfUnits").submit();
-		}
-		
-	</script>
-	
-
+	<title>Admin Units</title>
+	<meta 	http-equiv="Content-Type" 	content="text/html; charset=UTF-8">
+	<link 	type="text/css"				rel="stylesheet" href="./style.css">
+ 	<script type="text/javascript" 		src="js/unitsList.js"></script> 
 </head>
 <body>
 	
@@ -68,13 +26,12 @@
 			<b>State Admin Units</b><br><br>
 
 
-			<form 	method	= "POST" 
-					id		= "listOfUnits">
+			<form method="POST" id="unitsList">
 			
-				<input type="hidden" id="id" 		name="id"		value="">					
+				<input type="hidden" id="id"		name="id"		value="">					
+				<input type="hidden" id="origin"	name="origin"	value="">
 				<input type="hidden" id="exitMode"	name="exitMode"	value="">
-				<input type="hidden" id="origin"	name="origin"	value="listOfUnits">
-
+	
 				<table>
 					<tr align="left">
 						<th width="40px">ID</th>
@@ -103,18 +60,20 @@
 
 <!-- Edit button -->			<td>
 									<input 	type    = "button" 
+											id		= "editUnit_${unit.state_admin_unit_id}"
 								  			value   = "Edit" 
 								  			name    = "btnEdit" 
 								  			class   = "largeButton" 
-								  			onclick = "editUnit('${unit.state_admin_unit_id}')">	
+								  			onclick = "showSelectedEntry('${unit.state_admin_unit_id}')">	
 								</td>
 								<td></td>	
 <!-- Remove button -->			<td>
 									<input 	type    = "button" 
+											id 		= "removeUnit_${unit.state_admin_unit_id}"
 								  			value   = "Remove" 
 								  			name    = "btnRemove" 
 								  			class   = "largeButton" 
-								  			onclick = "removeUnit('${unit.state_admin_unit_id}')">	
+								  			onclick = "removeSelectedEntry('${unit.state_admin_unit_id}')">	
 								</td>							
 							</tr>
 						</c:forEach>
@@ -127,10 +86,11 @@
 						<td></td>
 <!-- Add button -->		<td>
 						 	<input 	type	= "button" 
+						 			id 		= "addUnit"
 						 			value   = "Add" 
 						 			name    = "btnAdd" 
 						 			class   = "largeButton"  
-						 			onclick = "addUnit()">
+						 			onclick = "addEntry()">
 						</td>
 					</tr>
 				</table>

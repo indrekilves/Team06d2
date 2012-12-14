@@ -6,31 +6,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" href="./style.css" type="text/css">
-	<title>BoarderGuard - Possible Subordinates for Admin Unit Type</title>
-	
-	<script type="text/javascript">
-		function selectSubOrdinate(id) {
-			var exitMode = document.getElementById("exitMode");
-			exitMode.value="selectedSubOrdinate";
-			
-			var subId = document.getElementById("subId");
-			subId.value = id;
-			
-			document.getElementById("listOfPossibileSubordinatesForStateAdminUnitType").submit();
-		}
-		
-		
-		function cancelSelect() {
-			var exitMode = document.getElementById("exitMode");
-			exitMode.value="cancel";
-			document.getElementById("listOfPossibileSubordinatesForStateAdminUnitType").submit();
-		}
-	</script>
-	
-	
-</head>
+	<title>Possible Subordinates for Admin Unit Type</title>
+	<meta 	http-equiv="Content-Type" 	content="text/html; charset=UTF-8">
+	<link  	type="text/css"				rel="stylesheet" 	href="./style.css">
+ 	<script type="text/javascript" 		src="js/typePossibileSubordinatesList.js"></script> 
+ </head>
 <body>
 
 	<div id="header">
@@ -43,15 +23,16 @@
 	
 	<div id="content">
 		<div class="pad10">
-			<b>Select subordinate for <c:out value="${unitType.name}"/></b><br><br>
+			<b>Select subordinate for <c:out value="${type.name}"/></b><br><br>
 			
-			<form 	method	= "POST" 
-					id		= "listOfPossibileSubordinatesForStateAdminUnitType" 
-					action	= "?form=listOfPossibileSubordinatesForStateAdminUnitType&id=${unitType.state_admin_unit_type_id}">
-			
-				<input type="hidden" id="subId" 	name="subId"	value="">					
+			<form method="POST"	id="typePossibileSubordinatesList">
+
+				<input type="hidden" id="id"		name="id"		value="">
+				<input type="hidden" id="subId" 	name="subId"	value="">		
+				<input type="hidden" id="origin" 	name="origin"	value="">					
 				<input type="hidden" id="exitMode"	name="exitMode"	value="">
 
+				
 				
 				<table>
 <!-- Select subOrdinate -->						
@@ -62,7 +43,7 @@
 						<th width="50px"></th>
 					</tr>
 					
-						<c:forEach var="posSubOrdType" items="${possibleSubordinateUnitTypes}">
+						<c:forEach var="posSubOrdType" items="${possibleSubordinateTypes}">
 							<tr>
 								<td>
 									 <c:out value="${posSubOrdType.code}" />
@@ -75,7 +56,7 @@
 								  			value   = "Select" 
 								  			name    = "btnSelectSubOrdinate" 
 								  			class   = "largeButton" 
-								  			onclick = "selectSubOrdinate('${posSubOrdType.state_admin_unit_type_id}')">	
+								  			onclick = "selectSubOrdinate('${type.state_admin_unit_type_id}', '${posSubOrdType.state_admin_unit_type_id}')">	
 								</td>
 							
 							</tr>
@@ -86,19 +67,17 @@
 							<td></td>
 							<td></td>
 							<td align="right">
-				
-									
-								  	<input 	type    = "button" 
+								  	<input 	type    = "button"
 								  			value   = "Cancel" 
 								  			name    = "btnCancelSelect" 
 								  			class   = "largeButton"
-								  			onclick = "cancelSelect()">
-							</td>
+								  			onclick = "cancelSubordinateSelect('${type.state_admin_unit_type_id}')">
+							</td>					
 						</tr>
 				</table>
 				<br><br><br>
 				Note:<br>
-				Shown are only these Types that can be subordinates of <c:out value="${unitType.name}"/>.
+				Shown are only these Types that can be subordinates of <c:out value="${type.name}"/>.
 				
 			</form>
 		    

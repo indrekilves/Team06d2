@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,7 +48,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		    	StateAdminUnit unit = createUnitFromResultSet(rs);
 		    	if (unit != null) {
 		    		units.add(unit);
-		    	}	
+		    	} 	
 		    }
 
 		} catch (Exception e) {
@@ -59,6 +60,45 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		
 	    return units;
 	}
+
+
+
+	
+	
+	public StateAdminUnit getStateAdminUnitById(Integer id) {
+		if (id == null) {
+			return null;
+		}
+		
+	    StateAdminUnit 		unit = null;
+		PreparedStatement 	ps = null;
+		ResultSet 			rs = null;
+		
+		try {
+			String sql = "SELECT * " +
+						 "FROM   state_admin_unit " +
+						 "WHERE  state_admin_unit_id = ? " +
+						 "  AND	 opened <= NOW() " +
+						 "  AND	 closed >= NOW() ";
+			
+			ps = super.getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, id);		    
+		    rs = ps.executeQuery();
+
+		    if (rs.next()) {
+		    	unit = createUnitFromResultSet(rs);
+			} 
+
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		return unit;	
+	}
+	
 
 	
 	private StateAdminUnit createUnitFromResultSet(ResultSet rs) throws SQLException {
@@ -89,7 +129,5 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		
 		return unit;
 	}
-	
-
 	
 }

@@ -9,9 +9,9 @@
 <body>
 	<div id="navigationText">
 		<b>Main menu</b><br>
-		<a href="SetupDatabase">Create database</a><br>
-		<a href="StateAdminUnitTypeController">State Admin Unit Types</a><br>
-		<a href="StateAdminUnitController">State Admin Units</a><br>
+		<a href="DatabaseController">Create database</a><br>
+		<a href="TypeController">State Admin Unit Types</a><br>
+		<a href="UnitController">State Admin Units</a><br>
 	</div>
 </body>
 </html>

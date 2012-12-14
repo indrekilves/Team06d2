@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>Team06d2</display-name>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>pages/index.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
     <description></description>
@@ -16,55 +16,15 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>SetupDatabase</display-name>
-    <servlet-name>SetupDatabase</servlet-name>
-    <servlet-class>servlets.SetupDatabase</servlet-class>
+    <display-name>DatabaseController</display-name>
+    <servlet-name>DatabaseController</servlet-name>
+    <servlet-class>servlets.DatabaseController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SetupDatabase</servlet-name>
-    <url-pattern>/SetupDatabase</url-pattern>
+    <servlet-name>DatabaseController</servlet-name>
+    <url-pattern>/DatabaseController</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ShowStateAdminUnitTypes</display-name>
-    <servlet-name>ShowStateAdminUnitTypes</servlet-name>
-    <servlet-class>servlets.ShowStateAdminUnitTypes</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowStateAdminUnitTypes</servlet-name>
-    <url-pattern>/ShowStateAdminUnitTypes</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ShowStateAdminUnits</display-name>
-    <servlet-name>ShowStateAdminUnits</servlet-name>
-    <servlet-class>servlets.ShowStateAdminUnits</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowStateAdminUnits</servlet-name>
-    <url-pattern>/ShowStateAdminUnits</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ShowStateAdminUnitType</display-name>
-    <servlet-name>ShowStateAdminUnitType</servlet-name>
-    <servlet-class>servlets.ShowStateAdminUnitType</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowStateAdminUnitType</servlet-name>
-    <url-pattern>/ShowStateAdminUnitType</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>EditStateAdminUnitType</display-name>
-    <servlet-name>EditStateAdminUnitType</servlet-name>
-    <servlet-class>servlets.EditStateAdminUnitType</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>EditStateAdminUnitType</servlet-name>
-    <url-pattern>/EditStateAdminUnitType</url-pattern>
-  </servlet-mapping>
-  <servlet>
+   <servlet>
     <description></description>
     <display-name>StateAdminUnitTypeController</display-name>
     <servlet-name>StateAdminUnitTypeController</servlet-name>
@@ -83,5 +43,25 @@
   <servlet-mapping>
     <servlet-name>StateAdminUnitController</servlet-name>
     <url-pattern>/StateAdminUnitController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UnitController</display-name>
+    <servlet-name>UnitController</servlet-name>
+    <servlet-class>servlets.UnitController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UnitController</servlet-name>
+    <url-pattern>/UnitController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TypeController</display-name>
+    <servlet-name>TypeController</servlet-name>
+    <servlet-class>servlets.TypeController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TypeController</servlet-name>
+    <url-pattern>/TypeController</url-pattern>
   </servlet-mapping>
 </web-app>

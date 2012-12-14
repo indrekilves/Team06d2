@@ -16,21 +16,22 @@
 	<table>
 	   	<!-- Code -->
 	   	<tr>
-	    	<td width="100px">Code</td> 		
-		   	<td><input name="code" 	value="${unitType.code}"></td>	
+	    	<td width="100px">Code</td> 
+	    			
+		   	<td><input name="code" 	value="${type.code}"></td>	
 	    </tr>
 	
     	<!-- Name -->
 	    <tr class="tall">
 		    <td>Name</td>		
-		    <td><input name="name" 	value="${unitType.name}"></td>	
+		    <td><input name="name" 	value="${type.name}"></td>	
 	    </tr>
 	    
     	<!-- Comment -->
 		<tr class="tall">
 			<td valign="top">Comment</td>
 			<td>
-				<textarea name="comment">${unitType.comment}</textarea>
+				<textarea name="comment">${type.comment}</textarea>
 			</td>
 	    </tr>
 	    
@@ -44,10 +45,10 @@
 			<select name="bossAdminUnitTypeId">
 				<option value=""></option>
 			
-				<c:forEach var="entry" items="${unitTypes}">
+				<c:forEach var="entry" items="${bossTypes}">
 			    	<c:set var="selected" value=""/>
 			    	
-			    	<c:if test="${entry.state_admin_unit_type_id == unitType.bossAdminUnitType.state_admin_unit_type_id}">
+			    	<c:if test="${entry.state_admin_unit_type_id == type.bossAdminUnitType.state_admin_unit_type_id}">
 			     		<c:set var="selected" value="selected=\"selected\""/>
 			    	</c:if>
 	
@@ -66,7 +67,7 @@
 			<td>
 				<input 	name  = "fromDate" 
 						type  = "text" 
-						value ="<fmt:formatDate 	value   = "${unitType.fromDate}"  
+						value ="<fmt:formatDate 	value   = "${type.fromDate}"  
 													type    = "date" 
 													pattern = "dd.MM.yyyy"/>"
 				 />
@@ -82,7 +83,7 @@
 			<td>
 				<input 	name  = "toDate" 
 						type  = "text" 
-						value ="<fmt:formatDate 	value   = "${unitType.toDate}"  
+						value ="<fmt:formatDate 	value   = "${type.toDate}"  
 													type    = "date" 
 													pattern = "dd.MM.yyyy"/>"
 				 />

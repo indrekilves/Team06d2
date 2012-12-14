@@ -13,7 +13,7 @@ public class Hello extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().println("Hello Team06d");
-		request.getRequestDispatcher("Hello.jsp").forward(request, response);
+		request.getRequestDispatcher("pages/Hello.jsp").forward(request, response);
 	}
 
 
