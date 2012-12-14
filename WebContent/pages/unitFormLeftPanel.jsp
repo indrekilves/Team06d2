@@ -35,7 +35,21 @@
 <!-- Type -->
 	    <tr class="tall">
 		    <td>Type</td>		
-		    <td> <c:out value="${unit.type.name}"/></td>	
+		    <td>
+		    	<table  width="205px">
+		    		<tr> 
+		    			<td >
+			    			<c:out value="${unit.type.name}"/>
+			    		</td>
+<!-- Type button -->	<td align="right">
+						 	<input 	type	= "button" 
+						 			value	= "Change" 
+						 			class 	= "largeButton"  
+						 			onclick	= "changeType('${unit.state_admin_unit_id}')">
+						</td>
+		    		</tr>
+		    	</table>
+		    </td>	
 	    </tr>
 	    
  <!-- Subordinate -->

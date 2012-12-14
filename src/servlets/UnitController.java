@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.StateAdminUnitDao;
+import dao.StateAdminUnitTypeDao;
 import beans.StateAdminUnit;
 import beans.StateAdminUnitType;
 
@@ -74,6 +74,15 @@ public class UnitController extends GenericController  {
 		{
 			saveSubOrdinate(request, response);
 		} 
+		else if (action.equals("changeType"))
+		{
+			changeType(request, response);
+		}
+		else if (action.equals("saveType"))
+		{
+			saveType(request, response);
+		}
+
 	}
 
 
@@ -83,6 +92,7 @@ public class UnitController extends GenericController  {
 		String exitMode		= request.getParameter("exitMode");		
 		String id	 		= request.getParameter("id");
 		String subId 		= request.getParameter("subId");
+		String typeId 		= request.getParameter("typeId");
 		
 		if (origin == null || origin.length() < 1 || exitMode == null || exitMode.length() <1) return action;
 		
@@ -119,6 +129,20 @@ public class UnitController extends GenericController  {
 		}
 		
 		
+		// Coming from type selection list
+		if (origin.equals("unitTypesList"))
+		{
+			if (exitMode.equals("selectType") && (typeId != null && typeId.length() > 0))
+			{
+				action = "saveType";
+			} 
+			//else if (exitMode.equals("cancelTypeSelect") && (id != null && id.length() > 0)) 
+			else if (exitMode.equals("cancelTypeSelect")) 
+			{
+				action = "showUnitForm";
+			}
+		}
+		
 		/*
 		// Coming from List of possible subOrds 
 		if (origin.equals("listOfPossibileSubordinatesForStateAdminUnitType"))
@@ -142,12 +166,15 @@ public class UnitController extends GenericController  {
 	
 	// Actions
 
+	
+	
+	
+	// Save Form
 
 	
-
+	
+	
 	private void saveUnitFrom(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("saveUnitFrom");
-		
 		List<String> errors = getValidationErrors(request);
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
@@ -158,13 +185,16 @@ public class UnitController extends GenericController  {
         Integer id = null;
         String strId = request.getParameter("id"); 
 		
+        System.out.println("saveUnitForm - ID: " + strId);
+        
         if (strId == null || strId.length() < 1){
-			//id = insertStateAdminUnitType(request);
+			id = insertUnit(request);
 		} else {        
 			id = Integer.parseInt(strId);
 			updateUnitById(id, request);
 		}
 		
+        // TODO 
 		//updateStateAdminUnitTypeBossById(id, request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
 		showUnitsList(request, response);
 		
@@ -174,6 +204,12 @@ public class UnitController extends GenericController  {
 	protected List<String> getValidationErrors(HttpServletRequest request) {
 
 		List<String> errors = super.getValidationErrors(request);
+		
+		if ("".equals(request.getParameter("typeId"))) {
+		    errors.add("Type is required.");
+		    return errors;
+		}
+		
 		errors.addAll(getCodeValidationErrors(request));
 		
 		return errors;
@@ -209,8 +245,22 @@ public class UnitController extends GenericController  {
 		
 		return errors;
 	}
+	
 
+	private Integer insertUnit(HttpServletRequest request) {
+		StateAdminUnit unit = new StateAdminUnit();
 
+		unit.setCode(request.getParameter("code"));
+		unit.setName(request.getParameter("name"));
+		unit.setComment(request.getParameter("comment"));
+		unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
+		unit.setToDate(getDateFromString(request.getParameter("toDate")));
+		unit.setState_admin_unit_type_id(Integer.parseInt(request.getParameter("typeId")));
+		
+		Integer id = unitDao.insertUnitByUnit(unit);
+		
+		return id;	
+	}
 	
 	
 	private void updateUnitById(Integer id, HttpServletRequest request) {
@@ -228,6 +278,13 @@ public class UnitController extends GenericController  {
 	}
 
 
+	
+	
+	// Remove unit
+	
+	
+	
+	
 	private void removeUnit(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		System.out.println("removeUnit");
@@ -259,17 +316,69 @@ public class UnitController extends GenericController  {
 		
 	}
 
+	
+	
+	
+	// Change type 
+
+	
+	
+	
+	private void changeType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		StateAdminUnit unit = null;
+		String strId = request.getParameter("id");
+		StateAdminUnitTypeDao typeDao = new StateAdminUnitTypeDao();
+		List<StateAdminUnitType> types = typeDao.getAllStateAdminUnitTypes();
+ 
+		System.out.println("changeType - ID: " + strId);
+		
+		if (strId != null && strId.length() > 0){
+			Integer id = Integer.parseInt(strId);
+			unit = unitDao.getUnitById(id);
+		} 
+
+		request.setAttribute("unit", unit);			
+		request.setAttribute("types", types);		
+
+		request.getRequestDispatcher("pages/unitTypesList.jsp").forward(request, response);		
+	}
+
+	
+
+	private void saveType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO siin peab tegelema ka uue unit'i lisamisega
+		
+		StateAdminUnit unit = null;
+		String strId   = request.getParameter("id");
+		Integer typeId = Integer.parseInt(request.getParameter("typeId"));
+
+		System.out.println("showUnitForm - ID: " + strId + " typeId: " + typeId);
+		
+		if (strId != null && strId.length() > 0){
+			Integer id = Integer.parseInt(strId);
+			unit = unitDao.getUnitById(id);
+			unit.setState_admin_unit_type_id(typeId);
+			unitDao.updateUnitByUnit(unit);
+		}
+		
+		showUnitForm(request, response);
+	}
+
+	
+	
 
 	// Show unit form
 	
 	
+	
+	
 	private void showUnitForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("showUnitForm");
-
 		StateAdminUnit unit = null;
 		List<StateAdminUnit> bossUnits = null;		
 		String strId = request.getParameter("id");
 
+		System.out.println("showUnitForm - ID: " + strId);
+		
 		if (strId != null && strId.length() > 0){
 			Integer id = Integer.parseInt(strId);
 			unit = unitDao.getUnitWithRelationsById(id);
@@ -295,13 +404,30 @@ public class UnitController extends GenericController  {
 		unit.setComment(request.getParameter("comment"));
 		unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
 		unit.setToDate(getDateFromString(request.getParameter("toDate")));
-		
+		unit.setType(getTypeFromRequest(request));
+
+
 		return unit;
 	}
 	
+	
+	private StateAdminUnitType getTypeFromRequest(HttpServletRequest request) {
+		StateAdminUnitType type = null;
+		
+		String strTypeId = request.getParameter("typeId");
+		if (strTypeId != null && strTypeId.length() > 0){
+			Integer typeID = Integer.parseInt(strTypeId);
+			StateAdminUnitTypeDao typeDao = new StateAdminUnitTypeDao();
+			
+			type = typeDao.getStateAdminUnitTypeById(typeID);
+		}	
+	
+		return type;
+	}
+
 
 	// Show list of all units 
-	
+
 	
 	private void showUnitsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("showUnitsList");

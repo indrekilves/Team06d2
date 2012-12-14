@@ -9,6 +9,7 @@
 
 
 
+
 function showSelectedEntry(id) {
 	storeAndSubmit(id, "showSelectedEntry");
 }
@@ -64,6 +65,13 @@ function addSubOrdinate(id) {
 
 
 
+function changeType(id){
+	storeAndSubmit(id, "changeType");
+}
+
+
+
+
 //Entry points from Unit and UnitType possible subOrdinates lists 
 
 
@@ -79,6 +87,26 @@ function selectSubOrdinate(id, subId) {
 
 function cancelSubordinateSelect(id) {
 	storeAndSubmit(id, "cancelSubordinateSelect");
+}
+
+
+
+
+// Entry points from type selection list
+
+
+
+
+function selectType(id, typeId){
+	setTypeId(typeId);
+	storeAndSubmit(id, "selectType");
+}
+
+
+
+
+function cancelTypeSelect(id){
+	storeAndSubmit(id, "cancelTypeSelect");
 }
 
 
@@ -119,10 +147,22 @@ function setSubId(subId){
 }
 
 
+
+
+function setTypeId(typeId){
+	var typeIdWidget   = document.getElementById("typeId");
+	typeIdWidget.value = typeId;			
+}
+
+
+
+
 function setExitMode(exitMode){
 	var emWidget   = document.getElementById("exitMode");
 	emWidget.value = exitMode;
 }
+
+
 
 
 function setOrigin(origin){

@@ -42,6 +42,7 @@
 	
 				<input type="hidden" id="id"		name="id"		value="">					
 				<input type="hidden" id="subId" 	name="subId"	value="">					
+				<input type="hidden" id="typeId"	name="typeId"	value="${unit.type.state_admin_unit_type_id}">
 				<input type="hidden" id="origin" 	name="origin"	value="">					
 				<input type="hidden" id="exitMode"	name="exitMode"	value="">
 					

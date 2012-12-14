@@ -401,16 +401,13 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 							"  ?, " +				// 4	fromDate
 							"  ?)";					// 5	toDate
 		
-		    java.sql.Date fromDate = getSqlDateFromJavaDate(stateAdminUnitType.getFromDate());
-		    java.sql.Date toDate = getSqlDateFromJavaDate(stateAdminUnitType.getToDate());
-		
 		    ps = getConnection().prepareStatement(sql);	 
 		   
 		    ps.setString(1, stateAdminUnitType.getCode());
 		    ps.setString(2, stateAdminUnitType.getName());
 		    ps.setString(3, stateAdminUnitType.getComment());
-			ps.setDate(  4, fromDate);
-		    ps.setDate(  5, toDate);
+			ps.setDate(  4, getSqlDateFromJavaDate(stateAdminUnitType.getFromDate()));
+		    ps.setDate(  5, getSqlDateFromJavaDate(stateAdminUnitType.getToDate()));
 		    
 		    ps.executeUpdate();
 		    

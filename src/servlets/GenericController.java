@@ -66,7 +66,7 @@ public class GenericController extends HttpServlet {
 		}
 
 		if ("".equals(request.getParameter("toDate"))) {
-		    errors.add("toDate is required.");
+		    errors.add("To Date is required.");
 		    return errors;
 		}
 

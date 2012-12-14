@@ -361,6 +361,79 @@ public class StateAdminUnitDao extends BorderGuardDao{
 
 	
 	
+	// Insert unit
+	
+	
+	
+	public Integer insertUnitByUnit(StateAdminUnit unit) {
+		if (unit == null) return null;
+		
+		
+		PreparedStatement ps      = null;
+		PreparedStatement psId    = null;
+		ResultSet         rs      = null;
+		Integer           addedId = null; 
+		
+		try {
+			String sql = 	"INSERT INTO state_admin_unit " +
+							"(" +
+							"  openedby, " +
+							"  opened, " +
+							"  changedby, " +
+							"  changed, " +
+							"  closedby, " +
+							"  closed, " +
+							"  code, " +
+							"  name, " +
+							"  comment, " +
+							"  fromdate, " +
+							"  todate," +
+							"  state_admin_unit_type_id" +
+							") " +
+							"VALUES " +
+							"(" +
+							"  'admin', " +
+							"  NOW(), " +
+							"  'admin', " +
+							"  NOW(), " +
+							"  '', " +
+							"  '2999-12-31', " +
+							"  ?, " +				// 1	code
+							"  ?, " +				// 2	name
+							"  ?, " + 				// 3	comment
+							"  ?, " +				// 4	fromDate
+							"  ?, " +				// 5	toDate
+							"  ?  " +				// 6	typeId
+							")";					
+		
+		    ps = getConnection().prepareStatement(sql);	 
+		   
+		    ps.setString(1, unit.getCode());
+		    ps.setString(2, unit.getName());
+		    ps.setString(3, unit.getComment());
+			ps.setDate(  4, getSqlDateFromJavaDate(unit.getFromDate()));
+		    ps.setDate(  5, getSqlDateFromJavaDate(unit.getToDate()));
+		    ps.setInt(   6, unit.getState_admin_unit_type_id());
+
+		    ps.executeUpdate();
+		    
+		    psId = getConnection().prepareStatement("CALL IDENTITY()");
+			rs = psId.executeQuery();
+			rs.next();
+			addedId = rs.getInt(1);		    
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		    DbUtils.closeQuietly(psId);
+		}
+		
+		return addedId;	
+	}
+	
+	
 	
 	// Update unit
 
@@ -373,15 +446,16 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		PreparedStatement ps = null;
 		
 		try {
-			String sql = "UPDATE state_admin_unit  " 	+	
-						 "SET   code      = ?,  "       +	//  1
-						 "		name      = ?,  " 		+ 	//  2
-						 "		comment   = ?,  " 		+	//  3
-						 "		fromDate  = ?, " 		+	//  4
-						 "		toDate    = ?," 		+	//  5
-						 "		changedBy = 'Admin', " 	+ 	
-				 		 "		changed   = NOW() " 	+	
-						 "WHERE state_admin_unit_id = ?";  //  6
+			String sql = "UPDATE state_admin_unit  " 			+	
+						 "SET   code      = ?,  "      			+	//  1
+						 "		name      = ?,  " 				+ 	//  2
+						 "		comment   = ?,  " 				+	//  3
+						 "		fromDate  = ?, " 				+	//  4
+						 "		toDate    = ?," 				+	//  5
+						 "		changedBy = 'Admin', " 			+ 	
+				 		 "		changed   = NOW(), " 			+
+				 		 "      state_admin_unit_type_id = ?" 	+	//  6
+						 "WHERE state_admin_unit_id = ?"; 			//  7
 		
 		    ps = getConnection().prepareStatement(sql);	 
 		   
@@ -390,7 +464,8 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		    ps.setString(3, unit.getComment());
 			ps.setDate(  4, getSqlDateFromJavaDate(unit.getFromDate()));
 		    ps.setDate(  5, getSqlDateFromJavaDate(unit.getToDate()));
-		    ps.setInt(   6, unit.getState_admin_unit_id());
+		    ps.setInt(   6, unit.getState_admin_unit_type_id()); 
+		    ps.setInt(   7, unit.getState_admin_unit_id());
 		    
 		    ps.executeUpdate();
 		    
@@ -402,6 +477,41 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	}
 
 
+//	public void updateTypeById(Integer id) {
+//		if (id == null) return;
+//		
+//		PreparedStatement ps = null;
+//		
+//		try {
+//			String sql = "UPDATE state_admin_unit  " 	+	
+//						 "SET   code      = ?,  "       +	//  1
+//						 "		name      = ?,  " 		+ 	//  2
+//						 "		comment   = ?,  " 		+	//  3
+//						 "		fromDate  = ?, " 		+	//  4
+//						 "		toDate    = ?," 		+	//  5
+//						 "		changedBy = 'Admin', " 	+ 	
+//				 		 "		changed   = NOW() " 	+	
+//						 "WHERE state_admin_unit_id = ?";  //  6
+//		
+//		    ps = getConnection().prepareStatement(sql);	 
+//		   
+//		    ps.setString(1, unit.getCode());
+//		    ps.setString(2, unit.getName());
+//		    ps.setString(3, unit.getComment());
+//			ps.setDate(  4, getSqlDateFromJavaDate(unit.getFromDate()));
+//		    ps.setDate(  5, getSqlDateFromJavaDate(unit.getToDate()));
+//		    ps.setInt(   6, unit.getState_admin_unit_id());
+//		    
+//		    ps.executeUpdate();
+//		    
+//		} catch (Exception e) {
+//		    throw new RuntimeException(e);
+//		} finally {
+//		    DbUtils.closeQuietly(ps);
+//		}		
+//	}
+	
+	
 	// Integiry checks 
 	
 	public boolean isCodeExisting(String code) {
@@ -436,6 +546,12 @@ public class StateAdminUnitDao extends BorderGuardDao{
 
 		return isCodeExisting;
 	}
+
+
+
+
+
+
 
 
 
