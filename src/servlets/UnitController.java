@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.StateAdminUnitDao;
 import beans.StateAdminUnit;
+import beans.StateAdminUnitType;
 
 public class UnitController extends GenericController  {
 	
@@ -145,12 +148,12 @@ public class UnitController extends GenericController  {
 	private void saveUnitFrom(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("saveUnitFrom");
 		
-//		List<String> errors = getValidationErrors(request);
-//        if (!errors.isEmpty()) {
-//            request.setAttribute("errors", errors);
-//			showTypeForm(request, response);
-//            return;
-//        }
+		List<String> errors = getValidationErrors(request);
+        if (!errors.isEmpty()) {
+            request.setAttribute("errors", errors);
+			showUnitForm(request, response);
+            return;
+        }
 	  
         Integer id = null;
         String strId = request.getParameter("id"); 
@@ -167,7 +170,49 @@ public class UnitController extends GenericController  {
 		
 	}
 
+	
+	protected List<String> getValidationErrors(HttpServletRequest request) {
 
+		List<String> errors = super.getValidationErrors(request);
+		errors.addAll(getCodeValidationErrors(request));
+		
+		return errors;
+	}
+	
+
+	private List<String> getCodeValidationErrors(HttpServletRequest request) {
+		List<String> errors = new ArrayList<String>();
+
+		String code = request.getParameter("code");
+		if (code == null || code.length() < 1) {
+		    errors.add("Code is required.");
+		    return errors;
+		}		
+
+		// Check if code is used by some OTHER type
+		String strId = request.getParameter("id");		
+		if (strId != null && strId.length() > 0){
+			Integer id = Integer.parseInt(strId);
+			StateAdminUnit unit = unitDao.getUnitById(id);
+			if (unit != null) {
+				if (!unit.getCode().equals(code)) {
+					if (unitDao.isCodeExisting(code)){
+						errors.add("Code '" + code + "' is in use already.");
+					}
+				}
+			}
+		} else {
+			if (unitDao.isCodeExisting(code)){
+				errors.add("Code '" + code + "' is in use already.");
+			}
+		}			
+		
+		return errors;
+	}
+
+
+	
+	
 	private void updateUnitById(Integer id, HttpServletRequest request) {
 		if (id == null) return;
 
@@ -248,10 +293,8 @@ public class UnitController extends GenericController  {
 		unit.setCode(request.getParameter("code"));
 		unit.setName(request.getParameter("name"));
 		unit.setComment(request.getParameter("comment"));
-		
-		// TODO type and Dates are missing
-		//unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
-		//unit.setToDate(getDateFromString(request.getParameter("toDate")));
+		unit.setFromDate(getDateFromString(request.getParameter("fromDate")));
+		unit.setToDate(getDateFromString(request.getParameter("toDate")));
 		
 		return unit;
 	}

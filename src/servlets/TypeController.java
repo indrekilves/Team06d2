@@ -169,22 +169,16 @@ public class TypeController extends GenericController {
 		updateStateAdminUnitTypeBossById(id, request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
 		showTypesList(request, response);
 	}
-
 	
-	private List<String> getValidationErrors(HttpServletRequest request) {
-		List<String> errors = new ArrayList<String>();
 
-		if ("".equals(request.getParameter("name"))) {
-		    errors.add("Name is required.");
-		}
+	protected List<String> getValidationErrors(HttpServletRequest request) {
 
+		List<String> errors = super.getValidationErrors(request);
 		errors.addAll(getCodeValidationErrors(request));
-		errors.addAll(getDateValidationErrors(request));
-		
 		
 		return errors;
 	}
-	
+
 
 	private List<String> getCodeValidationErrors(HttpServletRequest request) {
 		List<String> errors = new ArrayList<String>();
@@ -212,41 +206,6 @@ public class TypeController extends GenericController {
 				errors.add("Code '" + code + "' is in use already.");
 			}
 		}			
-		
-		return errors;
-	}
-
-
-	private List<String> getDateValidationErrors(HttpServletRequest request) {
-		List<String> errors = new ArrayList<String>();
-
-		if ("".equals(request.getParameter("fromDate"))) {
-		    errors.add("From date is required.");
-		    return errors;
-		}
-
-		if ("".equals(request.getParameter("toDate"))) {
-		    errors.add("toDate is required.");
-		    return errors;
-		}
-
-
-		Date fromDate = getDateFromString(request.getParameter("fromDate"));
-		if (fromDate == null) {
-			errors.add("From date must with format dd.mm.yyyy");
-			return errors;
-		}	
-		
-		Date toDate = getDateFromString(request.getParameter("toDate"));
-		if (toDate == null) {
-			errors.add("To date must with format dd.mm.yyyy");
-			return errors;
-		}	
-		
-		
-		if (fromDate.after(toDate)){
-			errors.add("From date must be before To date");
-		}		
 		
 		return errors;
 	}

@@ -402,6 +402,42 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	}
 
 
+	// Integiry checks 
+	
+	public boolean isCodeExisting(String code) {
+		boolean isCodeExisting = false;
+		
+		if (code == null || code.length() < 1) {
+			return isCodeExisting;
+		}
+			
+	    
+		PreparedStatement	ps = null;
+		ResultSet 			rs = null;
+		try {
+			String sql = "SELECT 1 " +
+						 "FROM   state_admin_unit " +
+						 "WHERE  UPPER(code) = ? ";
+			
+			ps = getConnection().prepareStatement(sql);	 
+		    ps.setString(1, code.toUpperCase());		    
+		    rs = ps.executeQuery();
+
+		    if (rs.next()) {
+		    	isCodeExisting = rs.getBoolean(1);
+		    }
+
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		return isCodeExisting;
+	}
+
+
 
 
 	
