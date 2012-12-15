@@ -139,4 +139,16 @@ public class AdminSubordinationDao extends BorderGuardDao {
 	}
 
 
+
+	public void removeSubOrdinateRelation(Integer id, Integer subId) {
+		if (id == null || subId == null) return;
+
+		Integer oldRelationId = getAdminSubordinationIdByIDs(id, subId);
+		
+		if (oldRelationId != null){
+			closeAdminSubordinationByRelationID(oldRelationId);
+		}		
+	}
+
+
 }

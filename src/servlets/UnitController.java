@@ -19,6 +19,7 @@ public class UnitController extends GenericController  {
 	
 	private static final long serialVersionUID = 1L;
 	private StateAdminUnitDao unitDao = new StateAdminUnitDao();
+	private AdminSubordinationDao adminSubOrdDao = new AdminSubordinationDao();
 	private StateAdminUnit sessionUnit  = null;
    
 	
@@ -304,7 +305,6 @@ public class UnitController extends GenericController  {
 		
 		if (oldBossId == newBossId) return;
 		
-		AdminSubordinationDao adminSubOrdDao = new AdminSubordinationDao();
 		adminSubOrdDao.replaceBossRelation(oldBossId, newBossId, id);	
 	}
 	
@@ -320,15 +320,33 @@ public class UnitController extends GenericController  {
 		
 	}
 
+	
+	
 
-	private void removeSubOrdinate(HttpServletRequest request,
-			HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		System.out.println("removeSubOrdinate");
+	// Remove subOrdinate
+	
+	
+	
+	private void removeSubOrdinate(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
+		updateUnitSubOrdinates(request);
+		showUnitForm(request, response);		
 		
 	}
 
 
+	private void updateUnitSubOrdinates(HttpServletRequest request) {
+		Integer id    = Integer.parseInt(request.getParameter("id"));
+		Integer subId = Integer.parseInt(request.getParameter("subId"));
+
+		System.out.println("RemoveSubOrdinate - ID: " + id + " SubID: " + subId);
+
+		adminSubOrdDao.removeSubOrdinateRelation(id, subId);		
+	}
+
+
+	
+	
+	
 	private void addSubOrdinate(HttpServletRequest request,
 			HttpServletResponse response) {
 		// TODO Auto-generated method stub
@@ -337,6 +355,8 @@ public class UnitController extends GenericController  {
 		
 	}
 
+	
+	
 
 	private void saveSubOrdinate(HttpServletRequest request,
 			HttpServletResponse response) {

@@ -295,7 +295,7 @@ public class TypeController extends GenericController {
 	
 	
 	
-	// Remove subType
+	// Remove subOrdinate
 	
 	
 	
