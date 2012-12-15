@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,12 +15,13 @@ import beans.StateAdminUnit;
 import beans.StateAdminUnitType;
 
 
-public class ReportController  extends GenericController {
+public class ReportController extends GenericController {
 
 	private static final long 		serialVersionUID = 1L;
 	private StateAdminUnitDao 		unitDao = new StateAdminUnitDao();
 	private StateAdminUnitTypeDao 	typeDao = new StateAdminUnitTypeDao();
 	private Integer					lastTypeId;
+	private Date 					lastDate;
 	
 	
 	
@@ -108,24 +110,16 @@ public class ReportController  extends GenericController {
 		List<StateAdminUnit> 		units = null;
 		List<StateAdminUnitType> 	types = typeDao.getAllStateAdminUnitTypes();
 
-		String 	strTypeId = request.getParameter("selTypeId");
-		Integer typeId = null;
-		
-		if (strTypeId != null && strTypeId.length() > 0){
-			typeId = Integer.parseInt(strTypeId);
-			lastTypeId = typeId;
-		}
-				
-		if (typeId == null){
-			// TODO
-			typeId = lastTypeId;
-		}	
-			
-		if (typeId != null){
-			units = unitDao.getAllUnitsWithSuboridinatesByTypeId(typeId);
+		Date date = getDate(request);
+
+		Integer typeId = getTypeId(request);
+		if (typeId != null && date != null){
+			units = unitDao.getAllUnitsWithSuboridinatesByTypeIdAndDate(typeId, date);
 		}		
 		
+		
 		request.setAttribute("lastTypeId", lastTypeId);
+		request.setAttribute("lastDate", lastDate);		
 		request.setAttribute("units", units);
 		request.setAttribute("types", types);
 
@@ -136,12 +130,55 @@ public class ReportController  extends GenericController {
 	
 	
 	
+
+
+
+
+	private Integer getTypeId(HttpServletRequest request) {
+		Integer typeId = null;
+		
+		String 	strTypeId = request.getParameter("selTypeId");
+		if (strTypeId != null && strTypeId.length() > 0){
+			typeId = Integer.parseInt(strTypeId);
+			lastTypeId = typeId;
+		}
+				
+		if (typeId == null){
+			// TODO
+			typeId = lastTypeId;
+		}
+		
+		return typeId;	
+	}
+	
+	
+	
+
+	private Date getDate(HttpServletRequest request) {
+		Date date = getDateFromString(request.getParameter("date"));
+		if (date != null){
+			lastDate = date;
+		} else {
+			if (lastDate != null){
+				date = lastDate;
+			} else {
+				date = new Date();
+				lastDate = date;
+			}
+		}
+			
+		return date;
+	}
+
 	
 	// Show Unit Form (readOnly)
 	
 	
 	
-	
+
+
+
+
 	private void showUnitReadonlyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StateAdminUnit unit = null;
 		List<StateAdminUnit> bossUnits = null;		

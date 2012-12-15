@@ -44,7 +44,21 @@
 									<td style="width: 80px;"/>						
 								</tr>
 								<tr>
-		<!-- Date --> 			<td><input name="date" 	value="" class="datePicker" style="width: 120px;"></td>
+		<!-- Date --> 			<td>				
+									<input 	name  = "date" 
+											class = "datePicker"
+											type  = "text"
+											style = "width: 120px;" 
+											value ="<fmt:formatDate 	value   = "${lastDate}"  
+					 													type    = "date"  
+					 													pattern = "dd.MM.yyyy"/>"
+					 				 /> 
+					 			</td>	 
+		
+		<!-- 
+		<input name="date" 	value="" class="datePicker" style="width: 120px;" value ="${lastDate}"></td>
+		 -->	
+			
 									<td>
 		<!-- Type -->					<select name="selTypeId" style="width: 150px">
 											<option value=""></option>

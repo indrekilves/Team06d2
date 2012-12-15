@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -669,10 +670,10 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	
 	
 	
-	public List<StateAdminUnit> getAllUnitsWithSuboridinatesByTypeId(Integer typeId) {
+	public List<StateAdminUnit> getAllUnitsWithSuboridinatesByTypeIdAndDate(Integer typeId, Date date) {
 		// TODO by date
 		
-		List<StateAdminUnit> plainUnits 		= getAllUnitsWithDirectRelationsByTypeId(typeId);
+		List<StateAdminUnit> plainUnits 		= getAllUnitsWithDirectRelationsByTypeIdAndDate(typeId, date);
 		List<StateAdminUnit> unitsWithSubOrds 	= new ArrayList<StateAdminUnit>();
 		
 		if (plainUnits == null) return null;
@@ -681,7 +682,7 @@ public class StateAdminUnitDao extends BorderGuardDao{
 			
 			if (unit != null){
 			
-				List<StateAdminUnit> subOrdinates = getAllSubordinatesByUnit(unit);
+				List<StateAdminUnit> subOrdinates = getAllSubordinatesByUnitAndDate(unit, date);
 				if (subOrdinates != null && !subOrdinates.isEmpty()){
 					unit.setSubordinateUnits(subOrdinates);
 				}
@@ -695,8 +696,8 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	
 
 
-	private List<StateAdminUnit> getAllUnitsWithDirectRelationsByTypeId(Integer typeId) {
-		if (typeId == null) return null;
+	private List<StateAdminUnit> getAllUnitsWithDirectRelationsByTypeIdAndDate(Integer typeId, Date date) {
+		if (typeId == null || date == null) return null;
 		
 	    List<StateAdminUnit>	units = new ArrayList<StateAdminUnit>();
 		PreparedStatement 		ps = null;
@@ -705,18 +706,25 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		try {
 			String sql = "SELECT state_admin_unit_id " +
 						 "FROM   state_admin_unit " +
-						 "WHERE  state_admin_unit_type_id = ? " +
-						 "  AND	 opened <= NOW() " +
-						 "  AND	 closed >= NOW() ";
+						 "WHERE  state_admin_unit_type_id = ? " +	//	1
+						 "  AND	 opened   <= ? " 				+	//	2		
+						 "  AND	 closed   >= ? " 				+	//	3
+						 "  AND  fromDate <= ? " 				+	// 	4
+						 "  AND  toDate   >= ?" 				;	// 	5
 			
 			ps = getConnection().prepareStatement(sql);	 
-		    ps.setInt(1, typeId);		    
+		    ps.setInt( 1, typeId);		    
+		    ps.setDate(2, getSqlDateFromJavaDate(date));
+		    ps.setDate(3, getSqlDateFromJavaDate(date));
+		    ps.setDate(4, getSqlDateFromJavaDate(date));
+		    ps.setDate(5, getSqlDateFromJavaDate(date));
+		    
 		    rs = ps.executeQuery();
 
 		    while (rs.next()) {
 		    	Integer unitId = rs.getInt(1);
 		    	if (unitId != null){
-			    	StateAdminUnit unit = getUnitWithRelationsById(unitId);
+			    	StateAdminUnit unit = getUnitWithSubordinatesByIdAndDate(unitId, date);
 			    	if (unit != null) {
 			    		units.add(unit);
 			    	} 	
@@ -736,7 +744,111 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	
 
 
-	private List<StateAdminUnit> getAllSubordinatesByUnit(StateAdminUnit unit) {
+	private StateAdminUnit getUnitWithSubordinatesByIdAndDate(Integer id, Date date) {
+		if (id == null || date == null) return null;
+		
+		// unit
+		StateAdminUnit unit = getUnitByIdAndDate(id, date);
+	    if (unit == null){
+	    	return null;
+	    }	    	
+    	    	
+    	// subordinates
+    	List<StateAdminUnit> subOrdinateUnits = getSubOrdinateUnitsByIdAndDate(id, date);
+		unit.setSubordinateUnits(subOrdinateUnits);
+		
+    	return unit;
+	}
+	
+
+	private StateAdminUnit getUnitByIdAndDate(Integer id, Date date) {
+		if (id == null || date == null) return null;
+		
+		
+	    StateAdminUnit 		unit = null;
+		PreparedStatement 	ps = null;
+		ResultSet 			rs = null;
+		
+		try {
+			String sql = "SELECT * " +
+						 "FROM   state_admin_unit " +
+						 "WHERE  state_admin_unit_id = ? " +	//	1
+						 "  AND	 opened             <= ? " +	//	2
+						 "  AND	 closed             >= ? " +	//	3
+						 "  AND  fromDate           <= ? " +	//	4
+						 "  AND  toDate             >= ? " ;	//	5
+			
+			ps = getConnection().prepareStatement(sql);	 
+		    ps.setInt( 1, id);	
+		    ps.setDate(2, getSqlDateFromJavaDate(date));
+		    ps.setDate(3, getSqlDateFromJavaDate(date));
+		    ps.setDate(4, getSqlDateFromJavaDate(date));
+		    ps.setDate(5, getSqlDateFromJavaDate(date));
+
+		    rs = ps.executeQuery();
+
+		    if (rs.next()) {
+		    	unit = createUnitFromResultSet(rs);
+			} 
+
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		return unit;				
+	}
+	
+	
+	private List<StateAdminUnit> getSubOrdinateUnitsByIdAndDate(Integer id,	Date date) {
+		if (id == null || date == null) return null;
+		
+		
+		List<StateAdminUnit> 	subOrdinateUnits 	= new ArrayList<StateAdminUnit>();
+		PreparedStatement 		ps 					= null;
+		ResultSet 				rs 					= null;
+		
+		try {
+			String sql = "SELECT 	subordinate_unit_id " +
+						 "FROM   	admin_subordination " +
+						 "WHERE 	boss_unit_id = ? "    +	//	1
+						 "  AND		opened      <= ? "    +	//	2
+						 "  AND		closed      >= ? "    ;	//	3
+			
+		    ps = getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, id);		 
+		    ps.setDate(2, getSqlDateFromJavaDate(date));
+		    ps.setDate(3, getSqlDateFromJavaDate(date));
+
+		    rs = ps.executeQuery();
+
+		    while (rs.next()) {
+		    	
+				Integer subID = rs.getInt("subordinate_unit_id");
+				StateAdminUnit subUnit = getUnitByIdAndDate(subID, date);
+		    	if (subUnit != null) {
+					subOrdinateUnits.add(subUnit);
+		    	}
+		    	
+				System.out.println("Subordinate for ID:" + id + " is ID:" + subID + " on date: " + date);				
+		    }
+		    		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}		
+
+		
+		return subOrdinateUnits;
+	}
+	
+	
+
+	private List<StateAdminUnit> getAllSubordinatesByUnitAndDate(StateAdminUnit unit, Date date) {
 		if (unit == null) return null;
 		
 	    List<StateAdminUnit> allSubOrdinates	= new ArrayList<StateAdminUnit>();
@@ -748,8 +860,8 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	    	if (subUnit != null){
 	        	allSubOrdinates.add(subUnit);
 		    	
-		    	StateAdminUnit subUnitWithRelations = getUnitWithRelationsById(subUnit.getState_admin_unit_id());
-		    	List<StateAdminUnit> subUnitSubOrdinates = getAllSubordinatesByUnit(subUnitWithRelations);
+		    	StateAdminUnit subUnitWithRelations = getUnitWithSubordinatesByIdAndDate(subUnit.getState_admin_unit_id(), date);
+		    	List<StateAdminUnit> subUnitSubOrdinates = getAllSubordinatesByUnitAndDate(subUnitWithRelations, date);
 		    	
 		    	if (subUnitSubOrdinates != null && !subUnitSubOrdinates.isEmpty()){
 		    		allSubOrdinates.addAll(subUnitSubOrdinates);
