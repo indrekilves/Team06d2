@@ -95,7 +95,7 @@
 						<td>
 <!-- Results -->			<c:forEach var="unit" items="${units}">
 								<table style="width:100%">
-								 	<tr style="border: 1px solid black;background-color:#D3D3D3;">
+								 	<tr class = "tableWithBorder">
 	<!-- Boss Unit -->					<th align="left"><c:out value="${unit.name}" /></th>
 									</tr>
 									

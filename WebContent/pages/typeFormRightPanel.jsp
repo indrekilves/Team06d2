@@ -12,7 +12,7 @@
 </head>
 <body>
 	<table width="300px">
-    	<tr style="border: 1px solid black;background-color:#D3D3D3;">
+    	<tr class = "tableWithBorder"">
     		<th align="left">Subordinates</th>
     		<th></th>				    						    		
     	</tr>
