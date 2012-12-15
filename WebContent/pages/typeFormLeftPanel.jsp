@@ -59,12 +59,12 @@
 		</tr>
 		
 		<!-- From date  -->
-		<!-- TODO: convert to jQuery based datePicker / calender widget -->
 		<tr class="tall">
 			<td>From</td>
 			<td>
 				<input 	name  = "fromDate" 
 						type  = "text" 
+						class = "datePicker"
 						value ="<fmt:formatDate 	value   = "${type.fromDate}"  
 													type    = "date" 
 													pattern = "dd.MM.yyyy"/>"
@@ -74,13 +74,12 @@
 		</tr>
 		
 		<!-- To date  -->
-		<!-- TODO: convert to jQuery based datePicker / calender widget -->
-		
 		<tr class="tall">
 			<td>To</td>
 			<td>
-				<input 	name  = "toDate" 
-						type  = "text" 
+				<input 	name  = "toDate"
+						class = "datePicker" 
+						type  = "text" 						
 						value ="<fmt:formatDate 	value   = "${type.toDate}"  
 													type    = "date" 
 													pattern = "dd.MM.yyyy"/>"

@@ -12,6 +12,7 @@
 		<a href="DatabaseController">Create database</a><br>
 		<a href="TypeController">State Admin Unit Types</a><br>
 		<a href="UnitController">State Admin Units</a><br>
+		<a href="ReportController">State Admin Unit Report</a><br>
 	</div>
 </body>
 </html>

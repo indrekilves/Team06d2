@@ -79,31 +79,36 @@
 		</tr>
 		
 		<!-- From date  -->
-		<!-- TODO: convert to jQuery based datePicker / calender widget -->
 		<tr class="tall">
 			<td>From</td>
 			<td>
 				<input 	name  = "fromDate" 
+						class = "datePicker"
 						type  = "text" 
 						value ="<fmt:formatDate 	value   = "${unit.fromDate}"  
-													type    = "date" 
-													pattern = "dd.MM.yyyy"/>"
-				 />
+ 													type    = "date"  
+ 													pattern = "dd.MM.yyyy"/>"
+ 				 /> 
+				 
+				 
+
+				 
 			</td>
 			
 		</tr>
 		
 		<!-- To date  -->
-		<!-- TODO: convert to jQuery based datePicker / calender widget -->
 		<tr class="tall">
 			<td>To</td>
 			<td>
-				<input 	name  = "toDate" 
-						type  = "text" 
-						value ="<fmt:formatDate 	value   = "${unit.toDate}"  
-													type    = "date" 
-													pattern = "dd.MM.yyyy"/>"
-				 />
+			
+ 				<input 	name  = "toDate"  
+ 						class = "datePicker"
+ 						type  = "text"  
+ 						value ="<fmt:formatDate 	value   = "${unit.toDate}"   
+ 													type    = "date"  
+ 													pattern = "dd.MM.yyyy"/>" 
+ 				 /> 
 			</td>
 			
 		</tr>

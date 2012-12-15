@@ -24,7 +24,7 @@
     <servlet-name>DatabaseController</servlet-name>
     <url-pattern>/DatabaseController</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>StateAdminUnitTypeController</display-name>
     <servlet-name>StateAdminUnitTypeController</servlet-name>
@@ -63,5 +63,15 @@
   <servlet-mapping>
     <servlet-name>TypeController</servlet-name>
     <url-pattern>/TypeController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReportController</display-name>
+    <servlet-name>ReportController</servlet-name>
+    <servlet-class>servlets.ReportController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReportController</servlet-name>
+    <url-pattern>/ReportController</url-pattern>
   </servlet-mapping>
 </web-app>

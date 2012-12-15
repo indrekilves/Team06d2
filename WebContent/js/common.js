@@ -2,6 +2,13 @@
  * Note: FormId comes from calling *.js 
  */
 
+// Include jQuery
+
+document.write("<link href='css/smoothness/jquery-ui-1.9.2.custom.css' rel='stylesheet'>");
+document.write("<script src='js/jquery-1.8.3.js'></script>");
+document.write("<script src='js/jquery-ui-1.9.2.custom.js'></script>");
+document.write("<script src='js/my_jquery_functions.js'></script>");
+
 
 
 
@@ -123,7 +130,6 @@ function cancelTypeSelect(id){
 
 
 // Helpers
-
 
 
 
