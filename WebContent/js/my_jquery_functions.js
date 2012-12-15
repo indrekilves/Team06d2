@@ -1,3 +1,10 @@
 $(function() {
-    $( ".datePicker" ).datepicker( { minDate: -30, maxDate:  -1, dateFormat: "dd.mm.yy" } );
+    $( ".datePicker" ).datepicker( {
+    	dateFormat: "dd.mm.yy",
+        showOn: "button",
+        buttonImage: "images/calendar.gif",
+        buttonImageOnly: true,
+        showButtonPanel: true
+
+    } );
 });

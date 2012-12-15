@@ -24,6 +24,10 @@ input{
 }
 
 
+input.datePicker{
+	width: 180px;	
+}
+
 
 input.largeButton{
 	width:80px; 
