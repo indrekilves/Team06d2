@@ -309,21 +309,29 @@ public class UnitController extends GenericController  {
 	}
 	
 	
+	
+	
 	// Remove unit
 	
 	
 	
 	
-	private void removeUnit(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		System.out.println("removeUnit");
+	private void removeUnit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String strId = request.getParameter("id");
+		if (strId != null && strId.length() > 0){
+			unitDao.closeUnitById(Integer.parseInt(strId));
+		}
 		
+		System.out.println("Remove Unit ID: " + strId);
+		
+		showUnitsList(request, response);		
 	}
 
 	
 	
 
 	// Remove subOrdinate
+	
 	
 	
 	

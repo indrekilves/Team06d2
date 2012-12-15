@@ -631,6 +631,33 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		return isCodeExisting;
 	}
 
+	
+	
+	
+	// Close Unit
+
+	
+	
+	
+	public void closeUnitById(int id) {
+		PreparedStatement ps = null;
+		try {
+			String sql = "UPDATE	state_admin_unit  " 	+	
+						 "SET    	closedBy = 'Admin', "	+ 	
+				 		 "	 		closed   = NOW() " 		+	
+						 "WHERE 	state_admin_unit_id = ?";  
+			
+		    ps = getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, id);
+		    ps.executeUpdate();
+		    
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+		    DbUtils.closeQuietly(ps);
+		}	
+	}
+
 
 
 
