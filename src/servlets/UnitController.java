@@ -146,11 +146,11 @@ public class UnitController extends GenericController  {
 			}
 		}
 		
-		/*
+		
 		// Coming from List of possible subOrds 
-		if (origin.equals("listOfPossibileSubordinatesForStateAdminUnitType"))
+		if (origin.equals("unitPossibileSubordinatesList"))
 		{
-			if (exitMode != null && exitMode.equals("selectedSubOrdinate") && (subId != null && subId.length() > 0)) 
+			if (exitMode.equals("selectSubOrdinate") && (subId != null && subId.length() > 0)) 
 			{
 				action = "saveSubOrdinate";
 			} 
@@ -159,7 +159,7 @@ public class UnitController extends GenericController  {
 				action = "showStateAdminUnitTypeForm";
 			}
 		}
-		*/
+		
 		
 		return action;
 	}
@@ -346,23 +346,60 @@ public class UnitController extends GenericController  {
 
 	
 	
-	
-	private void addSubOrdinate(HttpServletRequest request,
-			HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		System.out.println("addSubOrdinate");
+	// Add subOrdinate
 
+	
+	
+	
+	private void addSubOrdinate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer id = null;
+		String strId = request.getParameter("id"); 
 		
+		if (strId == null || strId.length() < 1){
+			List<String> errors = getValidationErrors(request);
+	        if (!errors.isEmpty()) {
+	            request.setAttribute("errors", errors);
+				showUnitForm(request, response);
+	            return;
+	        }
+		  
+			id = insertUnit(request);
+		} else {
+			id = Integer.parseInt(strId);
+		}
+		
+		if (id == null){
+			showUnitsList(request, response);
+			return;	
+		}
+		
+		System.out.println("Select SubOrdinate to ID: " + id);
+		
+		StateAdminUnit unit = unitDao.getUnitWithRelationsById(id);		
+		request.setAttribute("unit", unit);
+
+		List<StateAdminUnit> possibibleSubordinateUnits = unitDao.getAllPossibleSubordinateUnitsByUnit(unit);
+		request.setAttribute("possibleSubordinateUnits", possibibleSubordinateUnits);
+
+        request.getRequestDispatcher("pages/unitPossibileSubordinatesList.jsp").forward(request, response);		
 	}
 
 	
 	
 
-	private void saveSubOrdinate(HttpServletRequest request,
-			HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		System.out.println("saveSubOrdinate");
-		
+	private void saveSubOrdinate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		insertUnitSubOrdinate(request);
+		showUnitForm(request, response);
+	}
+
+	
+	private void insertUnitSubOrdinate(HttpServletRequest request) {
+		Integer id    = Integer.parseInt(request.getParameter("id"));
+		Integer subId = Integer.parseInt(request.getParameter("subId"));
+
+		System.out.println("Add SubOrdinate to ID: " + id + " SubID: " + subId);
+
+		adminSubOrdDao.addSubOrdinateRelation(id, subId);	
 	}
 
 	
@@ -373,6 +410,7 @@ public class UnitController extends GenericController  {
 	
 	
 	
+
 	private void changeType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StateAdminUnit unit = null;
 		String strId = request.getParameter("id");

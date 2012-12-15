@@ -27,7 +27,8 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	}
 	
 	
-	
+	// Get all POSSIBLE boss types 
+
 	
 	public List<StateAdminUnitType> getAllPossibleBossStateAdminUnitTypesByType(StateAdminUnitType stateAdminUnitType) {
 		List<StateAdminUnitType> possibleTypes = new ArrayList<StateAdminUnitType>();
@@ -60,6 +61,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 			
 		return true;
 	}
+
+	
+	
+	// Get all POSSIBLE subordinate types 
 
 	
 	
@@ -106,43 +111,45 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 	
 	public boolean isTypeASubordinate(StateAdminUnitType validateType,	List<StateAdminUnitType> subOrdinates) {
-		boolean isSubOrdinate = false;
 		
 		if (subOrdinates != null && !subOrdinates.isEmpty()) {
 			for (StateAdminUnitType subOrdinate : subOrdinates) {
 				if (validateType.getState_admin_unit_type_id() == subOrdinate.getState_admin_unit_type_id()){
-					isSubOrdinate = true;
+					return true;
 				} else {
 					// is subOrdinate of subOrdinate
 					List<StateAdminUnitType> subOrdinateSubOrdinates = getSubOrdinateAdminUnitTypesById(subOrdinate.getState_admin_unit_type_id());
 					if (subOrdinateSubOrdinates != null) {
-						isSubOrdinate = isTypeASubordinate(validateType, subOrdinateSubOrdinates);
+						if (isTypeASubordinate(validateType, subOrdinateSubOrdinates)){
+							return true;
+						}
 					}
 					 
 				}
 			}			
 		}
 		
-		return isSubOrdinate;
+		return false;
 	}
 	
 	
-	private boolean isTypeABoss(StateAdminUnitType validateType, StateAdminUnitType boss) {
-		boolean isBoss = false;
+	public boolean isTypeABoss(StateAdminUnitType validateType, StateAdminUnitType boss) {
 		
 		if (boss != null){						
 			if (validateType.getState_admin_unit_type_id() == boss.getState_admin_unit_type_id()){
-				isBoss = true;
+				return true;
 			} else {
 				// is bosses boss				
 				StateAdminUnitType bossesBoss = getBossAdminUnitTypeById(boss.getState_admin_unit_type_id());
 				if (bossesBoss != null) {
-					isBoss = isTypeABoss(validateType, bossesBoss);
+					if (isTypeABoss(validateType, bossesBoss)){
+						return true;
+					}
 				}
 			}
 		}
 
-		return isBoss;
+		return false;
 	}
 	
 	

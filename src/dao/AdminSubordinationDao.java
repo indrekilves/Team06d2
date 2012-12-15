@@ -139,6 +139,7 @@ public class AdminSubordinationDao extends BorderGuardDao {
 	}
 
 
+	
 
 	public void removeSubOrdinateRelation(Integer id, Integer subId) {
 		if (id == null || subId == null) return;
@@ -148,6 +149,14 @@ public class AdminSubordinationDao extends BorderGuardDao {
 		if (oldRelationId != null){
 			closeAdminSubordinationByRelationID(oldRelationId);
 		}		
+	}
+
+
+
+	public void addSubOrdinateRelation(Integer id, Integer subId) {
+		if (id == null || subId == null) return;
+		
+		addAdminSubordinationByIDs(id, subId);
 	}
 
 

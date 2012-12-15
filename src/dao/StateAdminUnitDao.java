@@ -30,7 +30,122 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	}
 
 	
-	// Get all boss units 
+	
+
+	// Get all POSSIBLE subordinate units 
+
+	
+	
+	
+	public List<StateAdminUnit> getAllPossibleSubordinateUnitsByUnit(StateAdminUnit unit) {
+		List<StateAdminUnit> possibleUnits = new ArrayList<StateAdminUnit>();
+		List<StateAdminUnit> allUnits = getAllUnits();
+		
+		if (!allUnits.isEmpty()){
+			for (StateAdminUnit validateUnit : allUnits) {
+				if (isUnitValidForSubordinate(validateUnit, unit)){
+					possibleUnits.add(validateUnit);
+				}
+			}		
+		}
+		
+		return possibleUnits;		
+	}
+	
+	
+
+	
+	private boolean isUnitValidForSubordinate(StateAdminUnit validateUnit, StateAdminUnit unit) {
+		// can't be itself
+		if (validateUnit.getState_admin_unit_id() == unit.getState_admin_unit_id()){
+			return false;
+		}
+		
+
+		// can't be subordinate
+		List<StateAdminUnit> subOrdinates = unit.getSubordinateUnits();
+		if (isUnitASubordinate(validateUnit, subOrdinates)) {
+			return false;
+		}
+		
+		// can't be boss
+		StateAdminUnit bossUnit = unit.getBossUnit();
+		if (isUnitABoss(validateUnit, bossUnit)) {
+			return false;
+		}
+		
+		// type can't be subOrdinated of current unit type
+		if (isTypeValidForSubordinate(validateUnit, unit) == false){
+			return false;
+		}
+		
+		return true;	
+	}
+	
+
+	private boolean isUnitABoss(StateAdminUnit validateUnit, StateAdminUnit bossUnit) {
+		if (bossUnit != null){						
+			if (validateUnit.getState_admin_unit_id() == bossUnit.getState_admin_unit_id()){
+				return true;
+			} else {
+				// is bosses boss				
+				StateAdminUnit bossesBoss = getBossUnitById(bossUnit.getState_admin_unit_id());
+				if (bossesBoss != null) {
+					if (isUnitABoss(validateUnit, bossesBoss)){
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	
+	
+
+	private boolean isTypeValidForSubordinate(StateAdminUnit validateUnit, StateAdminUnit unit) {
+		StateAdminUnitType validateType = validateUnit.getType();
+		StateAdminUnitType currentType 	= getTypeWithRelationsById(unit.getState_admin_unit_type_id());
+		
+		if (validateType == null || currentType == null){
+			return true;
+		}
+
+		
+		// can't be same type as current unit type
+		if (validateType.getState_admin_unit_type_id() == currentType.getState_admin_unit_type_id()){
+			return false;
+		}
+		
+		
+		// can't be with type that's boss for current unit type
+		if (isTypeBossForCurrentType(validateType, currentType)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	private boolean isTypeBossForCurrentType(StateAdminUnitType validateType, StateAdminUnitType currentType) {
+		if (validateType == null || currentType == null){
+			return false;
+		}
+		
+		if (typeDao.isTypeABoss(validateType, currentType)){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
+	// Get all POSSIBLE boss units 
+	
+
 	
 
 	public List<StateAdminUnit> getAllPossibleBossUnitsByUnit(StateAdminUnit unit) {
@@ -71,30 +186,29 @@ public class StateAdminUnitDao extends BorderGuardDao{
 
 	
 	private boolean isUnitASubordinate(StateAdminUnit validateUnit,	List<StateAdminUnit> subOrdinates) {
-		boolean isSubOrdinate = false;
-		
 		if (subOrdinates != null && !subOrdinates.isEmpty()) {
 			for (StateAdminUnit subOrdinate : subOrdinates) {
 				if (validateUnit.getState_admin_unit_id() == subOrdinate.getState_admin_unit_id()){
-					isSubOrdinate = true;
+					return true;
 				} else {
 					// is subOrdinate of subOrdinate
 					List<StateAdminUnit> subOrdinateSubOrdinates = getSubOrdinateUnitsById(subOrdinate.getState_admin_unit_id());
 					if (subOrdinateSubOrdinates != null) {
-						isSubOrdinate = isUnitASubordinate(validateUnit, subOrdinateSubOrdinates);
+						if (isUnitASubordinate(validateUnit, subOrdinateSubOrdinates)) {
+							return true;
+						}
 					}
 					 
 				}
 			}			
 		}
 		
-		return isSubOrdinate;
+		return false;
 	}
 
 
 
 	private boolean isTypeValidForBossUnit(StateAdminUnit validateUnit,StateAdminUnit unit) {
-		
 		StateAdminUnitType validateType = validateUnit.getType();
 		StateAdminUnitType currentType 	= getTypeWithRelationsById(unit.getState_admin_unit_type_id());
 		
@@ -516,6 +630,9 @@ public class StateAdminUnitDao extends BorderGuardDao{
 
 		return isCodeExisting;
 	}
+
+
+
 
 
 

@@ -316,7 +316,7 @@ public class TypeController extends GenericController {
 	
 	
 	
-	// Add subType
+	// Add subOrdinate
 
 	
 	
