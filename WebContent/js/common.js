@@ -72,21 +72,6 @@ function addSubOrdinate(id) {
 
 
 
-function changeType(id){
-	storeAndSubmit(id, "changeType");
-}
-
-
-
-function toggleTypeRelatedWidgets(typeId){
-	var typeId = document.getElementById('typeId').value;
-
-	var isDisabled = (typeId) ? false : true;
-
-    document.getElementById('bossUnitId').disabled=isDisabled;
-    document.getElementById('addSubOridinateUnit').disabled=isDisabled;
-}
-
 
 
 //Entry points from Unit and UnitType possible subOrdinates lists 

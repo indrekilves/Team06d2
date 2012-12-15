@@ -14,7 +14,7 @@
 </head>
 
 
-<body  onload="toggleTypeRelatedWidgets()">
+<body  onload="onLoadUnitForm()">
 
 	<div id="header">
 		<jsp:include page="header.jsp"/>
