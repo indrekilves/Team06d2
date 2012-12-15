@@ -19,7 +19,7 @@ public class ReportController  extends GenericController {
 	private static final long 		serialVersionUID = 1L;
 	private StateAdminUnitDao 		unitDao = new StateAdminUnitDao();
 	private StateAdminUnitTypeDao 	typeDao = new StateAdminUnitTypeDao();
-   
+	private Integer					lastTypeId;
 	
 	
 	
@@ -108,23 +108,24 @@ public class ReportController  extends GenericController {
 		List<StateAdminUnit> 		units = null;
 		List<StateAdminUnitType> 	types = typeDao.getAllStateAdminUnitTypes();
 
-		String 	strTypeId = request.getParameter("typeId");
+		String 	strTypeId = request.getParameter("selTypeId");
 		Integer typeId = null;
 		
 		if (strTypeId != null && strTypeId.length() > 0){
 			typeId = Integer.parseInt(strTypeId);
+			lastTypeId = typeId;
 		}
 				
 		if (typeId == null){
-			typeId = typeDao.getHighestType();
+			// TODO
+			typeId = lastTypeId;
 		}	
 			
 		if (typeId != null){
 			units = unitDao.getAllUnitsWithSuboridinatesByTypeId(typeId);
 		}		
 		
-		
-		request.setAttribute("lastTypeId", typeId);
+		request.setAttribute("lastTypeId", lastTypeId);
 		request.setAttribute("units", units);
 		request.setAttribute("types", types);
 
@@ -141,11 +142,28 @@ public class ReportController  extends GenericController {
 	
 	
 	
-	private void showUnitReadonlyForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void showUnitReadonlyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		StateAdminUnit unit = null;
+		List<StateAdminUnit> bossUnits = null;		
+		String strId = request.getParameter("id");
+
+		System.out.println("showUnitForm - ID: " + strId);
 		
+		if (strId != null && strId.length() > 0){
+			Integer id = Integer.parseInt(strId);
+			unit = unitDao.getUnitWithRelationsById(id);
+			bossUnits = unitDao.getAllPossibleBossUnitsByUnit(unit);			
+		} else {
+			System.out.println("showUnitForm in readOnly - ID missing");
+			showUnitsReport(request, response);
+			return;
+		}
 		
-		System.out.println("showUnitForm in readOnly");
+		request.setAttribute("unit", unit);
+		request.setAttribute("bossUnits", bossUnits);
+			
+		request.getRequestDispatcher("pages/unitForm.jsp").forward(request, response);		
+		
 
 	}
 }

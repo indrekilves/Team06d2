@@ -46,7 +46,7 @@
 								<tr>
 		<!-- Date --> 			<td><input name="date" 	value="" class="datePicker" style="width: 120px;"></td>
 									<td>
-		<!-- Type -->					<select name="typeId" style="width: 150px">
+		<!-- Type -->					<select name="selTypeId" style="width: 150px">
 											<option value=""></option>
 										
 											<c:forEach var="type" items="${types}">
