@@ -104,14 +104,31 @@ public class ReportController  extends GenericController {
 
 
 	private void showUnitsReport(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<StateAdminUnit> 		units = unitDao.getAllUnits();
+
+		List<StateAdminUnit> 		units = null;
 		List<StateAdminUnitType> 	types = typeDao.getAllStateAdminUnitTypes();
 
+		String 	strTypeId = request.getParameter("typeId");
+		Integer typeId = null;
+		
+		if (strTypeId != null && strTypeId.length() > 0){
+			typeId = Integer.parseInt(strTypeId);
+		}
+				
+		if (typeId == null){
+			typeId = typeDao.getHighestType();
+		}	
+			
+		if (typeId != null){
+			units = unitDao.getAllUnitsWithSuboridinatesByTypeId(typeId);
+		}		
+		
+		
+		request.setAttribute("lastTypeId", typeId);
 		request.setAttribute("units", units);
 		request.setAttribute("types", types);
 
-		System.out.println("showReport");
-
+		System.out.println("ShowReport for TypeID: " + typeId);
 		
 		request.getRequestDispatcher("pages/unitsReport.jsp").forward(request, response);	
 	}

@@ -295,6 +295,9 @@ public class StateAdminUnitDao extends BorderGuardDao{
 	
 	
 
+	/**
+	 * NOTE: only direct relations are attached. 
+	 */
 	public StateAdminUnit getUnitWithRelationsById(Integer id) {
 		if (id == null) return null;
 	
@@ -658,8 +661,105 @@ public class StateAdminUnitDao extends BorderGuardDao{
 		}	
 	}
 
+	
+	
+	
+	// Get all subordinates 
+
+	
+	
+	
+	public List<StateAdminUnit> getAllUnitsWithSuboridinatesByTypeId(Integer typeId) {
+		// TODO by date
+		
+		List<StateAdminUnit> plainUnits 		= getAllUnitsWithDirectRelationsByTypeId(typeId);
+		List<StateAdminUnit> unitsWithSubOrds 	= new ArrayList<StateAdminUnit>();
+		
+		if (plainUnits == null) return null;
+		
+		for (StateAdminUnit unit : plainUnits) {
+			
+			if (unit != null){
+			
+				List<StateAdminUnit> subOrdinates = getAllSubordinatesByUnit(unit);
+				if (subOrdinates != null && !subOrdinates.isEmpty()){
+					unit.setSubordinateUnits(subOrdinates);
+				}
+				
+				unitsWithSubOrds.add(unit);
+			}
+		}		
+		
+		return unitsWithSubOrds;
+	}
+	
 
 
+	private List<StateAdminUnit> getAllUnitsWithDirectRelationsByTypeId(Integer typeId) {
+		if (typeId == null) return null;
+		
+	    List<StateAdminUnit>	units = new ArrayList<StateAdminUnit>();
+		PreparedStatement 		ps = null;
+		ResultSet 				rs = null;
+		
+		try {
+			String sql = "SELECT state_admin_unit_id " +
+						 "FROM   state_admin_unit " +
+						 "WHERE  state_admin_unit_type_id = ? " +
+						 "  AND	 opened <= NOW() " +
+						 "  AND	 closed >= NOW() ";
+			
+			ps = getConnection().prepareStatement(sql);	 
+		    ps.setInt(1, typeId);		    
+		    rs = ps.executeQuery();
+
+		    while (rs.next()) {
+		    	Integer unitId = rs.getInt(1);
+		    	if (unitId != null){
+			    	StateAdminUnit unit = getUnitWithRelationsById(unitId);
+			    	if (unit != null) {
+			    		units.add(unit);
+			    	} 	
+		    	}
+		    }
+
+		} catch (Exception e) {
+		    throw new RuntimeException(e);
+		} finally {
+			DbUtils.closeQuietly(rs);
+		    DbUtils.closeQuietly(ps);
+		}
+
+		return units;	
+	}
+
+	
+
+
+	private List<StateAdminUnit> getAllSubordinatesByUnit(StateAdminUnit unit) {
+		if (unit == null) return null;
+		
+	    List<StateAdminUnit> allSubOrdinates	= new ArrayList<StateAdminUnit>();
+	    List<StateAdminUnit> directSubOrdinates = unit.getSubordinateUnits();
+	    
+	    if (directSubOrdinates == null || directSubOrdinates.isEmpty()) return null;
+	    
+	    for (StateAdminUnit subUnit : directSubOrdinates) {
+	    	if (subUnit != null){
+	        	allSubOrdinates.add(subUnit);
+		    	
+		    	StateAdminUnit subUnitWithRelations = getUnitWithRelationsById(subUnit.getState_admin_unit_id());
+		    	List<StateAdminUnit> subUnitSubOrdinates = getAllSubordinatesByUnit(subUnitWithRelations);
+		    	
+		    	if (subUnitSubOrdinates != null && !subUnitSubOrdinates.isEmpty()){
+		    		allSubOrdinates.addAll(subUnitSubOrdinates);
+		    	}
+	    	}
+	    	
+		}
+	    
+		return allSubOrdinates;
+	}
 
 
 

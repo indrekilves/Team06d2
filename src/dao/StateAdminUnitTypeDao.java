@@ -537,5 +537,10 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		}				
 	}
 
+	public Integer getHighestType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 		
 }

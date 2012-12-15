@@ -30,45 +30,85 @@
 	
 			<form method="POST" id="unitsReport"> 
 	
+				<input type="hidden" id="id"		name="id"		value="">					
 				<input type="hidden" id="origin" 	name="origin"	value="">					
 				<input type="hidden" id="exitMode"	name="exitMode"	value="">
 				
-				<input type="text" name="date1" id="date1" class="datePicker" />
-
-				
-				
-<!-- Filters --><table>
+				<table>
 					<tr>
-						<td>Date:</td>
-						<td>Type:</td>
-						<td/>						
-					</tr>
-					<tr>
-<!-- Date --> 			<td><input name="date" 	value="" class="datePicker"></td>
 						<td>
-<!-- Type -->				<select name="typeId">
-								<option value=""></option>
-							
-								<c:forEach var="type" items="${types}">
-									<option value="${type.state_admin_unit_type_id}">${type.name}</option>
-								</c:forEach>
-							</select>
-						</td>
-<!-- Refresh -->		<td>
-						 	<input 	type	= "button" 
-						 			value	= "Refresh" 
-						 			class 	= "largeButton"  
-						 			onclick	= "refreshReport()">
+<!-- Filters -->			<table>
+								<tr>
+									<td style="width: 170px;">Date:</td>					
+									<td style="width: 170px;">Type:</td>
+									<td style="width: 80px;"/>						
+								</tr>
+								<tr>
+		<!-- Date --> 			<td><input name="date" 	value="" class="datePicker" style="width: 120px;"></td>
+									<td>
+		<!-- Type -->					<select name="typeId" style="width: 150px">
+											<option value=""></option>
+										
+											<c:forEach var="type" items="${types}">
+												
+												<c:set var="selected" value=""/>
+						    	
+										    	<c:if test="${type.state_admin_unit_type_id == lastTypeId}">
+										     		<c:set var="selected" value="selected=\"selected\""/>
+										    	</c:if>
+												
+												<option value="${type.state_admin_unit_type_id}" ${selected}>${type.name}</option>
+												
+												
+												
+											</c:forEach>
+										</select>
+									</td>
+		<!-- Refresh button -->			<td>
+									 	<input 	type	= "button" 
+									 			value	= "Refresh" 
+									 			class 	= "largeButton"  
+									 			onclick	= "refreshReport()">
+									</td>
+								</tr>
+							</table>	
 						</td>
 					</tr>
-				</table>	
-				
-				<c:forEach var="unit" items="${units}">
-					<c:out value="${unit.name}" /><br>
-				</c:forEach>
-				
-			</form>	
-						
+					
+<!-- Spacer -->		<tr height="30px"/>
+	
+					<tr>
+						<td>
+<!-- Results -->			<c:forEach var="unit" items="${units}">
+								<table style="width:100%">
+								 	<tr style="border: 1px solid black;background-color:#D3D3D3;">
+	<!-- Boss Unit -->					<th align="left"><c:out value="${unit.name}" /></th>
+									</tr>
+									
+									<c:forEach var="subOrdinate" items="${unit.subordinateUnits}">
+	<!-- Sub Unit Name -->				<tr style="border: 1px solid black;">
+											<td>	
+												<table style="width:100%">
+													<tr>
+														<td><c:out value="${subOrdinate.name}" /></td>
+	<!-- View subUnit -->								<td align="right">
+														 	<input 	type	= "button" 
+														 			value	= "View" 
+														 			class 	= "largeButton"  
+														 			onclick	= "showSelectedEntry('${subOrdinate.state_admin_unit_id}')">
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</c:forEach>
+	<!-- Spacer -->								<tr height="20px"/>
+								</table>
+							</c:forEach>
+						</td>	
+					</tr>
+				</table>
+			</form>		
 		</div>
 	</div>
 
