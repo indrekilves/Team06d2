@@ -23,7 +23,8 @@
 		<div id="innerContainer">
 			<p class="lPad100">			
 				Database lock clearing result: <br>
-				<c:out value="${clearResult}"/>
+				<c:out value="${clearResult}"/> <br><br>
+				<a href="DatabaseController">Create database</a>
 			</p>
 		</div>
 	</div>

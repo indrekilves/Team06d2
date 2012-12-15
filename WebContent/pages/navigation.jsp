@@ -9,6 +9,7 @@
 <body>
 	<div id="navigationText">
 		<b>Main menu</b><br>
+		<a href="HomepageController">Home page</a><br>
 		<a href="DatabaseController">Create database</a><br>
 		<a href="DatabaseController?clearDbLock=true">Clear Db.lck</a><br>
 		<a href="TypeController">State Admin Unit Types</a><br>
