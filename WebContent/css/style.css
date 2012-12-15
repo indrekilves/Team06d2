@@ -54,6 +54,35 @@ p.lPad100{
 }
 
 
+a:link, a:visited {
+	text-decoration:none;
+	color: #FF6600;
+}
+a:hover, a:active {
+	text-decoration:underline;
+}  
+
+a:link.navigation,a:visited.navigation
+{
+	display:block;
+	font-weight:bold;
+	color: #FF9933;
+	background-color:#606060;
+	width:90%;
+	text-align:center;
+	padding:4px;
+	text-decoration:none;
+}
+
+
+a:hover.navigation,a:active.navigation
+{
+	background-color:#808080;
+}
+
+
+
+
 div.pad10{
 	padding-left:10px;
 	padding-top:10px; 
@@ -61,14 +90,15 @@ div.pad10{
 
 
 #header {
-  background: #aba;
+  background: #606060;
+  color: #FF9933;
   width: 100%;
   text-align:center; 
 }
 
 
 #navigation {
-  background: #aaa;
+  background: #888888;
   float: left;
   width: 20%;
   height: 500px;
@@ -76,13 +106,13 @@ div.pad10{
 
 
 #navigationText{
-  text-align:left;
+  text-align:center;
   padding-left: 5px;		
 }
 
 
 #content {
-  background: #eee;
+  background: #E0E0E0;
   float: left;
   width: 80%;
   height: 500px;
@@ -107,9 +137,11 @@ div.pad10{
 
 
 #footer {
-  background: #aba;
+  background: #606060;
   clear: both;
   width: 100%;
-  text-align:center;
+  text-align:center; 
+  color: #FF9933;
+  
 }
 </style>
