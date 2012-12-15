@@ -57,7 +57,7 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 						 "  AND		opened <= NOW() " +
 						 "  AND		closed >= NOW() ";
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, bossID);
 		    ps.setInt(2, stateAdminUnitTypeID);
 		    rs = ps.executeQuery();
@@ -94,7 +94,7 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 				 		 "	 		closed   = NOW() " 			+	
 						 "WHERE 	possible_subordination_id = ?";  
 			
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, possibleSubordinationID);
 		    ps.executeUpdate();
 		    
@@ -112,7 +112,6 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 		}
 		
 		PreparedStatement ps = null;
-		ResultSet rs 		 = null;
 		
 		try {
 			String sql = "INSERT INTO possible_subordination " +
@@ -140,7 +139,7 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 						 "  ?" +
 						 ")";
 					
-		    ps = super.getConnection().prepareStatement(sql);	 
+		    ps = getConnection().prepareStatement(sql);	 
 		    ps.setInt(1, bossID);
 		    ps.setInt(2, stateAdminUnitTypeID);
 		    ps.executeUpdate();
@@ -148,7 +147,6 @@ public class PossibleSubordinationDao extends BorderGuardDao {
 		} catch (Exception e) {
 		    throw new RuntimeException(e);
 		} finally {
-			DbUtils.closeQuietly(rs);
 		    DbUtils.closeQuietly(ps);
 		}		
 	}

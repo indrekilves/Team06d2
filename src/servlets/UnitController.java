@@ -8,8 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sun.tools.doclets.formats.html.resources.standard;
-
+import dao.AdminSubordinationDao;
 import dao.StateAdminUnitDao;
 import dao.StateAdminUnitTypeDao;
 import beans.StateAdminUnit;
@@ -197,13 +196,13 @@ public class UnitController extends GenericController  {
 			updateUnitById(id, request);
 		}
 		
-        // TODO 
-		//updateStateAdminUnitTypeBossById(id, request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
+    	updateUnitBossById(id, request); // Changing subOrdinates goes through removeSubStateAdminUnitType / addSubStateAdminUnitType
 		showUnitsList(request, response);
 		
 	}
 
 	
+
 	protected List<String> getValidationErrors(HttpServletRequest request) {
 
 		List<String> errors = super.getValidationErrors(request);
@@ -281,6 +280,33 @@ public class UnitController extends GenericController  {
 	}
 
 
+	
+	
+
+	private void updateUnitBossById(Integer id, HttpServletRequest request) {
+		if (id == null) return;
+		
+		StateAdminUnit unit = unitDao.getUnitWithRelationsById(id);
+		StateAdminUnit oldBoss = unit.getBossUnit();
+
+		Integer oldBossId = null;
+		Integer newBossId = null;
+		String newBossIdStr = request.getParameter("bossUnitId");
+		
+		if (oldBoss != null)
+		{
+			oldBossId = oldBoss.getState_admin_unit_id();
+		}
+	
+		if (newBossIdStr != null && newBossIdStr.length() > 0){
+			newBossId = Integer.parseInt(newBossIdStr);
+		}
+		
+		if (oldBossId == newBossId) return;
+		
+		AdminSubordinationDao adminSubOrdDao = new AdminSubordinationDao();
+		adminSubOrdDao.replaceBossRelation(oldBossId, newBossId, id);	
+	}
 	
 	
 	// Remove unit
