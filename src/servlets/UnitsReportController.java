@@ -15,7 +15,7 @@ import beans.StateAdminUnit;
 import beans.StateAdminUnitType;
 
 
-public class ReportController extends GenericController {
+public class UnitsReportController extends GenericController {
 
 	private static final long 		serialVersionUID = 1L;
 	private StateAdminUnitDao 		unitDao = new StateAdminUnitDao();

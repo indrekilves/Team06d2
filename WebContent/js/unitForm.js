@@ -18,7 +18,7 @@ function onLoadUnitForm(){
 
 function isComingFromReport(){
 	var pathName = window.location.pathname; 
-	return pathName.indexOf("ReportController") !== -1;
+	return pathName.indexOf("UnitsReportController") !== -1;
 }
 
 
