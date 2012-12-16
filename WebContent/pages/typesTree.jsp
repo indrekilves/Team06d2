@@ -20,7 +20,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#black").treeview({
-				url : "TypeTreeController2"
+				url : "TypesTreeController"
 			})
 		});
 	</script>

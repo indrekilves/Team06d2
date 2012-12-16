@@ -15,7 +15,7 @@
 		<a href="TypeController"						class="navigation">State Admin Unit Types</a><br>
 		<a href="UnitController"						class="navigation">State Admin Units</a><br>
 		<a href="UnitsReportController"					class="navigation">State Admin Units Report</a><br>
-		<a href="TypesTreeController?action=showTree"	class="navigation">State Admin Types Tree</a><br>
+		<a href="TypesTreeController"					class="navigation">State Admin Types Tree</a><br>
 		
 	</div>
 </body>

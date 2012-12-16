@@ -74,14 +74,4 @@
     <servlet-name>TypesTreeController</servlet-name>
     <url-pattern>/TypesTreeController</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>TypeTreeController2</display-name>
-    <servlet-name>TypeTreeController2</servlet-name>
-    <servlet-class>servlets.TypeTreeController2</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>TypeTreeController2</servlet-name>
-    <url-pattern>/TypeTreeController2</url-pattern>
-  </servlet-mapping>
 </web-app>
