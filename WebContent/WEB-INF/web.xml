@@ -4,7 +4,6 @@
   <welcome-file-list>
     <welcome-file>pages/index.jsp</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <description></description>
     <display-name>Hello</display-name>
@@ -15,7 +14,6 @@
     <servlet-name>Hello</servlet-name>
     <url-pattern>/Hello</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>DatabaseController</display-name>
@@ -26,7 +24,6 @@
     <servlet-name>DatabaseController</servlet-name>
     <url-pattern>/DatabaseController</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>UnitController</display-name>
@@ -37,7 +34,6 @@
     <servlet-name>UnitController</servlet-name>
     <url-pattern>/UnitController</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>TypeController</display-name>
@@ -48,7 +44,6 @@
     <servlet-name>TypeController</servlet-name>
     <url-pattern>/TypeController</url-pattern>
   </servlet-mapping>
-
   <servlet>
     <description></description>
     <display-name>GenericController</display-name>
@@ -59,7 +54,6 @@
     <servlet-name>GenericController</servlet-name>
     <url-pattern>/GenericController</url-pattern>
   </servlet-mapping>
-
   <servlet>
     <description></description>
     <display-name>UnitsReportController</display-name>
@@ -70,7 +64,6 @@
     <servlet-name>UnitsReportController</servlet-name>
     <url-pattern>/UnitsReportController</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>TypesTreeController</display-name>
@@ -80,5 +73,15 @@
   <servlet-mapping>
     <servlet-name>TypesTreeController</servlet-name>
     <url-pattern>/TypesTreeController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TypeTreeController2</display-name>
+    <servlet-name>TypeTreeController2</servlet-name>
+    <servlet-class>servlets.TypeTreeController2</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TypeTreeController2</servlet-name>
+    <url-pattern>/TypeTreeController2</url-pattern>
   </servlet-mapping>
 </web-app>

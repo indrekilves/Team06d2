@@ -63,6 +63,9 @@ a:link, a:visited {
 	text-decoration:none;
 	color: #FF6600;
 }
+
+
+
 a:hover, a:active {
 	text-decoration:underline;
 }  
@@ -144,4 +147,13 @@ div.pad10{
   color: #FF9933;
   
 }
+
+/*
+#placeholder{ 
+  background-image: url(images/loading.gif); 
+  background-repeat: no-repeat; 
+  /*text-indent:-1000px;*/ 
+  font-weight:bold; 
+}
+*/
 </style>

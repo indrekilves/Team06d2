@@ -315,7 +315,7 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 	
 	
 
-	private List<StateAdminUnitType> getSubOrdinateAdminUnitTypesById(Integer state_admin_unit_type_id) {
+	public List<StateAdminUnitType> getSubOrdinateAdminUnitTypesById(Integer state_admin_unit_type_id) {
 		if (state_admin_unit_type_id == null) {
 			return null;
 		}
@@ -537,9 +537,79 @@ public class StateAdminUnitTypeDao extends BorderGuardDao{
 		}				
 	}
 
-	public Integer getHighestType() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	
+
+	// Get top level types 
+	
+	
+	
+	
+	public List<StateAdminUnitType> getTopLevelTypesWithSubordinates() {
+		List <StateAdminUnitType> topLevelTypes = getTopLevelTypes();
+		if (topLevelTypes == null || topLevelTypes.isEmpty()) return null;
+		
+		for (StateAdminUnitType topLevelType : topLevelTypes) {
+			List <StateAdminUnitType> subOrdinates = getAllNestedSubordinatesById(topLevelType.getState_admin_unit_type_id());
+			if (subOrdinates != null && subOrdinates.isEmpty() == false){
+				topLevelType.setSubordinateAdminUnitTypes(subOrdinates);
+			}
+		}
+		
+		return topLevelTypes;
+	}
+	
+
+	public List<StateAdminUnitType> getTopLevelTypes() {
+		List <StateAdminUnitType> allTypes = getAllStateAdminUnitTypes();
+		List <StateAdminUnitType> topLevelTypes = new ArrayList<StateAdminUnitType>();
+
+		for (StateAdminUnitType type : allTypes) {
+			if (type != null){
+				if (hasBossById(type.getState_admin_unit_type_id()) == false){
+					topLevelTypes.add(type);
+				}
+			}
+		}
+		
+		
+		return topLevelTypes;
+	}
+	
+	
+	
+	private boolean hasBossById(Integer id) {
+		StateAdminUnitType boss = getBossAdminUnitTypeById(id);
+    	return boss != null;
+	}
+
+	
+	
+	public List<StateAdminUnitType> getAllNestedSubordinatesById(Integer id) {
+		if (id == null) return null;
+		StateAdminUnitType type = getStateAdminUnitTypeByIdWithRelations(id);
+		if (type == null) return null;
+		
+	    List<StateAdminUnitType> allSubOrdinates	= new ArrayList<StateAdminUnitType>();
+	    List<StateAdminUnitType> directSubOrdinates = type.getSubordinateAdminUnitTypes();
+	    
+	    if (directSubOrdinates == null || directSubOrdinates.isEmpty()) return null;
+	    
+	    for (StateAdminUnitType subType : directSubOrdinates) {
+	    	if (subType != null){
+
+	    		List<StateAdminUnitType> subTypeSubOrdinates = getAllNestedSubordinatesById(subType.getState_admin_unit_type_id());
+		    	if (subTypeSubOrdinates != null && !subTypeSubOrdinates.isEmpty()){
+		    		subType.setSubordinateAdminUnitTypes(subTypeSubOrdinates);
+		    	}
+	    		
+	    		allSubOrdinates.add(subType);
+	    	}
+	    	
+		}
+	    
+		return allSubOrdinates;
+		
 	}
 
 		
