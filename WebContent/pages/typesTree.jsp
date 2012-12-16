@@ -16,12 +16,11 @@
 	<script src="js/jquery.treeview.js" type="text/javascript"></script>
 	<script src="js/jquery.treeview.async.js" type="text/javascript"></script>
 
-
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#black").treeview({
 				url : "TypesTreeController"
-			})
+			});
 		});
 	</script>
 

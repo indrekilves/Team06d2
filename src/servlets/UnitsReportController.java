@@ -31,6 +31,7 @@ public class UnitsReportController extends GenericController {
 	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		showUnitsReport(request, response);
 	}
 
@@ -43,6 +44,7 @@ public class UnitsReportController extends GenericController {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		dispatchRequest(request, response);
 	}
 

@@ -32,6 +32,7 @@ public class TypesTreeController extends GenericController {
 	
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	request.setCharacterEncoding("UTF-8");
 		dispatchRequest(request, response);
     }
 
@@ -44,6 +45,7 @@ public class TypesTreeController extends GenericController {
     
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		doGet(request, response);
 	}
     
@@ -72,7 +74,7 @@ public class TypesTreeController extends GenericController {
 	
 	
 	private void showTypeTree(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	response.setContentType("application/json;UTF-8");
+    	response.setContentType("application/json");
 		
 		Collection<PlainJSON> jSONTypes = getJSONTypes(request);
 

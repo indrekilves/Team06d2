@@ -27,6 +27,7 @@ public class UnitController extends GenericController  {
 	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		showUnitsList(request, response);
 	}
 
@@ -35,6 +36,7 @@ public class UnitController extends GenericController  {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		dispatchRequest(request, response);
 	}
 

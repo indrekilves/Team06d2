@@ -13,6 +13,8 @@ public class DatabaseController extends HttpServlet {
 	private static final long serialVersionUID = -391959563520044178L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		String clearDbLock = request.getParameter("clearDbLock");
 		if (clearDbLock != null && clearDbLock.equals("true")){
 			clearDbLock(request, response);
