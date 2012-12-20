@@ -4,7 +4,9 @@ Projekt 1 Tähtaeg 16. dets (23:59)
 
 
 Töö esitamine
+
 ------------------------------------------------------
+
  Saata aadressile mart.kalmo at itcollege.ee link teie projektile GitHub-is ja link paigaldatud programmile kolledži Tomcat-i serveris.
 
 NB! Hilinenud tööd ei lähe arvesse.
@@ -13,21 +15,30 @@ NB! Hilinenud tööd ei lähe arvesse.
  Realiseerida tuleb vaated V1-5, kasutades järgmisi tehnoloogiaid: Servlet, Jsp, Jdbc, HSqlDb.  V1 - Admin üksuse liigi redaktor.jpg V2 - Admin üksuse redaktor.jpg V3 - Admin üksuste alluvusraport.jpg V4 - Admin üksuse liigi struktuuri vaade (pilt puudub) V5 - Avaleht menüüga (pilt puudub) 
 
 
- Admin üksuse liigi redaktor (V1) ------------------------------------------------------
+ Admin üksuse liigi redaktor (V1)
+ ------------------------------------------------------
+
  Selle redaktori abil on võimalik sisestada admin üksuste võimalikke alluvusi. nt. Kihelkond -> Vald -> Küla  Kirjutatavad tabelid: RIIGI_ADMIN_YKSUSE_LIIK, VOIMALIK_ALLUVUS.  Nupud: Salvesta - salvestab vormi seisu baasi ja läheb avalehele (V5). Loobu - läheb avalehele (V5). Lisa - avab vormi, millelt on võimalik valida kirjeid tabelist RIIGI_ADMIN_YKSUSE_LIIK Eemalda - eemaldab kirje tabelist VOIMALIK_ALLUVUS.  NB. ringsõltuvusi ei tohi lubada. 
 
 
- Admin üksuse redaktor (V2) ------------------------------------------------------
+ Admin üksuse redaktor (V2)
+ ------------------------------------------------------
+
  Selle redaktori abil on võimalik sisestada admin üksusi.  Kirjutatavad tabelid: RIIGI_ADMIN_YKSUS, ADMIN_ALLUVUS.  Nupud: Salvesta - salvestab vormi seisu baasi ja läheb avalehele (V5). Loobu - läheb avalehele (V5). Muuda - avab vormi, millelt on võimalik valida admin üksuse liik. Lisa - avab vormi, millelt on võimalik valida kirjeid tabelist RIIGI_ADMIN_YKSUS Eemalda - eemaldab kirje tabelist ADMIN_ALLUVUS.  Seni, kuni admin üksuse liik on valimata (Muuda nupp) on "Allub" ja "Alluvad" mitteaktiivsed. 
 
 
- Admin üksuste alluvusraport (V3) ------------------------------------------------------
+ Admin üksuste alluvusraport (V3)
+ ------------------------------------------------------
+
  See vaade näitab admin üksuste alluvusi valitud kuupäeval.  Nupud: Vaata - näitab antud admin üksuse infot. Vaade V2 mittemuudetaval kujul (nuupudest on ainult "Tagasi" nupp). Värskenda - kuvab alluvusuhted vastavalt valitud kuupäevale ja admin üksuse liigile. 
 
 
  Admin üksuse liigi struktuur (V4) ------------------------------------------------------
+
  näitab puu struktuuri admin hetkel kehtivatest üksuse liikidest.  Nupud: Tagasi - läheb avalehele (V5). 
 
 
- Avaleht (V5) ------------------------------------------------------
+ Avaleht (V5)
+ ------------------------------------------------------
+
  See vaade näitab menüüd.  Menüüks on lingid vaadetele V1, V2, V3, V4.
