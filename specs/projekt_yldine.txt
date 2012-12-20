@@ -1,0 +1,58 @@
+Üldised nõuded
+------------------------------------------------------
+
+	•	Projektid tehakse grupitööna, grupi liikmete arv on 2
+	•	Ühtegi faili, mida saab lähtetekstidest kompileerida, ei tohi GitHub-is olla
+	•	Soovitatav on GitHubi commitida oma nime alt
+	•	Projektid on grupitöö, hinne on individuaalne
+	•	Projektide jaoks peab olema kirjeldatud ITK CI serveris automaatse kokkupanemise reegel (vaata CI seadistamise juhend) ja selle abil kokku kompileeritud rakendus peab töötama
+
+
+
+
+Tehnilised nõuded
+------------------------------------------------------
+
+	•	Projektid peavad olema 100% automaatselt ehitatavad Ant-i abil
+	•	Lähteülesandes ette antud andmebaasi struktuuri muuta EI TOHI. Vähesel määral tohib muuta vaid väljade andmetüüpe, säilitades sealjuures välja põhitüübi (näiteks stringist integeri ei tohi teha) ja maksimaalse pikkuse, ning võimalikke kirjavigu
+	•	Lähteülesandes ette antud vaadete loogikat muuta ei tohi. Kujundus on loomulikult enda teha kuid vaade peab sisaldama kõiki nõutud elemente ja need peavad asuma lehel õigetes kohtades
+	•	Lahendus peab töötama rakendusserveril Tomcat 7
+	•	Kasutama peab HSQLDB andmebaasi
+	•	Andmebaasi URL peab olema kujul: jdbc:hsqldb:file:${user.home}/i377/TeamXXd/db;shutdown=true kus XX on meeskonna number.
+	•	Rakendus peab võimaldama luua ise oma tööks vajalikud andmebaasi tabelid
+	•	Rakendus peab võimaldama tekitada funktsionaalsuse demonstreerimiseks vajaliku komplekti näidisandmeid
+	•	Andmebaasi sisestatud andmed ei tohi rakenduse restartimisel ära kaduda
+
+
+
+Andmebaasi skeem
+------------------------------------------------------
+
+Andmebaasi arhitektid on loonud vastavalt taustsüsteemile andmebaasi mudeli. Teile kui rakenduse programmeerijatele on sellest üksipulgi kinni pidaminekohustuslik. Igas mudelis on alati vaieldavusi, ükski mudel pole ideaalne ja asju saab teha mitut moodi. Andmebaasi mudeli üle vaidlemine ei kuulu enam teie kompetentsi, see rong on läinud ja teie peate oma rakenduse ette antud mudeli põhjal valmis tegema.
+Auditeeritavuse tagamiseks on andmebaasis igal olemil väljad: avaja, muutja, sulgeja. Nendesse väljadesse tuleb automaatselt kirjutada nimetatud toimingu "süüdlase" kasutajanimi. Lisaks on igas tabelis kuupäevad avatud, muudetud, suletud, seda isegi juhtudel kui see funktsionaalsus võiks olla dubleeritav mõne teise kuupäevavälja abil. Avatud peab alati näitama kirje loomise aega, suletud kirje "kustutamise" aega. Reaalselt ei tohi rakenduse põhivaated ühtegi rida tabelitest mitte kunagi kustutada.
+
+	1.	Osadel olemitel on väljad alates ja kuni. Neid välju võib ignoreerida.
+Kõik kuupäevaväljad, mis on andmebaasi skeemil märgitud kui NOT NULL peavad alati olema täidetud. Kuupäevad, mida ei ole võimalik veel täita (näiteks suletud), tuleb täita nn. surrogaatkuupäevaga: 9999-12-31.
+
+Lisaks mudeli graafilisele skeemile on antud ka mudeli kirjeldus SQL failina  (piir.sql).
+Lahenduses peavad eksisteerima vähemalt oma vaadete realiseerimiseks hädavajalikud olemid. Seotud olemid, mille detaile loodavad vaated otseselt ei redigeeri ega kuva, võivad olla realiseeritud ka vähendatud kujul: sisaldada ainult valikusisendite mõistliku kuvamise jaoks vajalikke välju (id, kood, nimetus jms).
+
+
+
+Kasutajaliides
+---------------------------
+Kasutajaliidese disainerid on joonistanud kliendi soovide alusel hulga vaadete eskiise (mockups). Vaadete komplekti juures on ka kirjeldus, kuidas antud vaated käituma peavad ja millised lisavaateid need nõuavad.
+Vaadete loogikat ja ülesehitust muuta ei tohi, kui juuresolev kirjeldus ei ütle teisiti.
+
+
+
+Rakenduse taustsüsteem (domain)
+------------------------------------------------------
+
+Meil on üks riik, igal riigil on piirivalve – järelikult ka meil.  Meil on mitu väeosa.
+Väeosadesse kuuluvad piirivalvurid. Peab olema näha piirivalvurite väeosade vaheline liikumine. Igal piirivalvuril on roll väeossa kuulumisel (juhataja, juhataja asetäitja, politruk, pastor, mulla, realiige, vms.)
+Piirivalvuritel on auastmed. Peab olema näha auastmete muutumine.
+Lisaks tavapärstele kontaktandmetele (aadress, telefon, e-mail) tuleb iga piirivalvuri kohta registreerida kontaktisik, nt. mõni sugulane ja tema suguluse aste.  Igat piirilõiku valvab üks väeosa, piirilõikudel võivad omakorda asuda piiripunktid.  Üks väeosa teenindab mitut piirilõiku ja/või piiripunkti. Peab olema näha, milliseid piiripunkte ja -lõike on väosa teenindanud ja milliseid teenindab see praegu.  Peab olema näha milline piirivalvur on millises piiripunktis ja milline on tema roll seal (ülem, ülema asetäitja, kokk, realiige, vms.)  On elumajad, mis on jagatud tubadeks ja kohtadeks toas. Peab olema teada, milline piirivalvur, millisel kohal elab. Peab olema näha ka ajalugu.   Piiril käivad vahtkonnad. Iga piirivalvur kuulub mingisse vahtkonda. Peab olema näha millistes vahtkondades ta on olnud ja millises on ta praegu. Vahtkonda kuulumisel on piirivalvuril roll (vahtkonna ülem, vahtkonna ülema asetäitja, realiige vms.)
+Vahtkondadele koostatakse „piiril kõndimise“ graafik. Graafikujärgselt käiakse mingil piirilõigul.  Vahel juhtuvad piiril intsidendid. Peab saama märkida, millisel piirilõigul see toimus, millal ja kes avastas. Meil on intsidendiliikide teatmik. Iga intsident tuleb siduda intsidendi liigiga selles teatmikus. Intsident on tavaliselt seotud ka piiririkkujaga. Seega peame pidama ka muude isikute teatmikku.
+Piiririkkuja kohta peab olema teada tema kodakondsus ja isikukood.  Samas intsidendis võib osaleda mitu piiririkkujat. Ka piirivalvureid võib olla seotud intsidendiga. Kui intsidendiga on seotud mingi vahtkond, siis peab olema võimalik ka seda kirjeldada. Iga kord ei ole intsident seotud isikuga või isikutega vaid millegi muuga. Ka sellised intsidendid kus põder üle piiri läheb peab saama registreerida. Muud objektid on jagatud gruppidesse.
+Kui intsidendis osalenud isik või piirivalvur rikkus seadust, peab seda saama registreerida seadusepunktide lõikes. Kui seaduserikkumisega oli seotud objekt, peab ka seda saama märkida.
